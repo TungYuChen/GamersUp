@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
 import Home from './pages/Home'
-import About from './pages/About'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
         <main className='container mx-auto px-4 pb-15'>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
             <Route path='/*' element={<NotFound />} />
           </Routes>
         </main>
