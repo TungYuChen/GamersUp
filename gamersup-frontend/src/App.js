@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Login from './components/account/Login'
+import LoginForm from './components/account/LoginForm'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
 import { UserProvider } from './context/user/UserContext'
@@ -15,7 +15,7 @@ function App() {
           <main className='container mx-auto px-4 pb-15'>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/login' element={<Login />} />
+              <Route path='/login' element={<LoginForm />} />
               <Route path='/*' element={<NotFound />} />
             </Routes>
           </main>

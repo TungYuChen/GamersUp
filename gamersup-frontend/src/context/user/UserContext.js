@@ -5,17 +5,17 @@ const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
   const initialState = {
-    user: {},
+    userEmail: '',
     loggedIn: false,
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)
 
-  const checkUser = (user) => {
-    if(user.username === 'test' && user.password === 'test') {
+  const checkUserCredentials = (email, password) => {
+    if(email === 'test@qq.com' && password === 'test') {
         dispatch({
             type: 'LOGIN',
-            payload: user,
+            payload: email,
 
         })
     }
@@ -24,12 +24,14 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        user: state.user,
+        userEmail: state.userEmail,
         loggedIn: state.loggedIn,
-        checkUser,
+        checkUserCredentials,
       }}
     >
       {children}
     </UserContext.Provider>
   )
 }
+
+export default UserContext
