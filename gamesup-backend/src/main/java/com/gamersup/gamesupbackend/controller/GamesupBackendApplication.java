@@ -1,4 +1,4 @@
-package com.gamersup.gamesupbackend;
+package com.gamersup.gamesupbackend.controller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
