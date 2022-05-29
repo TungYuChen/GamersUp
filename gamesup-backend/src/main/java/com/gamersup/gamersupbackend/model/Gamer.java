@@ -1,4 +1,4 @@
-package com.gamersup.gamesupbackend.database;
+package com.gamersup.gamersupbackend.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +19,15 @@ public class Gamer {
 
     public Integer getId() {
         return Id;
+    }
+
+    public Gamer(String name, String email, String password) {
+        Name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Gamer() {
     }
 
     public void setId(Integer id) {
