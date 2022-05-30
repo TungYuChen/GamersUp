@@ -7,6 +7,7 @@ const userReducer = (state, action) => {
       }
     case 'LOGOUT':
       return {
+        userEmail: '',
         loggedIn: false,
       }
     default:

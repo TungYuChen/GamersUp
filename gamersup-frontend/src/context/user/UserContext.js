@@ -12,13 +12,18 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState)
 
   const checkUserCredentials = (email, password) => {
-    if(email === 'test@qq.com' && password === 'test') {
-        dispatch({
-            type: 'LOGIN',
-            payload: email,
-
-        })
+    if (email === 'test@qq.com' && password === 'test') {
+      dispatch({
+        type: 'LOGIN',
+        payload: email,
+      })
     }
+  }
+
+  const logout = () => {
+    dispatch({
+      type: 'LOGOUT',
+    })
   }
 
   return (
@@ -27,6 +32,7 @@ export const UserProvider = ({ children }) => {
         userEmail: state.userEmail,
         loggedIn: state.loggedIn,
         checkUserCredentials,
+        logout,
       }}
     >
       {children}
