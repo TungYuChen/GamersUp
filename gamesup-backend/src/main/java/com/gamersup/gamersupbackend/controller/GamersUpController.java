@@ -36,23 +36,24 @@ public class GamersUpController {
     }
 
     // build get gamer by id REST API
-    // http://localhost:8080/api/employee/1
-    @GetMapping("{id}")
+    // http://localhost:8080/api/gamers/1
+    @GetMapping("/{id}")
     public ResponseEntity<Gamer> getGamerById(@PathVariable("id") int id) {
         return new ResponseEntity<>(service.getGamerById(id), HttpStatus.OK);
     }
 
     // build update gamer REST API
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Gamer> updateGamer(@PathVariable("id") int id, @RequestBody Gamer gamer) {
         return new ResponseEntity<>(service.updateGamer(id, gamer), HttpStatus.OK);
     }
 
     // build delete gamer REST API
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGamer(@PathVariable("id") int id) {
         // delete gamer from db
         service.deleteGamer(id);
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
+
 }

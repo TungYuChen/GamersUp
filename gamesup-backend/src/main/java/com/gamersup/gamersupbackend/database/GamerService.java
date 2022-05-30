@@ -12,7 +12,6 @@ import java.util.Optional;
 @Service
 public class GamerService {
 
-
     private GamerRepository gamerRepository;
 
     public GamerService(GamerRepository gamerRepository) {
@@ -47,12 +46,20 @@ public class GamerService {
         existingGamer.setName(gamer.getName());
         existingGamer.setEmail(gamer.getEmail());
         existingGamer.setPassword(gamer.getPassword());
-
         return gamerRepository.save(existingGamer);
     }
 
     public void deleteGamer(int id) {
         gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gamer", "Id", id));
         gamerRepository.deleteById(id);
+    }
+
+    public boolean checkGamerExisting(String email, String password) {
+        Gamer gamer = gamerRepository.findGamerByEmail(email);
+        if (gamer != null) {
+            if (gamer.getPassword().equals(password))
+                return true;
+        }
+        return false;
     }
 }
