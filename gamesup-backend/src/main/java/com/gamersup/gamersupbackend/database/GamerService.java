@@ -6,23 +6,16 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class GamerService {
-    @Autowired
+public class GamerService implements GamerServiceInterface {
+
     private GamerRepository gamerRepository;
 
+    public GamerService(GamerRepository gamerRepository) {
+        this.gamerRepository = gamerRepository;
+    }
+
+    @Override
     public Gamer saveGamer(Gamer gamer) {
         return gamerRepository.save(gamer);
-    }
-
-    public Iterable<Gamer> getGamers() {
-        return gamerRepository.findAll();
-    }
-
-    public Gamer getGamerByName(String name) {
-        return gamerRepository.findByGamerName(name);
-    }
-
-    public Gamer getGamerById(int id) {
-        return gamerRepository.findById(id);
     }
 }

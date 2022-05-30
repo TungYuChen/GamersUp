@@ -1,28 +1,30 @@
 package com.gamersup.gamersupbackend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import lombok.Data;
+
+
+@Data
 @Entity
+@Table(name = "gamers")
 public class Gamer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
-
-    private String Name;
-
+    @Column(name="username", nullable = false)
+    private String userName;
+    @Column(name="email", nullable = false)
     private String email;
-
+    @Column(name="password", nullable = false)
     private String password;
 
     public Integer getId() {
         return Id;
     }
 
-    public Gamer(String name, String email, String password) {
-        Name = name;
+    public Gamer(String userName, String email, String password) {
+        this.userName = userName;
         this.email = email;
         this.password = password;
     }
@@ -35,11 +37,11 @@ public class Gamer {
     }
 
     public String getName() {
-        return Name;
+        return userName;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.userName = name;
     }
 
     public String getEmail() {
