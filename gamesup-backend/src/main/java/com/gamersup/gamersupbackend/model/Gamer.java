@@ -2,22 +2,27 @@ package com.gamersup.gamersupbackend.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 
-@Data
 @Entity
 @Table(name = "gamers")
 public class Gamer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
-    @Column(name="username", nullable = false)
+
+    @Column(name="username")
     private String userName;
-    @Column(name="email", nullable = false)
+
+    @Column(name="email")
     private String email;
-    @Column(name="password", nullable = false)
+
+    @Column(name="password")
     private String password;
+
+    public Gamer() {
+
+    }
 
     public Integer getId() {
         return Id;
@@ -27,9 +32,6 @@ public class Gamer {
         this.userName = userName;
         this.email = email;
         this.password = password;
-    }
-
-    public Gamer() {
     }
 
     public void setId(Integer id) {
