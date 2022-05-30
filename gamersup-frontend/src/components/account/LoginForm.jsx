@@ -1,25 +1,24 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import UserContext from '../../context/user/UserContext'
+import AlertContext from '../../context/alert/AlertContext'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 import Home from '../../pages/Home'
+import Alert from '../layout/Alert'
 
 function LoginForm() {
-  const { checkUserCredentials, loggedIn } = useContext(UserContext)
+  const { setAlert } = useContext(AlertContext)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value)
-  }
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value)
-  }
+  const { checkUserCredentials, loggedIn, error } = useContext(UserContext)
 
   const handleSubmit = (e) => {
+    e.preventDefault()
+    const email = e.target.email.value
+    const password = e.target.password.value
     checkUserCredentials(email, password)
+    if (error) {
+      setAlert('Wrong credentials. Please try your email and password again.', 'error')
+    }
   }
 
   if (loggedIn) {
@@ -58,7 +57,6 @@ function LoginForm() {
                     required
                     className='appearance-none rounded-none relative block w-full px-3 py-2 border border-primary placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-focus focus:border-primary-focus focus:z-10 text-lg'
                     placeholder='Email address'
-                    onChange={handleEmailChange}
                   />
                 </div>
                 <div>
@@ -73,7 +71,6 @@ function LoginForm() {
                     required
                     className='appearance-none rounded-none relative block w-full px-3 py-2 border border-primary placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-focus focus:border-primary-focus focus:z-10 text-lg'
                     placeholder='Password'
-                    onChange={handlePasswordChange}
                   />
                 </div>
               </div>
@@ -116,6 +113,7 @@ function LoginForm() {
                   </span>
                   Sign in
                 </button>
+                <Alert />
               </div>
             </form>
           </div>

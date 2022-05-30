@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     userEmail: '',
     loggedIn: false,
+    error: false,
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)
@@ -16,6 +17,10 @@ export const UserProvider = ({ children }) => {
       dispatch({
         type: 'LOGIN',
         payload: email,
+      })
+    } else {
+      dispatch({
+        type: 'CREDENTIAL_ERROR',
       })
     }
   }
@@ -31,6 +36,7 @@ export const UserProvider = ({ children }) => {
       value={{
         userEmail: state.userEmail,
         loggedIn: state.loggedIn,
+        error: state.error,
         checkUserCredentials,
         logout,
       }}
