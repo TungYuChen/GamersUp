@@ -1,64 +1,94 @@
 package com.gamersup.gamersupbackend.model;
 
+import com.gamersup.gamersupbackend.security.ApplicationUserRole;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 
-
-
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "gamers")
-public class Gamer {
+public class Gamer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Long Id;
 
-    @Column(name="username", nullable = false)
+    @Column(name="username")
     private String userName;
 
-    @Column(name="email", nullable = false)
+    @Column(name="email")
     private String email;
 
-    @Column(name="password", nullable = false)
+    @Column(name="password")
     private String password;
 
-    public Gamer() {
+    @Enumerated(EnumType.STRING)
+    @Column(name="User_Role")
+    private ApplicationUserRole applicationUserRole;
 
-    }
+    @Column(name="Locked")
+    private Boolean locked = false;
 
-    public Integer getId() {
-        return Id;
-    }
+    @Column(name="enable")
+    private Boolean enable = false;
 
-    public Gamer(String userName, String email, String password) {
+    public Gamer(String userName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.applicationUserRole = applicationUserRole;
     }
 
-    public void setId(Integer id) {
-        Id = id;
+    public Gamer(String userName, String email, String password, ApplicationUserRole applicationUserRole, Boolean locked, Boolean enable) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.applicationUserRole = applicationUserRole;
+        this.locked = locked;
+        this.enable = enable;
     }
 
-    public String getName() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(applicationUserRole.name());
+        return Collections.singletonList(authority);
+    }
+
+    @Override
+    public String getUsername() {
         return userName;
     }
 
-    public void setName(String name) {
-        this.userName = name;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public boolean isEnabled() {
+        return enable;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 }

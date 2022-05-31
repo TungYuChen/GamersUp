@@ -1,29 +1,24 @@
 package com.gamersup.gamersupbackend.controller;
 
-import com.gamersup.gamersupbackend.database.GamerRepository;
 import com.gamersup.gamersupbackend.database.GamerService;
+import com.gamersup.gamersupbackend.database.registration.RegistrationService;
 import com.gamersup.gamersupbackend.model.Gamer;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gamersup.gamersupbackend.model.RegistrationRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/gamers")
+@AllArgsConstructor
 public class GamersUpController {
 
     private GamerService service;
-
-    public GamersUpController(GamerService service) {
-        super();
-        this.service = service;
-    }
-
-
+    private RegistrationService registrationService;
 
     // build create gamer REST API
     @PostMapping("/create")
@@ -43,24 +38,30 @@ public class GamersUpController {
     // http://localhost:8080/api/gamers/1
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('gamer:read')")
-    public ResponseEntity<Gamer> getGamerById(@PathVariable("id") int id) {
+    public ResponseEntity<Gamer> getGamerById(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getGamerById(id), HttpStatus.OK);
     }
 
     // build update gamer REST API
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('gamer:update')")
-    public ResponseEntity<Gamer> updateGamer(@PathVariable("id") int id, @RequestBody Gamer gamer) {
+    public ResponseEntity<Gamer> updateGamer(@PathVariable("id") long id, @RequestBody Gamer gamer) {
         return new ResponseEntity<>(service.updateGamer(id, gamer), HttpStatus.OK);
     }
 
     // build delete gamer REST API
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('gamer:delete')")
-    public ResponseEntity<String> deleteGamer(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteGamer(@PathVariable("id") long id) {
         // delete gamer from db
         service.deleteGamer(id);
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
+    @PostMapping("/registration")
+    public String register(@RequestBody RegistrationRequest request) {
+        return registrationService.register(request);
+    }
+
+
 
 }
