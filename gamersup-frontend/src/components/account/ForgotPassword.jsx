@@ -1,0 +1,50 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Alert from '../layout/Alert'
+
+function ForgotPassword() {
+  return (
+    <div className='card card-side bg-base-100 shadow-xl w-2/5 m-3 mx-auto'>
+      <div className='min-h-full w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mx-auto'>
+        <div className='max-w-md w-full space-y-8'>
+          <div>
+            <h2 className='text-center text-3xl font-bold text-neutral-content'>
+              Password Reset
+            </h2>
+          </div>
+          <form className='mt-8 space-y-6'>
+            <div className='rounded-md shadow-sm space-y-px'>
+              <div>
+                <label
+                  htmlFor='email-address'
+                  className='text-sm font-semibold'
+                >
+                  Enter Your Email address
+                </label>
+                <input
+                  name='email'
+                  type='email'
+                  autoComplete='email'
+                  required
+                  className='mt-3 appearance-none rounded relative block w-full px-3 py-2 border border-primary placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-focus focus:border-primary-focus focus:z-10 text-lg'
+                  placeholder='Email address'
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type='submit'
+                className='group relative w-50 mx-auto flex justify-center py-2 px-20 border border-transparent text-base font-medium rounded-full btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ForgotPassword
