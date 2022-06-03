@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 
 function Navbar({ title }) {
-  const { loggedIn } = useContext(UserContext)
+  const { loggedIn, logout } = useContext(UserContext)
 
   return (
     <nav className='navbar shadow-lg bg-base-300'>
@@ -92,7 +92,7 @@ function Navbar({ title }) {
                     </Link>
                   </li>
                   <li>
-                    <Link to='/' className='text-lg'>
+                    <Link to='/' className='text-lg' onClick={logout}>
                       Logout
                     </Link>
                   </li>
