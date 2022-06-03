@@ -25,6 +25,8 @@ public class ConfirmationToken {
     @Column(nullable = false)
     private LocalDateTime creatAt;
 
+    private LocalDateTime confirmedAt;
+
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 

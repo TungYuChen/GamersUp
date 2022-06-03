@@ -7,16 +7,21 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/registration")
 @AllArgsConstructor
 public class AccountController {
 
-    private GamerService service;
-    private RegistrationService registrationService;
+    private final GamerService service;
+    private final RegistrationService registrationService;
 
-    @PostMapping("/registration")
+    @PostMapping("/")
     public String register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
+    }
+
+    @GetMapping(path = "/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return registrationService.confirmToken(token);
     }
 
 

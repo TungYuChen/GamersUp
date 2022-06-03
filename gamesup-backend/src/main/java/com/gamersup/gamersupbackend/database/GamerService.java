@@ -100,4 +100,9 @@ public class GamerService implements UserDetailsService {
 
         return token;
     }
+
+    public int enableGamer(String email) {
+        return gamerRepository.enableGamer(email);
+    }
+
 }
