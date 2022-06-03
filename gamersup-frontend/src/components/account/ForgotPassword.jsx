@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import Alert from '../layout/Alert'
 
 function ForgotPassword() {
   return (
@@ -9,7 +7,7 @@ function ForgotPassword() {
         <div className='max-w-md w-full space-y-8'>
           <div>
             <h2 className='text-center text-3xl font-bold text-neutral-content'>
-              Password Reset
+              Password Reset Request
             </h2>
           </div>
           <form className='mt-8 space-y-6'>
