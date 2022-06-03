@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import ForgotPassword from './components/account/ForgotPassword'
 import LoginForm from './components/account/LoginForm'
+import ResetPassword from './components/account/ResetPassword'
 import SignupForm from './components/account/SignupForm'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
@@ -22,6 +23,7 @@ function App() {
                 <Route path='/login' element={<LoginForm />} />
                 <Route path='/signup' element={<SignupForm />} />
                 <Route path='/forgotpassword' element={<ForgotPassword />} />
+                <Route path='/resetpassword' element={<ResetPassword />} />
                 <Route path='/*' element={<NotFound />} />
               </Routes>
             </main>
