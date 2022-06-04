@@ -80,6 +80,10 @@ public class GamerService implements UserDetailsService {
     public String signUpUser(Gamer gamer) {
         boolean gamerExists = gamerRepository.findGamerByEmail(gamer.getEmail()).isPresent();
         if (gamerExists) {
+            // TODO check of attributes are the same
+            // TODO if email not confirmed send confirmation email
+
+
             throw new IllegalStateException("Email already taken");
         }
         String encodedPassword = encoder.passwordEncoder().encode(gamer.getPassword());

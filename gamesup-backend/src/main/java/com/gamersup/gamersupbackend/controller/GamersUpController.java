@@ -22,7 +22,6 @@ public class GamersUpController {
 
     // build create gamer REST API
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('gamer:write')")
     public ResponseEntity<Gamer> saveGamer(@RequestBody Gamer gamer) {
         return new ResponseEntity<Gamer>(service.saveGamer(gamer), HttpStatus.CREATED);
     }
@@ -37,26 +36,24 @@ public class GamersUpController {
     // build get gamer by id REST API
     // http://localhost:8080/api/gamers/1
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('gamer:read')")
     public ResponseEntity<Gamer> getGamerById(@PathVariable("id") long id) {
         return new ResponseEntity<>(service.getGamerById(id), HttpStatus.OK);
     }
 
     // build update gamer REST API
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('gamer:update')")
     public ResponseEntity<Gamer> updateGamer(@PathVariable("id") long id, @RequestBody Gamer gamer) {
         return new ResponseEntity<>(service.updateGamer(id, gamer), HttpStatus.OK);
     }
 
     // build delete gamer REST API
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('gamer:delete')")
     public ResponseEntity<String> deleteGamer(@PathVariable("id") long id) {
         // delete gamer from db
         service.deleteGamer(id);
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
+
     @PostMapping("/registration")
     public String register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
