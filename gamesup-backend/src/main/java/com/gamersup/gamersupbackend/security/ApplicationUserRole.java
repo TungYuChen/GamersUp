@@ -13,7 +13,7 @@ import static com.gamersup.gamersupbackend.security.ApplicationUserPermission.*;
  * Enum for Roles with corresponding permission
  */
 public enum ApplicationUserRole {
-    USER(Sets.newHashSet(GAMER_READ)),
+    USER(Sets.newHashSet(GAMER_READ, GAMER_WRITE, GAMER_DELETE, GAMER_UPDATE)),
     ADMIN(Sets.newHashSet(GAMER_READ, GAMER_WRITE, GAMER_DELETE, GAMER_UPDATE));
 
     private final Set<ApplicationUserPermission> permissions;

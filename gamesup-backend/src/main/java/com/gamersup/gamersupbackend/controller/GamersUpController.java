@@ -22,6 +22,7 @@ public class GamersUpController {
 
     // build create gamer REST API
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Gamer> saveGamer(@RequestBody Gamer gamer) {
         return new ResponseEntity<Gamer>(service.saveGamer(gamer), HttpStatus.CREATED);
     }

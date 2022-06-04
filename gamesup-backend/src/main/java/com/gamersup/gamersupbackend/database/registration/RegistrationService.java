@@ -27,6 +27,7 @@ public class RegistrationService {
         if (!isValid) {
             throw new IllegalStateException("Email not valid");
         }
+        System.out.println(request.getUserName());
         String token = gamerService
                 .signUpUser(new Gamer(request.getUserName(),
                         request.getEmail(),
