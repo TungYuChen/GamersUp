@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.database.registration.token;
+package com.gamersup.gamersupbackend.service.email_service.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

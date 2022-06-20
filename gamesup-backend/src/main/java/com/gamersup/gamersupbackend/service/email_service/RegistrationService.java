@@ -1,10 +1,11 @@
-package com.gamersup.gamersupbackend.database.registration;
+package com.gamersup.gamersupbackend.service.email_service;
 
-import com.gamersup.gamersupbackend.database.GamerService;
-import com.gamersup.gamersupbackend.database.registration.email.EmailSender;
-import com.gamersup.gamersupbackend.database.registration.token.ConfirmationToken;
-import com.gamersup.gamersupbackend.database.registration.token.ConfirmationTokenService;
-import com.gamersup.gamersupbackend.model.Gamer;
+import com.gamersup.gamersupbackend.service.GamerService;
+import com.gamersup.gamersupbackend.service.email_service.email.EmailSender;
+import com.gamersup.gamersupbackend.service.email_service.email.EmailValidatorService;
+import com.gamersup.gamersupbackend.service.email_service.token.ConfirmationToken;
+import com.gamersup.gamersupbackend.service.email_service.token.ConfirmationTokenService;
+import com.gamersup.gamersupbackend.model.GamerInfo;
 import com.gamersup.gamersupbackend.model.RegistrationRequest;
 import com.gamersup.gamersupbackend.security.ApplicationUserRole;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class RegistrationService {
 
     private final GamerService gamerService;
-    private final EmailValidator emailValidator;
+    private final EmailValidatorService emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
@@ -29,12 +30,12 @@ public class RegistrationService {
         }
         System.out.println(request.getUserName());
         String token = gamerService
-                .signUpUser(new Gamer(request.getUserName(),
+                .signUpUser(new GamerInfo(request.getUserName(),
                         request.getEmail(),
                         request.getPassword(),
                         ApplicationUserRole.USER));
 
-        String link = "http://localhost:8080/registration/confirm?token=" + token;
+        String link = "http://localhost:8080/api/account/registration/confirm?token=" + token;
 
         emailSender.send(request.getEmail(),
                 buildEmail(request.getUserName(), link));

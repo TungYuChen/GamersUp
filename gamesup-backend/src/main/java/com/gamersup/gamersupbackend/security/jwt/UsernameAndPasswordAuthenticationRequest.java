@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.jwt;
+package com.gamersup.gamersupbackend.security.jwt;
 
 public class UsernameAndPasswordAuthenticationRequest {
 

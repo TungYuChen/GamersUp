@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.database.registration.token;
+package com.gamersup.gamersupbackend.service.email_service.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,15 @@ public class ConfirmationTokenService {
 
     public int setConfirmedAt(String token) {
         return repo.updateConfirmedAt(token, LocalDateTime.now());
+    }
+
+    public void deleteTokenByGamerId(long id) {
+        if (repo.findById(id).isPresent()) {
+            repo.deleteById(id);
+        } else {
+            throw new IllegalStateException("No such gamer's id");
+        }
+
     }
 
 

@@ -1,21 +1,21 @@
-package com.gamersup.gamersupbackend.database;
+package com.gamersup.gamersupbackend.service;
 
-import com.gamersup.gamersupbackend.database.registration.token.ConfirmationToken;
-import com.gamersup.gamersupbackend.database.registration.token.ConfirmationTokenRepository;
-import com.gamersup.gamersupbackend.database.registration.token.ConfirmationTokenService;
-import com.gamersup.gamersupbackend.exception.ResourceNotFoundException;
-import com.gamersup.gamersupbackend.model.Gamer;
-import com.gamersup.gamersupbackend.security.PasswordConfiguration;
+import com.gamersup.gamersupbackend.service.email_service.token.ConfirmationToken;
+import com.gamersup.gamersupbackend.service.email_service.token.ConfirmationTokenService;
+import com.gamersup.gamersupbackend.model.exception.ResourceNotFoundException;
+import com.gamersup.gamersupbackend.model.GamerInfo;
+import com.gamersup.gamersupbackend.model.GamerProfile;
+import com.gamersup.gamersupbackend.repo.GamerRepository;
+import com.gamersup.gamersupbackend.security.config.PasswordConfiguration;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -27,29 +27,38 @@ public class GamerService implements UserDetailsService {
     private final PasswordConfiguration encoder;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public Gamer saveGamer(Gamer gamer) {
+    public GamerInfo saveGamer(GamerInfo gamer) {
         return gamerRepository.save(gamer);
     }
 
-    public List<Gamer> getAllGamers() {
+    public List<GamerInfo> getAllGamers() {
         return gamerRepository.findAll();
     }
 
-    public Gamer getGamerById(long id) {
-//        Optional<Gamer> theGamer = Optional.of(gamerRepository.getReferenceById(id));
-//        if (theGamer.isPresent()) {
-//            return theGamer.get();
-//        } else {
-//            throw new ResourceNotFoundException("theGamer", "Id", id);
-//        }
+    public GamerInfo getGamerById(long id) {
+
         // smarter method
         return gamerRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Gamer", "Id", id)
         );
+
     }
 
-    public Gamer updateGamer(long id, Gamer gamer) {
-        Gamer existingGamer = gamerRepository.findById(id).orElseThrow(() ->
+    public GamerProfile getGamerSkinById(long id) {
+        Optional<GamerInfo> theGamer = Optional.of(gamerRepository.getReferenceById(id));
+        if (theGamer.isPresent()) {
+            GamerProfile resultGamer = new GamerProfile();
+            resultGamer.setUserName(theGamer.get().getUsername());
+            resultGamer.setEmail(theGamer.get().getEmail());
+            resultGamer.setEnable(theGamer.get().getEnable());
+            return resultGamer;
+        } else {
+            throw new ResourceNotFoundException("theGamer", "Id", id);
+        }
+    }
+
+    public GamerInfo updateGamer(long id, GamerInfo gamer) {
+        GamerInfo existingGamer = gamerRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Gamer", "Id", id));
         existingGamer.setUserName(gamer.getUsername());
         existingGamer.setEmail(gamer.getEmail());
@@ -59,11 +68,12 @@ public class GamerService implements UserDetailsService {
 
     public void deleteGamer(long id) {
         gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gamer", "Id", id));
+        confirmationTokenService.deleteTokenByGamerId(id);
         gamerRepository.deleteById(id);
     }
 
     public boolean checkGamerExisting(String email, String password) {
-        Gamer gamer = gamerRepository.findGamerByEmail(email).get();
+        GamerInfo gamer = gamerRepository.findGamerByEmail(email).get();
         if (gamer != null) {
             if (gamer.getPassword().equals(password))
                 return true;
@@ -77,7 +87,7 @@ public class GamerService implements UserDetailsService {
     }
 
 
-    public String signUpUser(Gamer gamer) {
+    public String signUpUser(GamerInfo gamer) {
         boolean gamerExists = gamerRepository.findGamerByEmail(gamer.getEmail()).isPresent();
         if (gamerExists) {
             // TODO check of attributes are the same

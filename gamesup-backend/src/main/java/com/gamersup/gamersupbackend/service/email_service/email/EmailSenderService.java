@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.database.registration.email;
+package com.gamersup.gamersupbackend.service.email_service.email;
 
 
 import lombok.AllArgsConstructor;
@@ -14,9 +14,9 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
-public class EmailService implements EmailSender {
+public class EmailSenderService implements EmailSender {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(EmailSenderService.class);
 
     private final JavaMailSender mailSender;
 

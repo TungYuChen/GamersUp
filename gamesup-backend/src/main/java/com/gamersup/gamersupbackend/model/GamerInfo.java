@@ -13,13 +13,19 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
+
+/**
+ * All information of the gamers including the encrypted password
+ */
+
+
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "gamers")
-public class Gamer implements UserDetails {
+public class GamerInfo implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -43,14 +49,14 @@ public class Gamer implements UserDetails {
     @Column(name="enable")
     private Boolean enable = false;
 
-    public Gamer(String userName, String email, String password, ApplicationUserRole applicationUserRole) {
+    public GamerInfo(String userName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.applicationUserRole = applicationUserRole;
     }
 
-    public Gamer(String userName, String email, String password, ApplicationUserRole applicationUserRole, Boolean locked, Boolean enable) {
+    public GamerInfo(String userName, String email, String password, ApplicationUserRole applicationUserRole, Boolean locked, Boolean enable) {
         this.userName = userName;
         this.email = email;
         this.password = password;

@@ -1,19 +1,16 @@
 package com.gamersup.gamersupbackend.security.config;
 
-import com.gamersup.gamersupbackend.database.GamerService;
-import com.gamersup.gamersupbackend.jwt.JwtUsernameAndPasswordAuthenticationFilter;
-import com.gamersup.gamersupbackend.security.PasswordConfiguration;
+import com.gamersup.gamersupbackend.service.GamerService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -59,8 +56,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 //                .hasAnyRole("USER", "ADMIN")
                 .permitAll()
                 .anyRequest()
-                .authenticated().and()
-                .formLogin();
+                .authenticated();
 
     }
 
@@ -104,5 +100,11 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 jamesUser,
                 chenUser
         );
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

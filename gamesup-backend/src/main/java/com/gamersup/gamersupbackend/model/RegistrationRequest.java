@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * For register request body
+ */
+
+
 @Getter
 @Setter
 @EqualsAndHashCode

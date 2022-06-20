@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.security;
+package com.gamersup.gamersupbackend.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

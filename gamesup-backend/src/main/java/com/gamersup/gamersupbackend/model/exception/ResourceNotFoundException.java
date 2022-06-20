@@ -1,4 +1,4 @@
-package com.gamersup.gamersupbackend.exception;
+package com.gamersup.gamersupbackend.model.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
