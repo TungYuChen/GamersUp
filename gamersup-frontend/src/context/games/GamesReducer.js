@@ -8,6 +8,12 @@ const gamesReducer = (state, action) => {
         prevUrl: action.payload.previous,
         loading: false,
       }
+    case 'SET_PLATFORM':
+      return {
+        ...state,
+        page: 1,
+        platformId: action.payload,
+      }
     case 'SET_NEXT':
       return {
         ...state,

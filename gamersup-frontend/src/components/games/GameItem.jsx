@@ -37,7 +37,7 @@ function GameItem({ game: { name, background_image, rating } }) {
 
       <div className='card-body'>
         <div className='card-title text-base mb-3'>
-          <div class='inline badge badge-accent font-bold'>{rating}</div>
+          <div className='inline badge badge-accent font-bold'>{rating}</div>
           {name}
         </div>
         <div className='card-actions justify-start'>
@@ -56,7 +56,7 @@ function GameItem({ game: { name, background_image, rating } }) {
 }
 
 GameItem.propTypes = {
-  gamer: PropTypes.object.isRequired,
+  gamer: PropTypes.object,
 }
 
 export default GameItem
