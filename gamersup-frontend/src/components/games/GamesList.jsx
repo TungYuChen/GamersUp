@@ -4,13 +4,14 @@ import Loading from '../layout/Loading'
 import PageBar from '../layout/PageBar'
 import GameItem from './GameItem'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import PropTypes from 'prop-types'
 
-function GamesList() {
+function GamesList({ ordering }) {
   const { games, loading, getGames } = useContext(GamesContext)
 
   useEffect(() => {
-    // get games ordered by rating
-    getGames('-rating')
+    // get games ordered by ordering
+    getGames(ordering)
   }, [])
 
   if (loading) {
@@ -34,6 +35,14 @@ function GamesList() {
       </>
     )
   }
+}
+
+GamesList.defaultProps = {
+  ordering: '-rating',
+}
+
+GamesList.propTypes = {
+  ordering: PropTypes.string,
 }
 
 export default GamesList

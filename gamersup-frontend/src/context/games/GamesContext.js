@@ -10,7 +10,9 @@ export const GamesProvider = ({ children }) => {
   const initialState = {
     games: [],
     loading: false,
-    index: 0, // index of the page starting from 0
+    page: 1, // page starting from 1
+    nextUrl: '',
+    prevUrl: '',
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -18,31 +20,41 @@ export const GamesProvider = ({ children }) => {
   //Set loading
   const setLoading = () => dispatch({ type: 'LOADING' })
 
+  //Get first page with ordering
   const getGames = async (ordering) => {
     setLoading()
 
-    let url = ''
-    let page = state.index + 1
-    if (page === 1) {
-      url = `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=${ordering}`
-    } else {
-      url = `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=${ordering}&page=${page}`
-    }
-    const response = await fetch(url)
+    const response = await fetch(
+      `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=${ordering}`
+    )
 
-    const { results } = await response.json()
+    const data = await response.json()
 
     dispatch({
       type: 'GET_GAMES',
-      payload: results,
+      payload: data,
     })
   }
 
-  const setNextPage = () => dispatch({ type: 'SET_NEXT', payload: (state.index + 1) })
+  //Get games using url
+  const getGamesWithUrl = async (url) => {
+      const response = await fetch(url)
+      const data = await response.json()
+      dispatch({
+        type: 'GET_GAMES',
+        payload: data,
+      })
+  }
+
+  const setNextPage = () => {
+    getGamesWithUrl(state.nextUrl)
+    dispatch({ type: 'SET_NEXT', payload: state.page + 1 })
+  }
 
   const setPrevPage = () => {
-    if (state.index > 0) {
-      dispatch({ type: 'SET_PREV', payload: (state.index - 1) })
+    if (state.page > 1) {
+      getGamesWithUrl(state.prevUrl)
+      dispatch({ type: 'SET_PREV', payload: state.page - 1 })
     }
   }
 
@@ -51,7 +63,7 @@ export const GamesProvider = ({ children }) => {
       value={{
         games: state.games,
         loading: state.loading,
-        index: state.index,
+        page: state.page,
         getGames,
         setNextPage,
         setPrevPage,

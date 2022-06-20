@@ -3,18 +3,20 @@ const gamesReducer = (state, action) => {
     case 'GET_GAMES':
       return {
         ...state,
-        games: action.payload,
+        games: action.payload.results,
+        nextUrl: action.payload.next,
+        prevUrl: action.payload.previous,
         loading: false,
       }
     case 'SET_NEXT':
       return {
         ...state,
-        index: action.payload,
+        page: action.payload,
       }
     case 'SET_PREV':
       return {
         ...state,
-        index: action.payload,
+        page: action.payload,
       }
     case 'LOADING':
       return {

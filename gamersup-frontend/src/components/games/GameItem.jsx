@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
+import PropTypes from 'prop-types'
 
 function GameItem({ game: { name, background_image, rating } }) {
   const [validImage, setValidImage] = useState(true)
@@ -52,6 +53,10 @@ function GameItem({ game: { name, background_image, rating } }) {
       </div>
     </div>
   )
+}
+
+GameItem.propTypes = {
+  gamer: PropTypes.object.isRequired,
 }
 
 export default GameItem
