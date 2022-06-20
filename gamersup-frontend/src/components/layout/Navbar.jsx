@@ -20,7 +20,7 @@ function Navbar({ title }) {
               <input
                 type='text'
                 className='w-full pr-10 mt-2 bg-base-100 text-lg input input-bordered'
-                placeholder='Search'
+                placeholder='Search for games...'
                 // value={text}
                 // onChange={handleChange}
               />
