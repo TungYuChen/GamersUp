@@ -3,6 +3,8 @@ import ForgotPassword from './components/account/ForgotPassword'
 import LoginForm from './components/account/LoginForm'
 import ResetPassword from './components/account/ResetPassword'
 import SignupForm from './components/account/SignupForm'
+import GamesList from './components/games/GamesList'
+import Alert from './components/layout/Alert'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
 import { AlertProvider } from './context/alert/AlertContext'
@@ -20,8 +22,10 @@ function App() {
             <div className='flex flex-col justify-between h-screen'>
               <Navbar />
               <main className='container mx-auto px-4 pb-15'>
+                <Alert />
                 <Routes>
                   <Route path='/' element={<Home />} />
+                  <Route path='/platform/:id' element={<Home />} />
                   <Route path='/login' element={<LoginForm />} />
                   <Route path='/signup' element={<SignupForm />} />
                   <Route path='/forgotpassword' element={<ForgotPassword />} />

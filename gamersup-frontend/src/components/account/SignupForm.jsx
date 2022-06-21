@@ -1,6 +1,5 @@
 import { React, useContext, useState } from 'react'
 import AlertContext from '../../context/alert/AlertContext'
-import Alert from '../layout/Alert'
 import { LockClosedIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
 
 function SignupForm() {
@@ -31,9 +30,6 @@ function SignupForm() {
 
   return (
     <>
-      <div className='flex place-content-center'>
-        <Alert />
-      </div>
       <div className='card card-side bg-base-100 shadow-xl w-1/2 mt-3 mb-3 mx-auto'>
         <figure>
           <img

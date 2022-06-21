@@ -1,10 +1,26 @@
-import { React, useContext } from 'react'
+import { React, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
+import AlertContext from '../../context/alert/AlertContext'
+import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
   const { loggedIn, logout } = useContext(UserContext)
+  const { searchGames } = useContext(GamesContext)
+  const { setAlert } = useContext(AlertContext)
+  const [text, setText] = useState('')
+
+  const handleChange = (e) => setText(e.target.value)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (text === '') {
+      setAlert('Please enter what you want to search', 'error')
+    }
+    //search games
+    searchGames(text)
+  }
 
   return (
     <nav className='navbar shadow-lg bg-base-300'>
@@ -16,15 +32,15 @@ function Navbar({ title }) {
         </div>
         <div className='flex-1 px-2 mx-2 text-neutral-content'>
           <div className='flex justify-end'>
-            <div className='form-control'>
+            <form className='form-control' onSubmit={handleSubmit}>
               <input
                 type='text'
                 className='w-full pr-10 mt-2 bg-base-100 text-lg input input-bordered'
                 placeholder='Search for games...'
-                // value={text}
-                // onChange={handleChange}
+                value={text}
+                onChange={handleChange}
               />
-            </div>
+            </form>
             {!loggedIn && (
               <Link
                 to='/login'

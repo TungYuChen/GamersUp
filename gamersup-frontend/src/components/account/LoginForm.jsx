@@ -9,7 +9,6 @@ import {
 } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 import Home from '../../pages/Home'
-import Alert from '../layout/Alert'
 
 function LoginForm() {
   // Set show password icon and function
@@ -37,9 +36,6 @@ function LoginForm() {
   } else {
     return (
       <>
-        <div className='flex place-content-center'>
-          <Alert />
-        </div>
         <div className='card card-side bg-base-100 shadow-xl w-1/2 mt-3 mb-3 mx-auto'>
           <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mx-auto'>
             <div className='max-w-md space-y-8'>
