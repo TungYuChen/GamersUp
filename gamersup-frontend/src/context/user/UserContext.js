@@ -1,7 +1,12 @@
 import { createContext, useReducer } from 'react'
 import userReducer from './UserReducer'
+import axios from 'axios'
 
 const UserContext = createContext()
+
+const API_URL = process.env.REACT_APP_BACKEND_API_URL
+
+const EMAIL_SESSION = "authenticatedEmail";
 
 export const UserProvider = ({ children }) => {
   const initialState = {
@@ -12,20 +17,30 @@ export const UserProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(userReducer, initialState)
 
-  const checkUserCredentials = (email, password) => {
-    if (email === 'test@qq.com' && password === 'test') {
-      dispatch({
-        type: 'LOGIN',
-        payload: email,
+  const executeAuthenticationService = (email, password) => {
+    axios
+      .post(`${API_URL}/account/authenticate`, {
+        email,
+        password,
       })
-    } else {
-      dispatch({
-        type: 'CREDENTIAL_ERROR',
+      .then((response) => {
+        sessionStorage.setItem(EMAIL_SESSION, email)
+        //response.data.jwt 
+        console.log(response)
+        dispatch({
+          type: 'LOGIN',
+          payload: email,
+        })
       })
-    }
+      .catch(() => {
+        dispatch({
+          type: 'CREDENTIAL_ERROR',
+        })
+      })
   }
 
   const logout = () => {
+    sessionStorage.removeItem(EMAIL_SESSION);
     dispatch({
       type: 'LOGOUT',
     })
@@ -37,7 +52,7 @@ export const UserProvider = ({ children }) => {
         userEmail: state.userEmail,
         loggedIn: state.loggedIn,
         error: state.error,
-        checkUserCredentials,
+        executeAuthenticationService,
         logout,
       }}
     >
