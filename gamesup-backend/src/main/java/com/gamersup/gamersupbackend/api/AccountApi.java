@@ -37,7 +37,8 @@ public class AccountApi {
 
     @GetMapping(path = "/confirm")
     public String confirm(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
+        String result =  registrationService.confirmToken(token);
+        return "direct:/login";
     }
 
     @PostMapping("/authenticate")
