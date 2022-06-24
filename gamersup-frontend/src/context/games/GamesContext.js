@@ -9,11 +9,12 @@ const RAWG_API_KEY = process.env.REACT_APP_RAWG_API_KEY
 export const GamesProvider = ({ children }) => {
   const initialState = {
     games: [],
-    loading: false,
+    loading: true,
     page: 1, // page starting from 1
     nextUrl: '',
     prevUrl: '',
     platformId: '0',
+    searchText: '',
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -21,14 +22,17 @@ export const GamesProvider = ({ children }) => {
   //Set loading
   const setLoading = () => dispatch({ type: 'LOADING' })
 
-  //Get first page with ordering
-  const getGames = async (ordering, platformId) => {
+  //Get first page with platform id
+  const getGames = async (id, text) => {
     setLoading()
 
     //for all platforms
-    let url = `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=${ordering}`
-    if (platformId !== '0') {
-      url = `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=${ordering}&platforms=${platformId}`
+    let url = `${RAWG_API_URL}/games?key=${RAWG_API_KEY}&ordering=-rating`
+    if (id !== '0') {
+      url += `&platforms=${id}`
+    }
+    if (text !== '') {
+      url += `&search=${text}`
     }
 
     const response = await fetch(url)
@@ -42,10 +46,19 @@ export const GamesProvider = ({ children }) => {
 
   //Platform id >> PC-4, PS5-187, PS4-18, Nintendo Switch-7, Xbox Series X/S-186, Xbox One-1, Wii U-10
   const setPlatform = (id) => {
-    getGames('-rating', id)
+    getGames(id, state.searchText)
     dispatch({
       type: 'SET_PLATFORM',
-      playload: id,
+      payload: id,
+    })
+  }
+
+  //Get games with search text
+  const searchGames = (text) => {
+    getGames(state.platformId, text)
+    dispatch({
+      type: 'SET_SEARCH_TEXT',
+      payload: text,
     })
   }
 
@@ -78,10 +91,12 @@ export const GamesProvider = ({ children }) => {
         loading: state.loading,
         page: state.page,
         platformId: state.platformId,
+        searchText: state.searchText,
         getGames,
         setNextPage,
         setPrevPage,
         setPlatform,
+        searchGames,
       }}
     >
       {children}

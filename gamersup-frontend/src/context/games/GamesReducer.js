@@ -14,6 +14,12 @@ const gamesReducer = (state, action) => {
         page: 1,
         platformId: action.payload,
       }
+    case 'SET_SEARCH_TEXT':
+      return {
+        ...state,
+        page: 1,
+        searchText: action.payload,
+      }
     case 'SET_NEXT':
       return {
         ...state,
