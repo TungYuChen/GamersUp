@@ -1,28 +1,24 @@
 import { React, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LockClosedIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
-import Alert from '../layout/Alert'
 import AlertContext from '../../context/alert/AlertContext'
 
 function ResetPassword() {
-  const { setAlert } = useContext(AlertContext)
+  const { setAlertWithTimeout } = useContext(AlertContext)
 
   const [showPassword, setShowPassword] = useState(false)
 
   const handleResetSubmit = (e) => {
     e.preventDefault()
     if (e.target.newpassword.value.length < 8) {
-      setAlert('Passwords must be at least 8 characters', 'information')
+      setAlertWithTimeout('Passwords must be at least 8 characters', 'information')
     } else if (e.target.newpassword.value !== e.target.passwordconfirm.value) {
-      setAlert('Your passwords must match', 'information')
+      setAlertWithTimeout('Your passwords must match', 'information')
     }
   }
 
   return (
     <>
-      <div className='flex place-content-center'>
-        <Alert />
-      </div>
       <div className='card card-side bg-base-100 shadow-xl w-2/5 m-3 mx-auto'>
         <div className='min-h-full w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mx-auto'>
           <div className='max-w-md w-full space-y-8'>

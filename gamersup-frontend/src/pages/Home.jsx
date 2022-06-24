@@ -1,8 +1,11 @@
 import React from 'react'
+import GamesList from '../components/games/GamesList'
 
 function Home() {
   return (
-    <div>Home</div>
+    <>
+      <GamesList />
+    </>
   )
 }
 
