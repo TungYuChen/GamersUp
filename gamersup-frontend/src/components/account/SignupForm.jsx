@@ -3,7 +3,7 @@ import AlertContext from '../../context/alert/AlertContext'
 import { LockClosedIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
 
 function SignupForm() {
-  const { setAlert } = useContext(AlertContext)
+  const { setAlertWithTimeout } = useContext(AlertContext)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -13,18 +13,18 @@ function SignupForm() {
   const handleSignupSubmit = (e) => {
     e.preventDefault()
     if (e.target.username.value === '') {
-      setAlert('Please enter your name', 'information')
+      setAlertWithTimeout('Please enter your name', 'information')
     } else if (e.target.emailaddress.value === '') {
-      setAlert('Please enter your email address', 'information')
+      setAlertWithTimeout('Please enter your email address', 'information')
     } else if (
       e.target.password.value === '' ||
       e.target.rpassword.value === ''
     ) {
-      setAlert('Please enter your password', 'information')
+      setAlertWithTimeout('Please enter your password', 'information')
     } else if (e.target.password.value.length < 8) {
-      setAlert('Passwords must be at least 8 characters', 'information')
+      setAlertWithTimeout('Passwords must be at least 8 characters', 'information')
     } else if (e.target.password.value !== e.target.rpassword.value) {
-      setAlert('Your passwords must match', 'information')
+      setAlertWithTimeout('Your passwords must match', 'information')
     }
   }
 

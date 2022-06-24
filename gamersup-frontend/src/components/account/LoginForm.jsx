@@ -14,7 +14,7 @@ function LoginForm() {
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlert } = useContext(AlertContext)
+  const { setAlertWithTimeout } = useContext(AlertContext)
 
   const { checkUserCredentials, loggedIn, error } = useContext(UserContext)
 
@@ -24,7 +24,7 @@ function LoginForm() {
     const password = e.target.password.value
     checkUserCredentials(email, password)
     if (error) {
-      setAlert(
+      setAlertWithTimeout(
         'Wrong credentials. Please try your email or password again.',
         'error'
       )
