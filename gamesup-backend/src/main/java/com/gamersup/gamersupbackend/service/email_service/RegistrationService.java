@@ -44,25 +44,25 @@ public class RegistrationService {
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public boolean confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                     new IllegalStateException("token not found"));
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Email already confirmed");
+            return false;
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiredAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
+            return false;
         }
 
         confirmationTokenService.setConfirmedAt(token);
         gamerService.enableGamer(confirmationToken.getGamer().getEmail());
 
-        return "confirmed";
+        return true;
 
 
     }
