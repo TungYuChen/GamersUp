@@ -5,16 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-/**
- * For login request body
- */
-
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class GamerLoginRequest {
+public class ResetPasswordRequest {
     private String email;
-    private String password;
 }

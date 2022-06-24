@@ -1,13 +1,14 @@
 package com.gamersup.gamersupbackend.api;
 
-import com.gamersup.gamersupbackend.model.GamerInfo;
-import com.gamersup.gamersupbackend.model.GamerLoginRequest;
+import com.gamersup.gamersupbackend.model.*;
+import com.gamersup.gamersupbackend.model.exception.ResourceNotFoundException;
 import com.gamersup.gamersupbackend.security.config.PasswordConfiguration;
 import com.gamersup.gamersupbackend.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.gamersup.gamersupbackend.security.jwt.model.AuthenticationResponse;
-import com.gamersup.gamersupbackend.service.GamerService;
+
+
+import com.gamersup.gamersupbackend.service.*;
 import com.gamersup.gamersupbackend.service.email_service.RegistrationService;
-import com.gamersup.gamersupbackend.model.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class AccountApi {
     private AuthenticationManager authenticationManager;
     private JwtUsernameAndPasswordAuthenticationFilter jwtUsernameAndPasswordAuthenticationFilter;
     private final PasswordConfiguration encoder;
+    private final ResetPasswordService resetPasswordService;
 
     @PostMapping("/registration")
     public String register(@RequestBody RegistrationRequest request) {
@@ -55,10 +57,18 @@ public class AccountApi {
 
     // build update gamer REST API
     @PutMapping("/edit/{id}")
-    public ResponseEntity<GamerInfo> updateGamer(@PathVariable("id") long id, @RequestBody GamerInfo gamer) {
+    public ResponseEntity<GamerInfo> updateGamerPassword(@PathVariable("id") long id, @RequestBody GamerInfo gamer) {
         String encodedPassword = encoder.passwordEncoder().encode(gamer.getPassword());
         gamer.setPassword(encodedPassword);
         return new ResponseEntity<>(service.updateGamer(id, gamer), HttpStatus.OK);
     }
+
+    // reset password
+    @PostMapping("/reset_password")
+    public String resetPasswordProgress(@RequestBody ResetPasswordRequest request) {
+        return resetPasswordService.resetPassword(request);
+    }
+
+
 
 }

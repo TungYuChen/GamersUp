@@ -27,6 +27,7 @@ public class GamerService implements UserDetailsService {
     private final PasswordConfiguration encoder;
     private final ConfirmationTokenService confirmationTokenService;
 
+
     public GamerInfo saveGamer(GamerInfo gamer) {
         return gamerRepository.save(gamer);
     }
@@ -117,6 +118,20 @@ public class GamerService implements UserDetailsService {
 
     public int enableGamer(String email) {
         return gamerRepository.enableGamer(email);
+    }
+
+
+
+    public void updatePassword(GamerInfo gamer, String newPassword) {
+        String encodedPassword = encoder.passwordEncoder().encode(newPassword);
+        gamer.setPassword(encodedPassword);
+
+        gamerRepository.save(gamer);
+
+    }
+
+    public GamerInfo getGamerByEmail(String email) {
+        return gamerRepository.findGamerByEmail(email).orElseThrow(() -> new ResourceNotFoundException("email", "gamer", email));
     }
 
 }
