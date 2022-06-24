@@ -1,13 +1,10 @@
 import { React, useContext } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import GamesContext from '../../context/games/GamesContext'
+import { Link } from 'react-router-dom'
 
 function GamePlatforms() {
   const { setPlatform } = useContext(GamesContext)
-
-  //   const handleClick = (e) => {
-  //     setPlatform('4')
-  //   }
 
   return (
     <div className='flex place-content-center'>
@@ -24,76 +21,76 @@ function GamePlatforms() {
           className='mt-5 p-2 shadow menu menu-compact dropdown-content bg-primary-focus rounded-box w-60'
         >
           <li>
-            <button
+            <Link to={'/platform/all'}
               className='btn btn-ghost text-lg font-semibold hover:text-neutral-focus'
               id='-1'
               onClick={() => setPlatform('0')}
             >
               All Platforms
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/pc'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='4'
               onClick={() => setPlatform('4')}
             >
               PC
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/ps5'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='187'
               onClick={() => setPlatform('187')}
             >
               PlayStation 5
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/ps4'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='18'
               onClick={() => setPlatform('18')}
             >
               PlayStation 4
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/switch'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='7'
               onClick={() => setPlatform('7')}
             >
               Nintendo Switch
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/xboxxs'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='186'
               onClick={() => setPlatform('186')}
             >
               Xbox Series X/S
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/xboxone'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='1'
               onClick={() => setPlatform('1')}
             >
               Xbox One
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link to={'/platform/wiiu'}
               className='text-lg font-semibold hover:text-neutral-focus'
               id='10'
               onClick={() => setPlatform('10')}
             >
               Wii U
-            </button>
+            </Link>
           </li>
         </ul>
       </div>

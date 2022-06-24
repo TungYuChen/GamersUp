@@ -2,22 +2,18 @@ import { React, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
-import AlertContext from '../../context/alert/AlertContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
   const { loggedIn, logout } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
-  const { setAlert } = useContext(AlertContext)
   const [text, setText] = useState('')
 
   const handleChange = (e) => setText(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (text === '') {
-      setAlert('Please enter what you want to search', 'error')
-    }
+    
     //search games
     searchGames(text)
   }

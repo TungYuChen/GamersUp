@@ -25,7 +25,7 @@ function App() {
                 <Alert />
                 <Routes>
                   <Route path='/' element={<Home />} />
-                  <Route path='/platform/:id' element={<Home />} />
+                  <Route path='/platform/:id' element={<GamesList />} />
                   <Route path='/login' element={<LoginForm />} />
                   <Route path='/signup' element={<SignupForm />} />
                   <Route path='/forgotpassword' element={<ForgotPassword />} />
