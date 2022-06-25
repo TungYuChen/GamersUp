@@ -1,9 +1,12 @@
 import { React, useContext, useState } from 'react'
 import AlertContext from '../../context/alert/AlertContext'
+import UserContext from '../../context/user/UserContext'
 import { LockClosedIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
 
 function SignupForm() {
-  const { setAlertWithTimeout } = useContext(AlertContext)
+  const { setAlert, setAlertWithTimeout } = useContext(AlertContext)
+
+  const { executeRegisterService, error } = useContext(UserContext)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -12,19 +15,29 @@ function SignupForm() {
 
   const handleSignupSubmit = (e) => {
     e.preventDefault()
-    if (e.target.username.value === '') {
+    const userName = e.target.username.value
+    const email = e.target.emailaddress.value
+    const password = e.target.password.value
+    if (userName === '') {
       setAlertWithTimeout('Please enter your name', 'information')
-    } else if (e.target.emailaddress.value === '') {
+    } else if (email.value === '') {
       setAlertWithTimeout('Please enter your email address', 'information')
     } else if (
-      e.target.password.value === '' ||
+      password.value === '' ||
       e.target.rpassword.value === ''
     ) {
       setAlertWithTimeout('Please enter your password', 'information')
-    } else if (e.target.password.value.length < 8) {
+    } else if (password.length < 8) {
       setAlertWithTimeout('Passwords must be at least 8 characters', 'information')
-    } else if (e.target.password.value !== e.target.rpassword.value) {
+    } else if (password !== e.target.rpassword.value) {
       setAlertWithTimeout('Your passwords must match', 'information')
+    } else {
+      executeRegisterService(userName, email, password)
+      if (error) {
+        setAlertWithTimeout('Your email has been taken.', 'error')
+      } else {
+        setAlert('Please check your email inbox for verification.', 'information')
+      }
     }
   }
 

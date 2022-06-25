@@ -18,6 +18,15 @@ const userReducer = (state, action) => {
         loggedIn: false,
         error: true,
       }
+    case 'REGISTER':
+      return {
+        userEmail: action.payload,
+        error: false,
+      }
+    case 'REGISTER_ERROR':
+      return {
+        error: true,
+      }
     default:
       return state
   }

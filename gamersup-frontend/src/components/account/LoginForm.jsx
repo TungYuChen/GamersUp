@@ -9,14 +9,24 @@ import {
 } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 import Home from '../../pages/Home'
+import { useEffect } from 'react'
 
 function LoginForm() {
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlertWithTimeout } = useContext(AlertContext)
+  const { setAlert, setAlertWithTimeout, removeAlert } = useContext(AlertContext)
 
   const { loggedIn, error, executeAuthenticationService } = useContext(UserContext)
+
+  // not working for now
+  // const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
+
+  // useEffect(() => {
+  //   if (sessionStorage.getItem(REGISTER_SESSION) !== null) {
+  //     setAlert('Activation Successful! Please sign in with your email and password.', 'information')
+  //   }
+  // }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -28,6 +38,8 @@ function LoginForm() {
         'Wrong credentials. Please try your email or password again.',
         'error'
       )
+    } else {
+      removeAlert()
     }
   }
 
