@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +49,15 @@ public class GamerInfo implements UserDetails {
 
     @Column(name="enable")
     private Boolean enable = false;
+
+    @Column(name="games_want_to_play")
+    private String gamesWantToPlay;
+
+    @Column(name="games_played")
+    private String gamesPlayed;
+
+    @Column(name="friends")
+    private String friends;
 
     public GamerInfo(String userName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.userName = userName;

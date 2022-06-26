@@ -15,6 +15,7 @@ export const GamesProvider = ({ children }) => {
     prevUrl: '',
     platformId: '0',
     searchText: '',
+    gameData: {}
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -84,6 +85,25 @@ export const GamesProvider = ({ children }) => {
     }
   }
 
+  const getGameById = async (gameId) => {
+    const gameData = [];    
+    gameId.map(async (id) => {
+      let gameUrl = `${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`;    
+      let response = await fetch(gameUrl)
+      let game = await response.json().data;
+      gameData.push(game);
+    })
+
+    console.log(gameData);
+    
+    // const gameData = await fetch(gameUrl).then(response => {return response.json()});   
+    dispatch({
+      type: 'GET_GAME',
+      payload: gameData
+    })        
+  }
+  
+
   return (
     <GamesContext.Provider
       value={{
@@ -92,11 +112,14 @@ export const GamesProvider = ({ children }) => {
         page: state.page,
         platformId: state.platformId,
         searchText: state.searchText,
+        gameData: state.gameData,
         getGames,
         setNextPage,
         setPrevPage,
         setPlatform,
         searchGames,
+        getGameById,
+
       }}
     >
       {children}

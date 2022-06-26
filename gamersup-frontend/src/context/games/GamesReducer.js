@@ -35,6 +35,11 @@ const gamesReducer = (state, action) => {
         ...state,
         loading: true,
       }
+    case 'GET_GAME':         
+      return {        
+        gameData: action.payload,
+        loading: false,
+      }
     default:
       return state
   }
