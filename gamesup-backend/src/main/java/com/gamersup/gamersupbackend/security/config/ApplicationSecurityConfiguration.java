@@ -52,6 +52,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .antMatchers("/registration/**")
                 .permitAll()
+                .antMatchers("api/reviews/**")
+                .permitAll()
                 .antMatchers("api/gamers/**", "/**")
 //                .hasAnyRole("USER", "ADMIN")
                 .permitAll()
