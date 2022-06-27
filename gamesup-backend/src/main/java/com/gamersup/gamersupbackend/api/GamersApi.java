@@ -63,9 +63,12 @@ public class GamersApi {
     @PostMapping("/searchwithmail")
     public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
         GamerInfo gamer = service.getGamerByEmail(email.getEmail());
+        String gamesWantToPlay = (gamer.getGamesWantToPlay() == null)? "-1": gamer.getGamesWantToPlay();
+        String gamersPlayed = (gamer.getGamesPlayed() == null)? "-1": gamer.getGamesPlayed();
+        String friends = (gamer.getFriends() == null)? "-1": gamer.getFriends();
         GamerProfile profile = new GamerProfile(gamer.getUsername(), gamer.getEmail(),
-                gamer.getEnable(), gamer.getGamesWantToPlay(),
-                gamer.getGamesPlayed(), gamer.getFriends());
+                gamer.getEnable(), gamesWantToPlay,
+                gamersPlayed, friends);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 

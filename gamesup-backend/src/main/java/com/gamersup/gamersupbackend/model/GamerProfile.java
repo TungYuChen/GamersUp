@@ -25,9 +25,9 @@ public class GamerProfile {
     private String email;
     private Boolean enable;
 
-    private String gamesWantToPlay;
-    private String gamesPlayed;
-    private String friends;
+    private String gamesWantToPlay = "-1";
+    private String gamesPlayed = "-1";
+    private String friends = "-1";
 
     public List<Integer> getGamesWantToPlay() {
         return getIntegers(gamesWantToPlay);
@@ -41,11 +41,15 @@ public class GamerProfile {
         return getIntegers(friends);
     }
 
-    private List<Integer> getIntegers(String gamesPlayed) {
-        List<String> gameTempList = Arrays.stream(gamesPlayed.split(",")).toList();
+    private List<Integer> getIntegers(String list) {
         List<Integer> gameList = new ArrayList<>();
-        for (String game : gameTempList) {
-            gameList.add(Integer.parseInt(game));
+        if (!list.isEmpty()) {
+            List<String> gameTempList = Arrays.stream(gamesPlayed.split(",")).toList();
+            for (String game : gameTempList) {
+                gameList.add(Integer.parseInt(game));
+            }
+        } else {
+            gameList.add(-1);
         }
         return gameList;
     }
