@@ -4,7 +4,7 @@ import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import PropTypes from 'prop-types'
 
-function GameItem({ game: { name, background_image, rating } }) {
+function GameItem({ game: { id, name, background_image, rating } }) {
   const [validImage, setValidImage] = useState(true)
 
   useEffect(() => {
@@ -13,8 +13,8 @@ function GameItem({ game: { name, background_image, rating } }) {
     }
   }, [])
 
-  return (
-    <div className='card w-72 bg-base-200 shadow-xl'>
+  return (  
+    <Link to={`/game/${id}`} className='card w-72 bg-base-200 shadow-xl'>
       {validImage && (
         <figure>
           <img
@@ -51,12 +51,12 @@ function GameItem({ game: { name, background_image, rating } }) {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
 GameItem.propTypes = {
-  gamer: PropTypes.object,
+  game: PropTypes.object,
 }
 
 export default GameItem

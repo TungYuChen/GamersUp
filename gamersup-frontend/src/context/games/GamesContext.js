@@ -1,5 +1,6 @@
 import { createContext, useReducer } from 'react'
 import gamesReducer from './GamesReducer'
+import axios from 'axios'
 
 const GamesContext = createContext()
 
@@ -9,6 +10,7 @@ const RAWG_API_KEY = process.env.REACT_APP_RAWG_API_KEY
 export const GamesProvider = ({ children }) => {
   const initialState = {
     games: [],
+    game: {},
     loading: true,
     page: 1, // page starting from 1
     nextUrl: '',
@@ -64,6 +66,7 @@ export const GamesProvider = ({ children }) => {
 
   //Get games using url for next & previous page
   const getGamesWithUrl = async (url) => {
+    setLoading()
     const response = await fetch(url)
     const data = await response.json()
     dispatch({
@@ -84,6 +87,24 @@ export const GamesProvider = ({ children }) => {
     }
   }
 
+  const getGameByGameId = async (id) => {
+    setLoading()
+    const url = `${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`
+    axios
+    .get(url)
+    .then((response) => {
+      dispatch({
+        type: 'GET_GAME',
+        payload: response.data,
+      })
+    })
+    .catch(() => {
+      // dispatch({
+      //   type: 'REVIEW_ERROR',
+      // })
+    })
+  }
+
   return (
     <GamesContext.Provider
       value={{
@@ -92,11 +113,13 @@ export const GamesProvider = ({ children }) => {
         page: state.page,
         platformId: state.platformId,
         searchText: state.searchText,
+        game: state.game,
         getGames,
         setNextPage,
         setPrevPage,
         setPlatform,
         searchGames,
+        getGameByGameId,
       }}
     >
       {children}
