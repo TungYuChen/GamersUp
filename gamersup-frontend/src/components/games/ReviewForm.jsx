@@ -14,7 +14,7 @@ function ReviewForm({ gameId }) {
     if (text === '') {
       setBtnDisabled(true)
       setMessage(null)
-    } else if (text !== '' && text.trim().length <= 5) {
+    } else if (text !== '' && text.trim().length < 4) {
       setBtnDisabled(true)
       setMessage('Please enter at least 5 characters.')
     } else {
