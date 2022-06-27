@@ -7,6 +7,8 @@ import com.gamersup.gamersupbackend.repo.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +26,18 @@ public class ReviewService {
         return replyRepository.save(reply);
     }
 
+    // In descending order
     public List<Review> getAllReviewsByUserID(Long userID) {
-        return reviewRepository.findAllByUserID(userID);
+        List<Review> reviews = reviewRepository.findAllByUserID(userID);
+        Collections.reverse(reviews);
+        return reviews;
     }
 
+    // In descending order
     public List<Review> getAllReviewsByGameID(Long gameID) {
-        return reviewRepository.findAllByGameID(gameID);
+        List<Review> reviews = reviewRepository.findAllByGameID(gameID);
+        Collections.reverse(reviews);
+        return reviews;
     }
 
     // Delete review with replies if exists
