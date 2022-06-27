@@ -3,6 +3,7 @@ import ForgotPassword from './components/account/ForgotPassword'
 import LoginForm from './components/account/LoginForm'
 import ResetPassword from './components/account/ResetPassword'
 import SignupForm from './components/account/SignupForm'
+import GameListForProfile from './components/games/GameListForProfile'
 import GamesList from './components/games/GamesList'
 import Alert from './components/layout/Alert'
 import Footer from './components/layout/Footer'
@@ -38,6 +39,7 @@ function App() {
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
                     <Route path='/*' element={<NotFound />} />
+                    <Route path='/profile' element={<GameListForProfile title={'Games Want to Play'}/>} />
                   </Routes>
                 </main>
                 <Footer />

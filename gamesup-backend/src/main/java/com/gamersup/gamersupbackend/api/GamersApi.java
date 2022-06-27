@@ -1,12 +1,10 @@
 package com.gamersup.gamersupbackend.api;
 
+import com.gamersup.gamersupbackend.model.*;
 import com.gamersup.gamersupbackend.service.GamerService;
 import com.gamersup.gamersupbackend.service.email_service.RegistrationService;
 import com.gamersup.gamersupbackend.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.gamersup.gamersupbackend.security.jwt.model.AuthenticationResponse;
-import com.gamersup.gamersupbackend.model.GamerInfo;
-import com.gamersup.gamersupbackend.model.GamerLoginRequest;
-import com.gamersup.gamersupbackend.model.GamerProfile;
 import com.gamersup.gamersupbackend.security.config.PasswordConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -61,6 +59,19 @@ public class GamersApi {
         service.deleteGamer(id);
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
+
+    @PostMapping("/searchwithmail")
+    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
+        GamerInfo gamer = service.getGamerByEmail(email.getEmail());
+        String gamesWantToPlay = (gamer.getGamesWantToPlay() == null)? "-1": gamer.getGamesWantToPlay();
+        String gamersPlayed = (gamer.getGamesPlayed() == null)? "-1": gamer.getGamesPlayed();
+        String friends = (gamer.getFriends() == null)? "-1": gamer.getFriends();
+        GamerProfile profile = new GamerProfile(gamer.getUsername(), gamer.getEmail(),
+                gamer.getEnable(), gamesWantToPlay,
+                gamersPlayed, friends);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
 
 
 

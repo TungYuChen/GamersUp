@@ -13,6 +13,11 @@ export const UserProvider = ({ children }) => {
     userEmail: '',
     loggedIn: false,
     error: false,
+    userId: '',
+    userName: '',
+    gamesWantToPlay: [],
+    gamesPlayed: [],
+    friends: []
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)
@@ -71,20 +76,47 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  const getGamer = () => {
+    // axios
+    //   .get(`https://cat-fact.herokuapp.com/facts`, {
+    //     email       
+    //   })
+    //   .then(response => {
+        // console.log(response);
+        dispatch({
+          type: 'USER_INFO',
+          payload: {'userId': 1, 'userName': 'James', 'email': 'gj@qq.com', 'gamesWantToPlay': ['3498','3576'], 'gamesPlayed': ['3498'], 'friends': ['7','8','9']}
+        })
+      // })
+      // .catch(() => {
+      //   dispatch({
+      //     tpye: 'REGISTER_ERROR',
+      //   })
+      // })
+  }
+
   return (
     <UserContext.Provider
       value={{
         userEmail: state.userEmail,
         loggedIn: state.loggedIn,
         error: state.error,
+        userId: state.userId,
+        userName: state.userName,
+        gamesWantToPlay: state.gamesWantToPlay,
+        gamesPlayed: state.gamesPlayed,
+        friends: state.friends,
         executeAuthenticationService,
         logout,
         executeRegisterService,
+        getGamer,
       }}
     >
       {children}
     </UserContext.Provider>
   )
+
+
 }
 
 export default UserContext

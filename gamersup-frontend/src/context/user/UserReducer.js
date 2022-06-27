@@ -27,6 +27,15 @@ const userReducer = (state, action) => {
       return {
         error: true,
       }
+    case 'USER_INFO':      
+      return {
+        ...state,
+        userId: action.payload.userId,
+        userName: action.payload.userName,
+        gamesWantToPlay: action.payload.gamesWantToPlay,
+        gamesPlayed: action.payload.gamesPlayed,
+        friends: action.payload.friends
+      }
     default:
       return state
   }

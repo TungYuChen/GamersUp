@@ -1,6 +1,18 @@
 import React from 'react'
+import axios from 'axios'
+
+
+const API_URL = process.env.REACT_APP_BACKEND_API_URL
+
 
 function ForgotPassword() {
+
+  const resetPassword = (e) => {
+    e.preventDefault()
+   axios.post(`${API_URL}/account/reset_password`, {email: e.target.email.value})
+   .then(response => console.log(response));
+  }
+
   return (
     <div className='card card-side bg-base-100 shadow-xl w-2/5 m-3 mx-auto'>
       <div className='min-h-full w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mx-auto'>
@@ -10,7 +22,7 @@ function ForgotPassword() {
               Password Reset Request
             </h2>
           </div>
-          <form className='mt-8 space-y-6'>
+          <form className='mt-8 space-y-6' onSubmit={resetPassword} >
             <div className='rounded-md shadow-sm space-y-px'>
               <div>
                 <label

@@ -17,6 +17,7 @@ export const GamesProvider = ({ children }) => {
     prevUrl: '',
     platformId: '0',
     searchText: '',
+    gameData: {}
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -87,6 +88,7 @@ export const GamesProvider = ({ children }) => {
     }
   }
 
+
   const getGameByGameId = async (id) => {
     setLoading()
     const url = `${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`
@@ -105,6 +107,7 @@ export const GamesProvider = ({ children }) => {
     })
   }
 
+
   return (
     <GamesContext.Provider
       value={{
@@ -120,6 +123,7 @@ export const GamesProvider = ({ children }) => {
         setPlatform,
         searchGames,
         getGameByGameId,
+
       }}
     >
       {children}
