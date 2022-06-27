@@ -15,9 +15,11 @@ function LoginForm() {
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlert, setAlertWithTimeout, removeAlert } = useContext(AlertContext)
+  const { setAlert, setAlertWithTimeout, removeAlert } =
+    useContext(AlertContext)
 
-  const { loggedIn, error, executeAuthenticationService } = useContext(UserContext)
+  const { loggedIn, error, executeAuthenticationService } =
+    useContext(UserContext)
 
   // not working for now
   // const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
