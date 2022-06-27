@@ -98,9 +98,9 @@ public record ResetPasswordService(GamerService gamerService,
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
                 "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Your new password is " + newPassword + " </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\">" +
-                "        \n" +
+                "        \n" + "<a href=\"" + "http://localhost:4200/login" + "\">Go to Login</a>" +
                 "      </td>\n" +
-                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
+                "      <td width=\"10\" valign=\"middle\"><br></td>\n"  +
                 "    </tr>\n" +
                 "    <tr>\n" +
                 "      <td height=\"30\"><br></td>\n" +
