@@ -8,6 +8,12 @@ const gamesReducer = (state, action) => {
         prevUrl: action.payload.previous,
         loading: false,
       }
+    case 'GET_GAME':
+      return {
+        ...state,
+        game: action.payload,
+        loading: false,
+      }
     case 'SET_PLATFORM':
       return {
         ...state,
@@ -34,11 +40,6 @@ const gamesReducer = (state, action) => {
       return {
         ...state,
         loading: true,
-      }
-    case 'GET_GAME':         
-      return {        
-        gameData: action.payload,
-        loading: false,
       }
     default:
       return state

@@ -11,34 +11,42 @@ import Navbar from './components/layout/Navbar'
 import { AlertProvider } from './context/alert/AlertContext'
 import { GamesProvider } from './context/games/GamesContext'
 import { UserProvider } from './context/user/UserContext'
+import { ReviewProvider } from './context/games/ReviewContext'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import GameDetailsPage from './pages/GameDetailsPage'
 
 function App() {
   return (
     <GamesProvider>
       <UserProvider>
-        <AlertProvider>
-          <Router>
-            <div className='flex flex-col justify-between h-screen'>
-              <Navbar />
-              <main className='container mx-auto px-4 pb-15'>
-                <Alert />
-                <Routes>
-                  <Route path='/' element={<Home />} />
-                  <Route path='/platform/:id' element={<GamesList />} />
-                  <Route path='/login' element={<LoginForm />} />
-                  <Route path='/signup' element={<SignupForm />} />
-                  <Route path='/forgotpassword' element={<ForgotPassword />} />
-                  <Route path='/resetpassword' element={<ResetPassword />} />
-                  <Route path='/*' element={<NotFound />} />
-                  <Route path='/profile' element={<GameListForProfile title={'Games Want to Play'}/>} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          </Router>
-        </AlertProvider>
+        <ReviewProvider>
+          <AlertProvider>
+            <Router>
+              <div className='flex flex-col justify-between h-screen'>
+                <Navbar />
+                <main className='container mx-auto px-4 pb-15'>
+                  <Alert />
+                  <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/platform/:id' element={<GamesList />} />
+                    <Route path='/game/:id' element={<GameDetailsPage />} />
+                    <Route path='/login' element={<LoginForm />} />
+                    <Route path='/signup' element={<SignupForm />} />
+                    <Route
+                      path='/forgotpassword'
+                      element={<ForgotPassword />}
+                    />
+                    <Route path='/resetpassword' element={<ResetPassword />} />
+                    <Route path='/*' element={<NotFound />} />
+                    <Route path='/profile' element={<GameListForProfile title={'Games Want to Play'}/>} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </Router>
+          </AlertProvider>
+        </ReviewProvider>
       </UserProvider>
     </GamesProvider>
   )
