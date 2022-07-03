@@ -17,7 +17,8 @@ export const GamesProvider = ({ children }) => {
     prevUrl: '',
     platformId: '0',
     searchText: '',
-    gameData: {}
+    gamesWantToPlay: {},
+    gamesPlayed: {}
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -107,6 +108,34 @@ export const GamesProvider = ({ children }) => {
     })
   }
 
+  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
+    setLoading();    
+    const wannaGames = [];
+    for (var i = 0; i < gamesWantToPlay.length; i++) {
+      wannaGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+    }
+    console.log(wannaGames);
+    while (wannaGames.length < gamesWantToPlay.length) {
+      setTimeout(10);
+    }
+
+    const playedGames = [];
+    for (var j = 0; j < gamesPlayed.length; j++) {
+      playedGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+    }
+    console.log(playedGames);
+    while (playedGames.length < gamesPlayed.length) {
+      setTimeout(10);
+    }
+
+    console.log(playedGames);   
+
+    dispatch({
+      type:'LIST_GAMES',
+      payload: {'gamesWantToPlayObjects': wannaGames, 'gamesPlayedObjects': playedGames},
+    })
+  }
+
 
   return (
     <GamesContext.Provider
@@ -117,12 +146,15 @@ export const GamesProvider = ({ children }) => {
         platformId: state.platformId,
         searchText: state.searchText,
         game: state.game,
+        gamesWantToPlayObjects: state.gamesWantToPlayObjects,
+        gamesPlayedObjects: state.gamesPlayedObjects,
         getGames,
         setNextPage,
         setPrevPage,
         setPlatform,
         searchGames,
         getGameByGameId,
+        getGamesByIdList
 
       }}
     >

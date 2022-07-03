@@ -34,7 +34,14 @@ const userReducer = (state, action) => {
         userName: action.payload.userName,
         gamesWantToPlay: action.payload.gamesWantToPlay,
         gamesPlayed: action.payload.gamesPlayed,
-        friends: action.payload.friends
+        friends: action.payload.friends,
+        userEmail: action.payload.email,
+        reading: false
+      }
+    case 'READING':
+      return {
+        ...state,
+        reading: action.payload
       }
     default:
       return state

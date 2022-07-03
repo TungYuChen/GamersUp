@@ -17,10 +17,16 @@ export const UserProvider = ({ children }) => {
     userName: '',
     gamesWantToPlay: [],
     gamesPlayed: [],
-    friends: []
+    friends: [],
+    reading: true
   }
 
-  const [state, dispatch] = useReducer(userReducer, initialState)
+  const [state, dispatch] = useReducer(userReducer, initialState)  
+
+  const reading = () => {
+    dispatch({type: 'READING',
+              payload: true}) 
+  }
 
   // Execute back end authentication service for login feature
   const executeAuthenticationService = (email, password) => {
@@ -77,6 +83,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const getGamer = () => {
+    reading();
     // axios
     //   .get(`https://cat-fact.herokuapp.com/facts`, {
     //     email       
@@ -85,7 +92,7 @@ export const UserProvider = ({ children }) => {
         // console.log(response);
         dispatch({
           type: 'USER_INFO',
-          payload: {'userId': 1, 'userName': 'James', 'email': 'gj@qq.com', 'gamesWantToPlay': ['3498','3576'], 'gamesPlayed': ['3498'], 'friends': ['7','8','9']}
+          payload: {'userId': 1, 'userName': 'James', 'email': 'gj@qq.com', 'gamesWantToPlay': ['3498','3576'], 'gamesPlayed': ['3498', '2178'], 'friends': ['7','8','9'], 'reading': false}, 
         })
       // })
       // .catch(() => {
@@ -106,6 +113,7 @@ export const UserProvider = ({ children }) => {
         gamesWantToPlay: state.gamesWantToPlay,
         gamesPlayed: state.gamesPlayed,
         friends: state.friends,
+        reading: state.reading,
         executeAuthenticationService,
         logout,
         executeRegisterService,

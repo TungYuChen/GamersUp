@@ -5,33 +5,47 @@ import PropTypes from "prop-types";
 import GameListItem from "./GameListItem";
 import Loading from "../layout/Loading";
 import GameListMiddleLayer from "./GameListMiddleLayer";
+import ProfileComponent from "./ProfileComponent";
 
-function GameListForProfile({ title }) {
-  const { loading, gameData, getGameById } = useContext(GamesContext);
-  const { gamesWantToPlay, gamesPlayed, getGamer } = useContext(UserContext);
-
- 
+function GameListForProfile() {
+  const { reading, gamesWantToPlay, gamesPlayed, getGamer} = useContext(UserContext); 
   //useEffect
-  useEffect(() => {
-    getGamer();
-    let list = [3498,3576];
-    getGameById(list);
-    
+  useEffect(() => {    
+    getGamer();     
   }, []);
 
-  return (
-    <>
-      <h1>{title}</h1>
-      <div className="grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-5 mb-5">
-        {/* {gameData.map((game) => (
-          <GameListItem key={game.id} game={game} />
-        ))} */}
+  
+  if (reading) {
+    return <Loading />
+  } else {
+    return (   
+      <>
+       <div className="card  bg-base-300 p-4 my-8">
+          <ProfileComponent />
+        <div>
+         
+        </div>
       </div>
-    </>
-  );
+   
+        <div className="card  bg-base-300 p-4 my-8">
+          <h1 className="card-title">Games Want To Play</h1>      
+          <GameListMiddleLayer className="card-body" gamesWantToPlayIdList={gamesWantToPlay} gamesPlayedIdList={gamesPlayed} title="Games Want To Play" />
+        </div>
+        <div className="card  bg-base-300 p-4 my-8">
+          <h1 className="card-title">Games Played</h1>      
+          <GameListMiddleLayer className="card-body" gamesWantToPlayIdList={gamesWantToPlay} gamesPlayedIdList={gamesPlayed} title="Games Played" />
+        </div>         
+      
+      </>
+    );
+  }  
+ 
+ 
 }
+
 GameListForProfile.propTypes = {
   title: PropTypes.string,
 };
+
 
 export default GameListForProfile;
