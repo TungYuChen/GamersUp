@@ -22,7 +22,7 @@ public class Review {
     private long gameID;
 
     @Column(name="rating")
-    private int rating; //rating: 0-5
+    private int rating; //rating: 1-5
 
     @Column(name="comment")
     private String comment;
