@@ -8,11 +8,10 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 
 /**
@@ -40,6 +39,21 @@ public class GamerInfo implements UserDetails {
     @Column(name="password")
     private String password;
 
+    @Column(name="dob")
+    private Date dob;
+
+    @Column(name="avatarurl")
+    private String avatarUrl;
+
+    @Column(name="bio")
+    private String bio;
+
+    @Column(name="level")
+    private int level; //0-Newbie, 1-Pro Gamer, 2-Veteran
+
+    @Column(name="likes")
+    private int likes;
+
     @Enumerated(EnumType.STRING)
     @Column(name="User_Role")
     private ApplicationUserRole applicationUserRole;
@@ -50,14 +64,6 @@ public class GamerInfo implements UserDetails {
     @Column(name="enable")
     private Boolean enable = false;
 
-    @Column(name="games_want_to_play")
-    private String gamesWantToPlay;
-
-    @Column(name="games_played")
-    private String gamesPlayed;
-
-    @Column(name="friends")
-    private String friends;
 
     public GamerInfo(String userName, String email, String password, ApplicationUserRole applicationUserRole) {
         this.userName = userName;
