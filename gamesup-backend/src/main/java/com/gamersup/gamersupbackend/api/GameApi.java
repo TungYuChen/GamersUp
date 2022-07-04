@@ -24,9 +24,21 @@ public class GameApi {
     }
 
     // Get a game's want-to-play-gamer list with game id
-    @GetMapping("/game={gameid}/gamerslist")
-    public List<WantToPlay> getGamersList(@PathVariable long gameid) {
+    @GetMapping("/game={gameid}/wanttoplaygamerslist")
+    public List<WantToPlay> getWantToPlayGamersList(@PathVariable long gameid) {
         return gameService.getWantToPlayGamersByGameID(gameid);
+    }
+
+    // Get a gamer's played list with user id
+    @GetMapping("/user={userid}/playedlist")
+    public List<Played> getPlayedList(@PathVariable long userid) {
+        return gameService.getPlayedListByGamerID(userid);
+    }
+
+    // Get a game's played-gamer list with game id
+    @GetMapping("/game={gameid}/playedgamerslist")
+    public List<Played> getPlayedGamersList(@PathVariable long gameid) {
+        return gameService.getPlayedListByGameID(gameid);
     }
 
     // Create/Update a new want-to-play
