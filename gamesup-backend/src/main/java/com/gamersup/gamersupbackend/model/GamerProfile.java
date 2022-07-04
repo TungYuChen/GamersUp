@@ -28,7 +28,7 @@ public class GamerProfile {
     private Date dob;
     private String avatarUrl;
     private String bio;
-    private int level;;
-    private int likes;
+    private Integer level;;
+    private Integer likes;
 
 }

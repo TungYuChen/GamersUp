@@ -1,10 +1,7 @@
 package com.gamersup.gamersupbackend.model;
 
 import com.gamersup.gamersupbackend.security.ApplicationUserRole;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +20,7 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "gamers")
 public class GamerInfo implements UserDetails {
@@ -49,10 +47,10 @@ public class GamerInfo implements UserDetails {
     private String bio;
 
     @Column(name="level")
-    private int level; //0-Newbie, 1-Pro Gamer, 2-Veteran
+    private Integer level; //0-Newbie, 1-Pro Gamer, 2-Veteran
 
     @Column(name="likes")
-    private int likes;
+    private Integer likes;
 
     @Enumerated(EnumType.STRING)
     @Column(name="User_Role")

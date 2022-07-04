@@ -51,7 +51,7 @@ public class GamerService implements UserDetailsService {
     }
 
     public GamerProfile getGamerProfileByEmail(String email) {
-        Optional<GamerInfo> gamer = gamerRepository.findByEmail(email);
+        Optional<GamerInfo> gamer = gamerRepository.findGamerByEmail(email);
         return getGamerProfile(gamer);
     }
 
@@ -82,7 +82,7 @@ public class GamerService implements UserDetailsService {
     }
 
     public boolean checkGamerExisting(String email, String password) {
-        GamerInfo gamer = gamerRepository.findByEmail(email).get();
+        GamerInfo gamer = gamerRepository.findGamerByEmail(email).get();
         if (gamer != null) {
             if (gamer.getPassword().equals(password))
                 return true;
@@ -92,12 +92,12 @@ public class GamerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return gamerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Gamer", "email", email));
+        return gamerRepository.findGamerByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Gamer", "email", email));
     }
 
 
     public String signUpUser(GamerInfo gamer) {
-        boolean gamerExists = gamerRepository.findByEmail(gamer.getEmail()).isPresent();
+        boolean gamerExists = gamerRepository.findGamerByEmail(gamer.getEmail()).isPresent();
         if (gamerExists) {
             // TODO check of attributes are the same
             // TODO if email not confirmed send confirmation email
@@ -139,7 +139,7 @@ public class GamerService implements UserDetailsService {
     }
 
     public GamerInfo getGamerByEmail(String email) {
-        return gamerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("email", "gamer", email));
+        return gamerRepository.findGamerByEmail(email).orElseThrow(() -> new ResourceNotFoundException("email", "gamer", email));
     }
 
 }

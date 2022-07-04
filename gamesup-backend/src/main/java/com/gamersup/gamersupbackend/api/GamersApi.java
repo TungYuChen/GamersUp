@@ -52,7 +52,7 @@ public class GamersApi {
     public GamerProfile getGamerProfileByEmail(@PathVariable String email) {
         return service.getGamerProfileByEmail(email);
     }
-    
+
     // TODO: Search Gamers by username (wild-card)
     @GetMapping("/search?{keyword}")
     public ResponseEntity<List<GamerProfile>> searchGamersByKeyword(@PathVariable("keyword") String keyword) {return null;}
