@@ -42,10 +42,15 @@ public class GamersApi {
     }
 
     // build get gamer by id REST API
-    // http://localhost:8080/api/gamers/1
-    @GetMapping("/{id}")
-    public ResponseEntity<GamerProfile> getGamerById(@PathVariable("id") long id) {
-        return new ResponseEntity<>(service.getGamerSkinById(id), HttpStatus.OK);
+    @GetMapping("/gamer={gamerid}")
+    public GamerProfile getGamerProfileById(@PathVariable long gamerid) {
+        return service.getGamerProfileById(gamerid);
+    }
+
+    // Get gamer by email
+    @GetMapping("/email={email}")
+    public GamerProfile getGamerProfileByEmail(@PathVariable String email) {
+        return service.getGamerProfileByEmail(email);
     }
 
     // TODO: Search Gamers by username (wild-card)
@@ -60,17 +65,17 @@ public class GamersApi {
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
 
-    @PostMapping("/searchwithmail")
-    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
-        GamerInfo gamer = service.getGamerByEmail(email.getEmail());
-        String gamesWantToPlay = (gamer.getGamesWantToPlay() == null)? "-1": gamer.getGamesWantToPlay();
-        String gamersPlayed = (gamer.getGamesPlayed() == null)? "-1": gamer.getGamesPlayed();
-        String friends = (gamer.getFriends() == null)? "-1": gamer.getFriends();
-        GamerProfile profile = new GamerProfile(gamer.getUsername(), gamer.getEmail(),
-                gamer.getEnable(), gamesWantToPlay,
-                gamersPlayed, friends);
-        return new ResponseEntity<>(profile, HttpStatus.OK);
-    }
+//    @PostMapping("/searchwithmail")
+//    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
+//        GamerInfo gamer = service.getGamerByEmail(email.getEmail());
+//        String gamesWantToPlay = (gamer.getGamesWantToPlay() == null)? "-1": gamer.getGamesWantToPlay();
+//        String gamersPlayed = (gamer.getGamesPlayed() == null)? "-1": gamer.getGamesPlayed();
+//        String friends = (gamer.getFriends() == null)? "-1": gamer.getFriends();
+//        GamerProfile profile = new GamerProfile(gamer.getUsername(), gamer.getEmail(),
+//                gamer.getEnable(), gamesWantToPlay,
+//                gamersPlayed, friends);
+//        return new ResponseEntity<>(profile, HttpStatus.OK);
+//    }
 
 
 

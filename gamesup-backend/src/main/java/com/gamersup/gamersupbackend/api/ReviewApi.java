@@ -59,7 +59,7 @@ public class ReviewApi {
 
     // Update/Edit a review
     @PutMapping("/review={reviewid}")
-    public  ResponseEntity<Review> editReview(@PathVariable long reviewid, @RequestBody Review review) {
+    public ResponseEntity<Review> editReview(@PathVariable long reviewid, @RequestBody Review review) {
         Review originalReview = reviewService.findReviewById(reviewid).get();
         originalReview.setComment(review.getComment());
         Review reviewUpdated = reviewService.saveReview(originalReview);

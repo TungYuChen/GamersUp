@@ -1,33 +1,39 @@
 const userReducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN':
+    case 'GET_USER':
       return {
-        userEmail: action.payload,
         loggedIn: true,
         error: false,
+        user: action.payload,
+      }
+    case 'GET_GAMER':
+      return {
+        ...state,
+        gamer: action.payload,
       }
     case 'LOGOUT':
       return {
-        userEmail: '',
         loggedIn: false,
         error: false,
-      }
-    case 'CREDENTIAL_ERROR':
-      return {
-        userEmail: '',
-        loggedIn: false,
-        error: true,
+        user: {},
       }
     case 'REGISTER':
       return {
-        userEmail: action.payload,
         error: false,
       }
-    case 'REGISTER_ERROR':
+    case 'GET_WANT_TO_PLAY':
       return {
-        error: true,
+        ...state,
+        wantToPlay: action.payload,
+        reading: false
       }
-    case 'USER_INFO':      
+    case 'GET_PlAYED':
+      return {
+        ...state,
+        played: action.payload,
+        reading: false
+      }
+    case 'USER_INFO':
       return {
         ...state,
         userId: action.payload.userId,
@@ -41,7 +47,14 @@ const userReducer = (state, action) => {
     case 'READING':
       return {
         ...state,
-        reading: action.payload
+        reading: action.payload,
+        error: true,
+      }
+
+    case 'ERROR':
+      return {
+        ...state,
+        error: true
       }
     default:
       return state

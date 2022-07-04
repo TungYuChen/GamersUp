@@ -43,12 +43,21 @@ function ProfileComponent() {
         <div className="justify-center flex">
             <input type="file" className="pl-20" onChange={(e) => setImageSelected(e.target.files[0])} />  
         </div>
-        <div className="justify-center flex">
-          <h1 className="text-neutral-content py-1 text-3xl">{userName}</h1>
-        </div>
-        <div className="justify-center flex">
-            <h1 className="inline-flex text-neutral-content py-1 text-2xl">User Email: &nbsp;&nbsp;</h1> <h1 className="inline-flex text-neutral-content py-1 text-2xl">{userEmail}</h1>
-        </div>
+        
+          <div className="justify-center flex">
+            <h1 className="text-neutral-content py-1 text-3xl">{userName}</h1>
+          </div>          
+          <div className="justify-center flex">
+              <h1 className="inline-flex text-neutral-content py-1 text-2xl">User Email: &nbsp;&nbsp;</h1> <h1 className="inline-flex text-neutral-content py-1 text-2xl">{userEmail}</h1>
+          </div>
+          <div className="justify-center flex">
+              <h1 className="inline-flex text-neutral-content py-1 text-2xl">User BirthDay: &nbsp;&nbsp;</h1> <h1 className="inline-flex text-neutral-content py-1 text-2xl">2022.07.01</h1>
+          </div>
+          <div className="justify-center flex">
+              <h1 className="inline-flex text-neutral-content py-1 text-2xl">User Level: &nbsp;&nbsp;</h1> <h1 className="inline-flex text-neutral-content py-1 text-2xl">2022.07.01</h1>
+          </div>
+
+        
         </>
     )
 

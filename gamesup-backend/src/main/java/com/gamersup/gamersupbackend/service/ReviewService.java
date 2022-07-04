@@ -27,14 +27,14 @@ public class ReviewService {
     }
 
     // In descending order
-    public List<Review> getAllReviewsByUserID(Long userID) {
+    public List<Review> getAllReviewsByUserID(long userID) {
         List<Review> reviews = reviewRepository.findAllByUserID(userID);
         Collections.reverse(reviews);
         return reviews;
     }
 
     // In descending order
-    public List<Review> getAllReviewsByGameID(Long gameID) {
+    public List<Review> getAllReviewsByGameID(long gameID) {
         List<Review> reviews = reviewRepository.findAllByGameID(gameID);
         Collections.reverse(reviews);
         return reviews;

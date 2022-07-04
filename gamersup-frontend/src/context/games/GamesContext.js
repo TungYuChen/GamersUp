@@ -6,6 +6,7 @@ const GamesContext = createContext()
 
 const RAWG_API_URL = process.env.REACT_APP_RAWG_API_URL
 const RAWG_API_KEY = process.env.REACT_APP_RAWG_API_KEY
+const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
 export const GamesProvider = ({ children }) => {
   const initialState = {
@@ -18,7 +19,10 @@ export const GamesProvider = ({ children }) => {
     platformId: '0',
     searchText: '',
     gamesWantToPlay: {},
-    gamesPlayed: {}
+    gamesPlayed: {},
+    wantToPlayGamers: [], // a list of gamers who what to play this game
+    playedGamers: [], // a list of gamers who played this game
+    gameError: false,
   }
 
   const [state, dispatch] = useReducer(gamesReducer, initialState)
@@ -89,24 +93,42 @@ export const GamesProvider = ({ children }) => {
     }
   }
 
-
   const getGameByGameId = async (id) => {
     setLoading()
     const url = `${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`
     axios
-    .get(url)
-    .then((response) => {
-      dispatch({
-        type: 'GET_GAME',
-        payload: response.data,
+      .get(url)
+      .then((response) => {
+        dispatch({
+          type: 'GET_GAME',
+          payload: response.data,
+        })
       })
-    })
-    .catch(() => {
-      // dispatch({
-      //   type: 'REVIEW_ERROR',
-      // })
-    })
+      .catch(() => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
   }
+
+  const getWantToPlayGamersByGameId = async (id) => {
+    setLoading()
+    axios
+      .get(`${API_URL}/games/game={id}/wanttoplaygamerslist`)
+      .then((response) => {
+        console.log(response.data)
+        dispatch({
+          type: 'GET_WANT_GAMERS',
+          payload: response.data,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
+
 
   const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
     setLoading();    
@@ -136,6 +158,23 @@ export const GamesProvider = ({ children }) => {
     })
   }
 
+  const getPlayedGamersByGameId = async (id) => {
+    setLoading()
+    axios
+      .get(`${API_URL}/games/game={id}/playedgamerslist`)
+      .then((response) => {
+        console.log(response.data)
+        dispatch({
+          type: 'GET_PlAYED_GAMERS',
+          payload: response.data,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
 
   return (
     <GamesContext.Provider
@@ -148,14 +187,19 @@ export const GamesProvider = ({ children }) => {
         game: state.game,
         gamesWantToPlayObjects: state.gamesWantToPlayObjects,
         gamesPlayedObjects: state.gamesPlayedObjects,
+        wantToPlayGamers: state.wantToPlayGamers,
+        playedGamers: state.playedGamers,
+        gameError: state.gameError,
         getGames,
         setNextPage,
         setPrevPage,
         setPlatform,
         searchGames,
         getGameByGameId,
-        getGamesByIdList
-
+        getGamesByIdList,
+        getWantToPlayGamersByGameId,
+        getPlayedGamersByGameId,
+        
       }}
     >
       {children}

@@ -36,7 +36,7 @@ public class GamerService implements UserDetailsService {
         return gamerRepository.findAll();
     }
 
-    public GamerInfo getGamerById(long id) {
+    public GamerInfo getGamerInfoById(long id) {
 
         // smarter method
         return gamerRepository.findById(id).orElseThrow(() ->
@@ -45,16 +45,24 @@ public class GamerService implements UserDetailsService {
 
     }
 
-    public GamerProfile getGamerSkinById(long id) {
-        Optional<GamerInfo> theGamer = Optional.of(gamerRepository.getReferenceById(id));
-        if (theGamer.isPresent()) {
-            GamerProfile resultGamer = new GamerProfile();
-            resultGamer.setUserName(theGamer.get().getUsername());
-            resultGamer.setEmail(theGamer.get().getEmail());
-            resultGamer.setEnable(theGamer.get().getEnable());
-            return resultGamer;
+    public GamerProfile getGamerProfileById(long id) {
+        Optional<GamerInfo> gamer = gamerRepository.findById(id);
+        return getGamerProfile(gamer);
+    }
+
+    public GamerProfile getGamerProfileByEmail(String email) {
+        Optional<GamerInfo> gamer = gamerRepository.findGamerByEmail(email);
+        return getGamerProfile(gamer);
+    }
+
+    private GamerProfile getGamerProfile(Optional<GamerInfo> gamer) {
+        if (gamer.isPresent()) {
+            GamerInfo gamerInfo = gamer.get();
+            GamerProfile result = new GamerProfile(gamerInfo.getId(), gamerInfo.getUsername(), gamerInfo.getEmail(),
+                    gamerInfo.getDob(), gamerInfo.getAvatarUrl(), gamerInfo.getBio(), gamerInfo.getLevel(), gamerInfo.getLikes());
+            return result;
         } else {
-            throw new ResourceNotFoundException("theGamer", "Id", id);
+            throw new ResourceNotFoundException("Gamer", "gamer", gamer);
         }
     }
 
