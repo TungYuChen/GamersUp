@@ -47,7 +47,7 @@ function GameItem({ game: { id, name, background_image, rating } }) {
             <PlusIcon className='inline mr-1 w-5' />
             Want to Play
           </button>
-          <button className='btn-ghost badge badge-outline text-xs'>
+          <button className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'>
             <CheckIcon className='inline mr-1 w-5' />
             Played
           </button>
