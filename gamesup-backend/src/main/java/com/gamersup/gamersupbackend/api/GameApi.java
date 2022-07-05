@@ -59,4 +59,16 @@ public class GameApi {
 
     }
 
+    // Check whether gamer wants to play a game
+    @PostMapping("/check/wanttoplay")
+    public boolean checkWantToPlay(@RequestBody WantToPlay wantToPlay) {
+        return gameService.checkWantToPlay(wantToPlay.getGameID(), wantToPlay.getGamerID());
+    }
+
+    // Check whether gamer played a game
+    @PostMapping("/check/played")
+    public boolean checkPlayed(@RequestBody Played played) {
+        return gameService.checkPlayed(played.getGameID(), played.getGamerID());
+    }
+
 }

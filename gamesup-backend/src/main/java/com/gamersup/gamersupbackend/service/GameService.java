@@ -84,4 +84,21 @@ public class GameService {
         }
     }
 
+    // Check whether gamer wants to play a game
+    public boolean checkWantToPlay(long gameID, long gamerID) {
+        Optional<WantToPlay> wantToPlay = wantToPlayRepository.findByGameIDAndGamerID(gameID, gamerID);
+        if (wantToPlay.isPresent() && wantToPlay.get().getChecked() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    // Check whether gamer played a game
+    public boolean checkPlayed(long gameID, long gamerID) {
+        Optional<Played> played = playedRepository.findByGameIDAndGamerID(gameID, gamerID);
+        if (played.isPresent() && played.get().getChecked() == 1) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,17 +1,36 @@
-import { React, useState, useEffect } from 'react'
+import { React, useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import PropTypes from 'prop-types'
+import UserContext from '../../context/user/UserContext'
+import Loading from '../layout/Loading'
 
 function GameItem({ game: { id, name, background_image, rating } }) {
+  const { loggedIn, clickWantToPlay, checkWantToPlay, checkPlayed } =
+    useContext(UserContext)
   const [validImage, setValidImage] = useState(true)
+  const [wantToPlay, setWantToPlay] = useState(false)
+  const [played, setPlayed] = useState(false)
 
   useEffect(() => {
     if (background_image == null) {
       setValidImage(false)
     }
+    console.log(checkWantToPlay(id))
+    if (checkWantToPlay(id) == true) {
+      console.log('test')
+      setWantToPlay(true)
+    }
+    if (checkPlayed(id) === true) {
+      setPlayed(true)
+    }
   }, [])
+
+  const handleClickWant = (e) => {
+    e.preventDefault()
+    clickWantToPlay(id)
+  }
 
   return (
     <div className='card w-72 bg-base-200 shadow-xl'>
@@ -42,16 +61,40 @@ function GameItem({ game: { id, name, background_image, rating } }) {
           <div className='inline badge badge-accent font-bold'>{rating}</div>
           <Link to={`/game/${id}`}>{name}</Link>
         </div>
-        <div className='card-actions justify-start'>
-          <button className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'>
-            <PlusIcon className='inline mr-1 w-5' />
-            Want to Play
-          </button>
-          <button className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'>
-            <CheckIcon className='inline mr-1 w-5' />
-            Played
-          </button>
-        </div>
+        {loggedIn && (
+          <div className='card-actions justify-start'>
+            {wantToPlay && (
+              <button
+                className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'
+                onClick={handleClickWant}
+              >
+                <PlusIcon className='inline mr-1 w-5' />
+                Added
+              </button>
+            )}
+            {!wantToPlay && (
+              <button
+                className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'
+                onClick={handleClickWant}
+              >
+                <PlusIcon className='inline mr-1 w-5' />
+                Want to Play
+              </button>
+            )}
+            {played && (
+              <button className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'>
+                <CheckIcon className='inline mr-1 w-5' />
+                Added
+              </button>
+            )}
+            {!played && (
+              <button className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'>
+                <CheckIcon className='inline mr-1 w-5' />
+                Played
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

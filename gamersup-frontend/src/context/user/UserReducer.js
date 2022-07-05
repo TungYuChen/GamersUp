@@ -2,9 +2,11 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case 'GET_USER':
       return {
+        ...state,
         loggedIn: true,
         error: false,
         user: action.payload,
+        userID: action.payload.userID,
       }
     case 'GET_GAMER':
       return {
@@ -48,7 +50,7 @@ const userReducer = (state, action) => {
       return {
         ...state,
         reading: action.payload,
-        error: true,
+        error: false,
       }
 
     case 'ERROR':

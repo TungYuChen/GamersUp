@@ -28,6 +28,11 @@ public class Played {
     private long gamerID;
 
     @Column(name="checked")
-    private int checked; // 0 - unchecked, 1 - checked
+    private Integer checked; // 0 - unchecked, 1 - checked
+
+    public Played(long gameID, long gamerID) {
+        this.gameID = gameID;
+        this.gamerID = gamerID;
+    }
 
 }
