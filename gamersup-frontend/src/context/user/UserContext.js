@@ -12,6 +12,12 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     loggedIn: false,
     error: false,
+    userId: '',
+    userName: '',
+    gamesWantToPlay: [],
+    gamesPlayed: [],
+    friends: [],
+    reading: true,
     user: {}, // logged user
     userID: 0,
     gamer: {}, // another gamer besides the user
@@ -19,7 +25,13 @@ export const UserProvider = ({ children }) => {
     played: [],
   }
 
-  const [state, dispatch] = useReducer(userReducer, initialState)
+  const [state, dispatch] = useReducer(userReducer, initialState)  
+
+  const reading = (load) => {
+    dispatch({type: 'READING',
+              payload: load}) 
+  }
+
 
   // Execute back end authentication service for login feature
   const executeAuthenticationService = async (email, password) => {
@@ -106,6 +118,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const getWantToPlayByGamerId = async (id) => {
+    reading(true)
     axios
       .get(`${API_URL}/games/user={id}/wanttoplaylist`)
       .then((response) => {
@@ -122,7 +135,22 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+
+  const getGamer = () => {
+    reading(true);
+    // axios
+    //   .get(`https://cat-fact.herokuapp.com/facts`, {
+    //     email       
+    //   })
+    //   .then(response => {
+        // console.log(response);
+        dispatch({
+          type: 'USER_INFO',
+          payload: {'userId': 1, 'userName': 'James', 'email': 'gj@qq.com', 'gamesWantToPlay': ['3498','3576'], 'gamesPlayed': ['3498', '2178'], 'friends': ['7','8','9'], 'reading': false}})
+    } 
+
   const getPlayedByGamerId = async (id) => {
+    reading(true)
     axios
       .get(`${API_URL}/games/user={id}/playedlist`)
       .then((response) => {
@@ -135,6 +163,7 @@ export const UserProvider = ({ children }) => {
       .catch((err) => {
         dispatch({
           type: 'ERROR',
+
         })
       })
   }
@@ -157,7 +186,6 @@ export const UserProvider = ({ children }) => {
 
   const checkWantToPlay = async (gameID) => {
     const gamerID = state.userID
-    let result = false
     await axios
       .post(`${API_URL}/games/check/wanttoplay`, {
         gameID,
@@ -165,14 +193,13 @@ export const UserProvider = ({ children }) => {
       })
       .then((response) => {
         // console.log(response.data)
-        result = response.data
+        return response.data
       })
       .catch((err) => {
         dispatch({
           type: 'ERROR',
         })
       })
-    return result
   }
 
   const checkPlayed = async (gameID) => {
@@ -198,11 +225,18 @@ export const UserProvider = ({ children }) => {
       value={{
         loggedIn: state.loggedIn,
         error: state.error,
+        userId: state.userId,
+        userName: state.userName,
+        gamesWantToPlay: state.gamesWantToPlay,
+        gamesPlayed: state.gamesPlayed,
+        friends: state.friends,
+        reading: state.reading,
         user: state.useReducer,
         userID: state.userID,
         gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
+        userEmail: state.userEmail,
         executeAuthenticationService,
         logout,
         executeRegisterService,
@@ -210,6 +244,10 @@ export const UserProvider = ({ children }) => {
         checkWantToPlay,
         checkPlayed,
         clickWantToPlay,
+        getGamerById,
+        getWantToPlayByGamerId,
+        getGamer,
+        getPlayedByGamerId
       }}
     >
       {children}

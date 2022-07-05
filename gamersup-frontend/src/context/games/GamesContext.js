@@ -18,6 +18,8 @@ export const GamesProvider = ({ children }) => {
     prevUrl: '',
     platformId: '0',
     searchText: '',
+    gamesWantToPlay: {},
+    gamesPlayed: {},
     wantToPlayGamers: [], // a list of gamers who what to play this game
     playedGamers: [], // a list of gamers who played this game
     gameError: false,
@@ -134,6 +136,35 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
+
+  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
+    setLoading();    
+    const wannaGames = [];
+    for (var i = 0; i < gamesWantToPlay.length; i++) {
+      wannaGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+    }
+    console.log(wannaGames);
+    while (wannaGames.length < gamesWantToPlay.length) {
+      setTimeout(10);
+    }
+
+    const playedGames = [];
+    for (var j = 0; j < gamesPlayed.length; j++) {
+      playedGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+    }
+    console.log(playedGames);
+    while (playedGames.length < gamesPlayed.length) {
+      setTimeout(10);
+    }
+
+    console.log(playedGames);   
+
+    dispatch({
+      type:'LIST_GAMES',
+      payload: {'gamesWantToPlayObjects': wannaGames, 'gamesPlayedObjects': playedGames},
+    })
+  }
+
   const getPlayedGamersByGameId = async (id) => {
     setLoading()
     axios
@@ -161,6 +192,8 @@ export const GamesProvider = ({ children }) => {
         platformId: state.platformId,
         searchText: state.searchText,
         game: state.game,
+        gamesWantToPlayObjects: state.gamesWantToPlayObjects,
+        gamesPlayedObjects: state.gamesPlayedObjects,
         wantToPlayGamers: state.wantToPlayGamers,
         playedGamers: state.playedGamers,
         gameError: state.gameError,
@@ -170,6 +203,10 @@ export const GamesProvider = ({ children }) => {
         setPlatform,
         searchGames,
         getGameByGameId,
+        getGamesByIdList,
+        getWantToPlayGamersByGameId,
+        getPlayedGamersByGameId,
+        
       }}
     >
       {children}

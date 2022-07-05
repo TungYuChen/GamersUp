@@ -51,6 +51,13 @@ const gamesReducer = (state, action) => {
         ...state,
         loading: true,
       }
+    case 'LIST_GAMES':
+      return {
+        ...state,
+        gamesWantToPlayObjects: action.payload.gamesWantToPlayObjects,
+        gamesPlayedObjects: action.payload.gamesPlayedObjects,
+        loading: false,
+      }
     case 'ERROR':
       return {
         ...state,

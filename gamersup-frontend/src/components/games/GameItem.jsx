@@ -4,6 +4,7 @@ import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
+import Loading from '../layout/Loading'
 
 function GameItem({ game: { id, name, background_image, rating } }) {
   const { loggedIn, clickWantToPlay, checkWantToPlay, checkPlayed } =
@@ -18,12 +19,12 @@ function GameItem({ game: { id, name, background_image, rating } }) {
     }
     console.log(checkWantToPlay(id))
     if (checkWantToPlay(id) == true) {
-      console.log("test")
+      console.log('test')
       setWantToPlay(true)
     }
     if (checkPlayed(id) === true) {
       setPlayed(true)
-    } 
+    }
   }, [])
 
   const handleClickWant = (e) => {

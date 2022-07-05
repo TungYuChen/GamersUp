@@ -27,16 +27,36 @@ const userReducer = (state, action) => {
       return {
         ...state,
         wantToPlay: action.payload,
+        reading: false
       }
     case 'GET_PlAYED':
       return {
         ...state,
         played: action.payload,
+        reading: false
       }
+    case 'USER_INFO':
+      return {
+        ...state,
+        userId: action.payload.userId,
+        userName: action.payload.userName,
+        gamesWantToPlay: action.payload.gamesWantToPlay,
+        gamesPlayed: action.payload.gamesPlayed,
+        friends: action.payload.friends,
+        userEmail: action.payload.email,
+        reading: false
+      }
+    case 'READING':
+      return {
+        ...state,
+        reading: action.payload,
+        error: false,
+      }
+
     case 'ERROR':
       return {
         ...state,
-        error: true,
+        error: true
       }
     default:
       return state
