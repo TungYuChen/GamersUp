@@ -41,13 +41,20 @@ export const GamesProvider = ({ children }) => {
       url += `&search=${text}`
     }
 
-    const response = await fetch(url)
-    const data = await response.json()
-
-    dispatch({
-      type: 'GET_GAMES',
-      payload: data,
-    })
+    axios
+      .get(url)
+      .then((response) => {
+        // console.log(response.data)
+        dispatch({
+          type: 'GET_GAMES',
+          payload: response.data,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
   }
 
   //Platform id >> PC-4, PS5-187, PS4-18, Nintendo Switch-7, Xbox Series X/S-186, Xbox One-1, Wii U-10
