@@ -38,7 +38,7 @@ const userReducer = (state, action) => {
     case 'USER_INFO':
       return {
         ...state,
-        userId: action.payload.userId,
+        // userId: action.payload.userId,
         userName: action.payload.userName,
         gamesWantToPlay: action.payload.gamesWantToPlay,
         gamesPlayed: action.payload.gamesPlayed,

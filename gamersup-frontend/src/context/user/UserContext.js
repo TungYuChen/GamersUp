@@ -12,11 +12,13 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     loggedIn: false,
     error: false,
-    userId: '',
+    // hardcode part - need to be deleted
+    // userId: '',
     userName: '',
     gamesWantToPlay: [],
     gamesPlayed: [],
     friends: [],
+    // hardcode part
     reading: true,
     user: {}, // logged user
     userID: 0,
@@ -25,13 +27,11 @@ export const UserProvider = ({ children }) => {
     played: [],
   }
 
-  const [state, dispatch] = useReducer(userReducer, initialState)  
+  const [state, dispatch] = useReducer(userReducer, initialState)
 
   const reading = (load) => {
-    dispatch({type: 'READING',
-              payload: load}) 
+    dispatch({ type: 'READING', payload: load })
   }
-
 
   // Execute back end authentication service for login feature
   const executeAuthenticationService = async (email, password) => {
@@ -135,19 +135,28 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-
+  // Wait delete
   const getGamer = () => {
-    reading(true);
+    reading(true)
     // axios
     //   .get(`https://cat-fact.herokuapp.com/facts`, {
-    //     email       
+    //     email
     //   })
     //   .then(response => {
-        // console.log(response);
-        dispatch({
-          type: 'USER_INFO',
-          payload: {'userId': 1, 'userName': 'James', 'email': 'gj@qq.com', 'gamesWantToPlay': ['3498','3576'], 'gamesPlayed': ['3498', '2178'], 'friends': ['7','8','9'], 'reading': false}})
-    } 
+    // console.log(response);
+    dispatch({
+      type: 'USER_INFO',
+      payload: {
+        userId: 1,
+        userName: 'James',
+        email: 'gj@qq.com',
+        gamesWantToPlay: ['3498', '3576'],
+        gamesPlayed: ['3498', '2178'],
+        friends: ['7', '8', '9'],
+        reading: false,
+      },
+    })
+  }
 
   const getPlayedByGamerId = async (id) => {
     reading(true)
@@ -163,14 +172,13 @@ export const UserProvider = ({ children }) => {
       .catch((err) => {
         dispatch({
           type: 'ERROR',
-
         })
       })
   }
 
   const clickWantToPlay = async (gameID) => {
     const gamerID = state.userID
-    axios
+    await axios
       .put(`${API_URL}/games/wanttoplay`, { gameID, gamerID })
       .then((response) => {
         console.log(response.data)
@@ -182,18 +190,12 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const clickPlayed = async (gameID) => {}
-
-  const checkWantToPlay = async (gameID) => {
+  const clickPlayed = async (gameID) => {
     const gamerID = state.userID
     await axios
-      .post(`${API_URL}/games/check/wanttoplay`, {
-        gameID,
-        gamerID,
-      })
+      .put(`${API_URL}/games/played`, { gameID, gamerID })
       .then((response) => {
-        // console.log(response.data)
-        return response.data
+        console.log(response.data)
       })
       .catch((err) => {
         dispatch({
@@ -202,30 +204,48 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const checkPlayed = async (gameID) => {
-    const gamerID = state.userID
-    axios
-      .post(`${API_URL}/games/check/played`, {
-        gameID,
-        gamerID,
-      })
-      .then((response) => {
-        // console.log(response.data)
-        return response.data
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
-  }
+  // const checkWantToPlay = async (gameID) => {
+  //   const gamerID = state.userID
+  //   return await axios
+  //     .post(`${API_URL}/games/check/wanttoplay`, {
+  //       gameID,
+  //       gamerID,
+  //     })
+      // .then((response) => {
+      //   // console.log(response.data)
+      //   return response.data
+      // })
+      // .catch((err) => {
+      //   dispatch({
+      //     type: 'ERROR',
+      //   })
+      // })
+  // }
+
+  // const checkPlayed = async (gameID) => {
+  //   const gamerID = state.userID
+  //   axios
+  //     .post(`${API_URL}/games/check/played`, {
+  //       gameID,
+  //       gamerID,
+  //     })
+  //     .then((response) => {
+  //       // console.log(response.data)
+  //       return response.data
+  //     })
+  //     .catch((err) => {
+  //       dispatch({
+  //         type: 'ERROR',
+  //       })
+  //     })
+  // }
 
   return (
     <UserContext.Provider
       value={{
         loggedIn: state.loggedIn,
         error: state.error,
-        userId: state.userId,
+        // userId: state.userId,
         userName: state.userName,
         gamesWantToPlay: state.gamesWantToPlay,
         gamesPlayed: state.gamesPlayed,
@@ -241,13 +261,14 @@ export const UserProvider = ({ children }) => {
         logout,
         executeRegisterService,
         getUserProfile,
-        checkWantToPlay,
-        checkPlayed,
+        // checkWantToPlay,
+        // checkPlayed,
         clickWantToPlay,
+        clickPlayed,
         getGamerById,
         getWantToPlayByGamerId,
         getGamer,
-        getPlayedByGamerId
+        getPlayedByGamerId,
       }}
     >
       {children}
