@@ -185,7 +185,7 @@ export const UserProvider = ({ children }) => {
   const clickPlayed = async (gameID) => {}
 
   const checkWantToPlay = async (gameID) => {
-    const gamerID = state.userID
+    const gamerID = state.user.userID;
     await axios
       .post(`${API_URL}/games/check/wanttoplay`, {
         gameID,
@@ -203,7 +203,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const checkPlayed = async (gameID) => {
-    const gamerID = state.userID
+    const gamerID = state.user.userID;
     axios
       .post(`${API_URL}/games/check/played`, {
         gameID,
@@ -218,6 +218,32 @@ export const UserProvider = ({ children }) => {
           type: 'ERROR',
         })
       })
+  }
+
+  const changeBio = async (bio) => {
+    const gamerID = state.user.userID;
+    axios.put(`${API_URL}/gamers/bio/change`, {
+      gamerID,
+      bio
+    }).then((response) => getUserProfile(state.user.email))
+    .catch((err) => {
+      dispatch({
+        type: 'ERROR'
+      })
+    })
+  }
+
+  const changeAvatar = async (url) => {
+    const gamerID = state.user.userID;
+    axios.put(`${API_URL}/gamers/changeAvatar`, {
+      gamerID,
+      url
+    }).then((response) => getUserProfile(state.user.email))
+    .catch((err) => {
+      dispatch({
+        type: 'ERROR'
+      })
+    })
   }
 
   return (
@@ -247,7 +273,9 @@ export const UserProvider = ({ children }) => {
         getGamerById,
         getWantToPlayByGamerId,
         getGamer,
-        getPlayedByGamerId
+        getPlayedByGamerId,
+        changeBio,
+        changeAvatar,
       }}
     >
       {children}

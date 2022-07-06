@@ -18,6 +18,6 @@ public interface GamerRepository extends JpaRepository<GamerInfo, Long> {
     @Query("UPDATE GamerInfo a " + "SET a.enable = TRUE WHERE a.email = ?1")
     int enableGamer(String email);
 
-
+    Optional<GamerInfo> findGamerById(long id);
 
 }
