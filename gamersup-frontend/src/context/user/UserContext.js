@@ -12,13 +12,6 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     loggedIn: false,
     error: false,
-    // hardcode part - need to be deleted
-    // userId: '',
-    userName: '',
-    gamesWantToPlay: [],
-    gamesPlayed: [],
-    friends: [],
-    // hardcode part
     reading: true,
     user: {}, // logged user
     userID: 0,
@@ -35,16 +28,16 @@ export const UserProvider = ({ children }) => {
 
   // Execute back end authentication service for login feature
   const executeAuthenticationService = async (email, password) => {
-    axios
+    await axios
       .post(`${API_URL}/account/authenticate`, {
         email,
         password,
       })
       .then((response) => {
-        sessionStorage.setItem(LOGIN_SESSION, email)
         //response.data.jwt
         // console.log(response)
         getUserProfile(email)
+        sessionStorage.setItem(LOGIN_SESSION, email)
       })
       .catch(() => {
         dispatch({
@@ -60,9 +53,18 @@ export const UserProvider = ({ children }) => {
     })
   }
 
+  const isLoggedIn = () => {
+    const email = sessionStorage.getItem(LOGIN_SESSION)
+    if (email === null) {
+      return false
+    } else {
+      return true
+    }
+  }
+
   // Execute back end registration service
   const executeRegisterService = async (userName, email, password) => {
-    axios
+    await axios
       .post(`${API_URL}/account/registration`, {
         userName,
         email,
@@ -84,7 +86,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const getUserProfile = async (email) => {
-    axios
+    await axios
       .get(`${API_URL}/gamers/email=${email}`)
       .then((response) => {
         // console.log(response.data)
@@ -101,7 +103,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const getGamerById = async (id) => {
-    axios
+    await axios
       .get(`${API_URL}/gamers/gamer={id}`)
       .then((response) => {
         // console.log(response.data)
@@ -119,7 +121,7 @@ export const UserProvider = ({ children }) => {
 
   const getWantToPlayByGamerId = async (id) => {
     reading(true)
-    axios
+    await axios
       .get(`${API_URL}/games/user={id}/wanttoplaylist`)
       .then((response) => {
         console.log(response.data)
@@ -160,7 +162,7 @@ export const UserProvider = ({ children }) => {
 
   const getPlayedByGamerId = async (id) => {
     reading(true)
-    axios
+    await axios
       .get(`${API_URL}/games/user={id}/playedlist`)
       .then((response) => {
         console.log(response.data)
@@ -211,15 +213,15 @@ export const UserProvider = ({ children }) => {
   //       gameID,
   //       gamerID,
   //     })
-      // .then((response) => {
-      //   // console.log(response.data)
-      //   return response.data
-      // })
-      // .catch((err) => {
-      //   dispatch({
-      //     type: 'ERROR',
-      //   })
-      // })
+  // .then((response) => {
+  //   // console.log(response.data)
+  //   return response.data
+  // })
+  // .catch((err) => {
+  //   dispatch({
+  //     type: 'ERROR',
+  //   })
+  // })
   // }
 
   // const checkPlayed = async (gameID) => {
@@ -245,30 +247,23 @@ export const UserProvider = ({ children }) => {
       value={{
         loggedIn: state.loggedIn,
         error: state.error,
-        // userId: state.userId,
-        userName: state.userName,
-        gamesWantToPlay: state.gamesWantToPlay,
-        gamesPlayed: state.gamesPlayed,
-        friends: state.friends,
         reading: state.reading,
         user: state.useReducer,
         userID: state.userID,
         gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
-        userEmail: state.userEmail,
         executeAuthenticationService,
         logout,
         executeRegisterService,
         getUserProfile,
-        // checkWantToPlay,
-        // checkPlayed,
         clickWantToPlay,
         clickPlayed,
         getGamerById,
         getWantToPlayByGamerId,
         getGamer,
         getPlayedByGamerId,
+        isLoggedIn,
       }}
     >
       {children}

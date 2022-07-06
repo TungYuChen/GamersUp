@@ -1,5 +1,5 @@
 import { React, useContext, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import PropTypes from 'prop-types'
@@ -7,6 +7,8 @@ import UserContext from '../../context/user/UserContext'
 import axios from 'axios'
 
 function GameItem({ game: { id, name, background_image, rating } }) {
+  const navigate = useNavigate()
+
   const { loggedIn, userID, clickWantToPlay, clickPlayed } =
     useContext(UserContext)
   const [validImage, setValidImage] = useState(true)
@@ -48,14 +50,22 @@ function GameItem({ game: { id, name, background_image, rating } }) {
 
   const handleClickWant = async (e) => {
     e.preventDefault()
-    await clickWantToPlay(id)
-    setClick(1)
+    if (loggedIn) {
+      await clickWantToPlay(id)
+      setClick(1)
+    } else {
+      navigate('/login', { replace: true })
+    }
   }
 
   const handleClickPlayed = async (e) => {
     e.preventDefault()
-    await clickPlayed(id)
-    setClick(1)
+    if (loggedIn) {
+      await clickPlayed(id)
+      setClick(1)
+    } else {
+      navigate('/login', { replace: true })
+    }
   }
 
   return (
@@ -87,46 +97,44 @@ function GameItem({ game: { id, name, background_image, rating } }) {
           <div className='inline badge badge-accent font-bold'>{rating}</div>
           <Link to={`/game/${id}`}>{name}</Link>
         </div>
-        {loggedIn && (
-          <div className='card-actions justify-start'>
-            {wantToPlay && (
-              <button
-                className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'
-                onClick={handleClickWant}
-              >
-                <PlusIcon className='inline mr-1 w-5' />
-                Added
-              </button>
-            )}
-            {!wantToPlay && (
-              <button
-                className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'
-                onClick={handleClickWant}
-              >
-                <PlusIcon className='inline mr-1 w-5' />
-                Want to Play
-              </button>
-            )}
-            {played && (
-              <button
-                className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'
-                onClick={handleClickPlayed}
-              >
-                <CheckIcon className='inline mr-1 w-5' />
-                Added
-              </button>
-            )}
-            {!played && (
-              <button
-                className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'
-                onClick={handleClickPlayed}
-              >
-                <CheckIcon className='inline mr-1 w-5' />
-                Played
-              </button>
-            )}
-          </div>
-        )}
+        <div className='card-actions justify-start'>
+          {wantToPlay && (
+            <button
+              className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'
+              onClick={handleClickWant}
+            >
+              <PlusIcon className='inline mr-1 w-5' />
+              Added
+            </button>
+          )}
+          {!wantToPlay && (
+            <button
+              className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'
+              onClick={handleClickWant}
+            >
+              <PlusIcon className='inline mr-1 w-5' />
+              Want to Play
+            </button>
+          )}
+          {played && (
+            <button
+              className='btn-ghost bg-primary badge badge-outline text-xs hover:bg-primary-focus'
+              onClick={handleClickPlayed}
+            >
+              <CheckIcon className='inline mr-1 w-5' />
+              Added
+            </button>
+          )}
+          {!played && (
+            <button
+              className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'
+              onClick={handleClickPlayed}
+            >
+              <CheckIcon className='inline mr-1 w-5' />
+              Played
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )

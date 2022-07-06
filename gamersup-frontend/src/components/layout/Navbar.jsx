@@ -1,13 +1,19 @@
-import { React, useContext, useState } from 'react'
+import { React, useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { loggedIn, logout } = useContext(UserContext)
+  const { loggedIn, logout, isLoggedIn, getUserProfile } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     getUserProfile(sessionStorage.getItem('authenticatedEmail'))
+  //   }
+  // }, [loggedIn])
 
   const handleChange = (e) => setText(e.target.value)
 

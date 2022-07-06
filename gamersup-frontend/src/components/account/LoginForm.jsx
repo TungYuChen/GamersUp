@@ -7,16 +7,16 @@ import {
   EyeOffIcon,
   MailIcon,
 } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Home from '../../pages/Home'
-import { useEffect } from 'react'
 
 function LoginForm() {
+  const navigate = useNavigate()
+
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlert, setAlertWithTimeout, removeAlert } =
-    useContext(AlertContext)
+  const { setAlertWithTimeout, removeAlert } = useContext(AlertContext)
 
   const { loggedIn, error, executeAuthenticationService } =
     useContext(UserContext)
@@ -30,18 +30,18 @@ function LoginForm() {
   //   }
   // }, [])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const email = e.target.email.value
     const password = e.target.password.value
-    executeAuthenticationService(email, password)
+    await executeAuthenticationService(email, password)
     if (error) {
       setAlertWithTimeout(
         'Wrong credentials. Please try your email or password again.',
         'error'
       )
     } else {
-      removeAlert()
+      navigate('/', { replace: true })
     }
   }
 
@@ -68,7 +68,7 @@ function LoginForm() {
                 </p>
               </div>
               <form className='mt-8 space-y-6' onSubmit={handleSubmit}>
-                {/* <input type='hidden' name='remember' defaultValue='true' /> */}
+                <input type='hidden' name='remember' defaultValue='true' />
                 <div className='rounded-md shadow-sm space-y-px'>
                   <div className='mt-1 relative rounded-md shadow-sm'>
                     <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
