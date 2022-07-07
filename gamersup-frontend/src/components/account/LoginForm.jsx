@@ -18,7 +18,7 @@ function LoginForm() {
 
   const { setAlertWithTimeout, removeAlert } = useContext(AlertContext)
 
-  const { loggedIn, error, executeAuthenticationService } =
+  const { isLoggedIn, error, executeAuthenticationService } =
     useContext(UserContext)
 
   // not working for now
@@ -30,11 +30,11 @@ function LoginForm() {
   //   }
   // }, [])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     const email = e.target.email.value
     const password = e.target.password.value
-    await executeAuthenticationService(email, password)
+    executeAuthenticationService(email, password)
     if (error) {
       setAlertWithTimeout(
         'Wrong credentials. Please try your email or password again.',
@@ -45,7 +45,7 @@ function LoginForm() {
     }
   }
 
-  if (loggedIn) {
+  if (isLoggedIn()) {
     return <Home />
   } else {
     return (

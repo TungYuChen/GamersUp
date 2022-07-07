@@ -5,21 +5,15 @@ import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { loggedIn, logout, isLoggedIn, getUserProfile } = useContext(UserContext)
+  const { isLoggedIn, logout } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     getUserProfile(sessionStorage.getItem('authenticatedEmail'))
-  //   }
-  // }, [loggedIn])
 
   const handleChange = (e) => setText(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
+
     //search games
     searchGames(text)
   }
@@ -43,7 +37,7 @@ function Navbar({ title }) {
                 onChange={handleChange}
               />
             </form>
-            {!loggedIn && (
+            {!isLoggedIn() && (
               <Link
                 to='/login'
                 className='btn btn-ghost btn-lg rounded-btn ml-3'
@@ -51,12 +45,12 @@ function Navbar({ title }) {
                 Sign In
               </Link>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <Link to='/' className='btn btn-ghost btn-lg rounded-btn ml-3'>
                 Chats
               </Link>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <div className='w-12 rounded-full mt-2 mr-6'>
                 <button className='btn btn-ghost btn-circle'>
                   <div className='indicator'>
@@ -79,7 +73,7 @@ function Navbar({ title }) {
                 </button>
               </div>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <div className='dropdown dropdown-end'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle avatar'>
                   <div className='w-12 rounded-full mt-2'>

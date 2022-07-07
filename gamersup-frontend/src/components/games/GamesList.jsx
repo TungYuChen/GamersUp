@@ -1,21 +1,31 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import GamesContext from '../../context/games/GamesContext'
 import AlertContext from '../../context/alert/AlertContext'
+import UserContext from '../../context/user/UserContext'
 import GamePlatforms from './GamePlatforms'
 import Loading from '../layout/Loading'
 import PageBar from '../layout/PageBar'
 import GameItem from './GameItem'
 
 function GamesList() {
+  const LOGIN_SESSION = process.env.REACT_APP_AUTH_SESSION
+
   const { games, loading, platformId, searchText, getGames } =
     useContext(GamesContext)
 
   const { alert, setAlert, removeAlert } = useContext(AlertContext)
 
+  const { isLoggedIn } = useContext(UserContext)
+
+  const [user, setUser] = useState({'userID': 0})
+
   useEffect(() => {
     // get games with platformId
     getGames(platformId, searchText)
-  }, [])
+    if (isLoggedIn()) {
+      setUser(JSON.parse(sessionStorage.getItem(LOGIN_SESSION)))
+    }
+  }, [isLoggedIn()])
 
   if (loading) {
     return <Loading />
@@ -43,7 +53,7 @@ function GamesList() {
         <PageBar />
         <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-5 mb-5'>
           {games.map((game) => (
-            <GameItem key={game.id} game={game} />
+            <GameItem key={game.id} game={game} user={user} />
           ))}
         </div>
         <PageBar />

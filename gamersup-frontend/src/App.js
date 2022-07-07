@@ -38,8 +38,8 @@ function App() {
                       element={<ForgotPassword />}
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
-                    <Route path='/*' element={<NotFound />} />
                     <Route path='/profile' element={<GameListForProfile />} />
+                    <Route path='/*' element={<NotFound />} />
                   </Routes>
                 </main>
                 <Footer />
