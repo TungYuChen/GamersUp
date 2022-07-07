@@ -7,18 +7,18 @@ import {
   EyeOffIcon,
   MailIcon,
 } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Home from '../../pages/Home'
-import { useEffect } from 'react'
 
 function LoginForm() {
+  const navigate = useNavigate()
+
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlert, setAlertWithTimeout, removeAlert } =
-    useContext(AlertContext)
+  const { setAlertWithTimeout, removeAlert } = useContext(AlertContext)
 
-  const { loggedIn, error, executeAuthenticationService } =
+  const { isLoggedIn, error, executeAuthenticationService } =
     useContext(UserContext)
 
   // not working for now
@@ -41,11 +41,11 @@ function LoginForm() {
         'error'
       )
     } else {
-      removeAlert()
+      navigate('/', { replace: true })
     }
   }
 
-  if (loggedIn) {
+  if (isLoggedIn()) {
     return <Home />
   } else {
     return (
@@ -68,7 +68,7 @@ function LoginForm() {
                 </p>
               </div>
               <form className='mt-8 space-y-6' onSubmit={handleSubmit}>
-                {/* <input type='hidden' name='remember' defaultValue='true' /> */}
+                <input type='hidden' name='remember' defaultValue='true' />
                 <div className='rounded-md shadow-sm space-y-px'>
                   <div className='mt-1 relative rounded-md shadow-sm'>
                     <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
