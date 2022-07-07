@@ -8,6 +8,7 @@ import GamesList from './components/games/GamesList'
 import Alert from './components/layout/Alert'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
+import FriendList from './components/layout/FriendList'
 import { AlertProvider } from './context/alert/AlertContext'
 import { GamesProvider } from './context/games/GamesContext'
 import { UserProvider } from './context/user/UserContext'
@@ -41,6 +42,7 @@ function App() {
                     <Route path='/*' element={<NotFound />} />
                     <Route path='/profile' element={<GameListForProfile />} />
                   </Routes>
+                  <FriendList />
                 </main>
                 <Footer />
               </div>

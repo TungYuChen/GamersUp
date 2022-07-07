@@ -58,6 +58,17 @@ const userReducer = (state, action) => {
         ...state,
         error: true
       }
+    case 'FRIENDS':
+      return {
+        ...state,
+        friends: action.payload,
+        fetching: false,
+      }
+    case 'Fetching':
+      return {
+        ...state,
+        fetching: true,
+      }
     default:
       return state
   }

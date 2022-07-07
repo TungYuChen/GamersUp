@@ -23,6 +23,7 @@ export const UserProvider = ({ children }) => {
     gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],
+    fetching: true,
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)  
@@ -30,6 +31,12 @@ export const UserProvider = ({ children }) => {
   const reading = (load) => {
     dispatch({type: 'READING',
               payload: load}) 
+  }
+
+  const fetching = () => {
+    dispatch({
+      type: 'Fetching',
+    })
   }
 
 
@@ -246,6 +253,26 @@ export const UserProvider = ({ children }) => {
     })
   }
 
+  const getFriends = async () => {
+    fetching();
+    //hardcode
+    const friends = [1,2];
+    // const friends = state.user.friends;
+    const friendList = [];
+    await friends.forEach(async id => {
+      await axios.get(`${API_URL}/gamer={id}`).then((response) => friendList.push(response.data));
+    })
+
+    while (friendList.length < friends.length) {
+      setTimeout(10);
+    }
+
+    dispatch({
+      type: 'FRIENDS',
+      payload: friendList,
+    })
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -276,6 +303,7 @@ export const UserProvider = ({ children }) => {
         getPlayedByGamerId,
         changeBio,
         changeAvatar,
+        getFriends,
       }}
     >
       {children}
