@@ -1,11 +1,11 @@
-import { React, useContext, useState } from 'react'
+import { React, useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { loggedIn, logout } = useContext(UserContext)
+  const { isLoggedIn, logout } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
 
@@ -13,7 +13,7 @@ function Navbar({ title }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
+
     //search games
     searchGames(text)
   }
@@ -37,7 +37,7 @@ function Navbar({ title }) {
                 onChange={handleChange}
               />
             </form>
-            {!loggedIn && (
+            {!isLoggedIn() && (
               <Link
                 to='/login'
                 className='btn btn-ghost btn-lg rounded-btn ml-3'
@@ -45,12 +45,12 @@ function Navbar({ title }) {
                 Sign In
               </Link>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <Link to='/' className='btn btn-ghost btn-lg rounded-btn ml-3'>
                 Chats
               </Link>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <div className='w-12 rounded-full mt-2 mr-6'>
                 <button className='btn btn-ghost btn-circle'>
                   <div className='indicator'>
@@ -73,7 +73,7 @@ function Navbar({ title }) {
                 </button>
               </div>
             )}
-            {loggedIn && (
+            {isLoggedIn() && (
               <div className='dropdown dropdown-end'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle avatar'>
                   <div className='w-12 rounded-full mt-2'>
