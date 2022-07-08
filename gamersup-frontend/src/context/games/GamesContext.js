@@ -141,6 +141,24 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
+  const getPlayedGamersByGameId = async (id) => {
+    setLoading()
+    axios
+      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
+      .then((response) => {
+        console.log(response.data)
+        dispatch({
+          type: 'GET_PlAYED_GAMERS',
+          payload: response.data,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
+
   const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
     setLoading()
     const wannaGames = []
@@ -180,24 +198,6 @@ export const GamesProvider = ({ children }) => {
         gamesPlayedObjects: playedGames,
       },
     })
-  }
-
-  const getPlayedGamersByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_PlAYED_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
   }
 
   return (
