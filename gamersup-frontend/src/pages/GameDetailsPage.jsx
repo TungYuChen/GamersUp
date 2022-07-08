@@ -2,6 +2,7 @@ import { React, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import GamesContext from '../context/games/GamesContext'
 import ReviewContext from '../context/games/ReviewContext'
+import UserContext from '../context/user/UserContext'
 import Loading from '../components/layout/Loading'
 import gameimage from '../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
@@ -66,14 +67,15 @@ function GameDetailsPage() {
             <div className='mb-3'>
               <div className='mb-4'>
                 <h1 className='text-3xl card-title mb-2'>{name}</h1>
-                {genres && genres.map((genre) => (
-                  <div
-                    className='ml-1 mr-1 badge badge-accent font-semibold'
-                    key={genre.id}
-                  >
-                    {genre.name}
-                  </div>
-                ))}
+                {genres &&
+                  genres.map((genre) => (
+                    <div
+                      className='ml-1 mr-1 badge badge-accent font-semibold'
+                      key={genre.id}
+                    >
+                      {genre.name}
+                    </div>
+                  ))}
                 {/* <p>{description}</p> */}
               </div>
 

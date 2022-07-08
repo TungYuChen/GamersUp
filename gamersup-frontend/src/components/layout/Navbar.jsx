@@ -5,9 +5,14 @@ import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { isLoggedIn, logout } = useContext(UserContext)
+  const { isLoggedIn, logout, getLoggedUserInSession } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
+
+  useEffect(() => {
+    // get the logged user
+    getLoggedUserInSession()
+  }, [isLoggedIn()])
 
   const handleChange = (e) => setText(e.target.value)
 
