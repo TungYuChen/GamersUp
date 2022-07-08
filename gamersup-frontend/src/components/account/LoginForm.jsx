@@ -16,9 +16,9 @@ function LoginForm() {
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
-  const { setAlertWithTimeout, removeAlert } = useContext(AlertContext)
+  const { setAlertWithTimeout } = useContext(AlertContext)
 
-  const { isLoggedIn, error, executeAuthenticationService } =
+  const { isLoggedIn, executeAuthenticationService, getUserByEmail } =
     useContext(UserContext)
 
   // not working for now
@@ -35,14 +35,20 @@ function LoginForm() {
     const email = e.target.email.value
     const password = e.target.password.value
     executeAuthenticationService(email, password)
-    if (error) {
-      setAlertWithTimeout(
-        'Wrong credentials. Please try your email or password again.',
-        'error'
-      )
-    } else {
-      navigate('/', { replace: true })
-    }
+      .then(() => {
+        getUserByEmail(email)
+      })
+      .catch((err) => {
+        if (err.response) {
+          setAlertWithTimeout(err.response.data.error, 'error')
+        } else if (err.request) {
+          setAlertWithTimeout(err.request, 'error')
+        } else {
+          setAlertWithTimeout(err.message, 'error')
+        }
+        
+      })
+
   }
 
   if (isLoggedIn()) {

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useContext } from 'react'
 import userReducer from './UserReducer'
 import axios from 'axios'
 
@@ -12,9 +12,11 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     error: false,
     reading: true,
+    user: { userID: 0 }, // logged user
     gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],
+    fetching: true,
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)
@@ -23,36 +25,47 @@ export const UserProvider = ({ children }) => {
     dispatch({ type: 'READING', payload: load })
   }
 
+  const fetching = () => {
+    dispatch({
+      type: 'Fetching',
+    })
+  }
+
   // Execute back end authentication service for login feature
   const executeAuthenticationService = (email, password) => {
+    return axios.post(`${API_URL}/account/authenticate`, {
+      email,
+      password,
+    })
+  }
+
+  const getUserByEmail = (email) => {
     axios
-      .post(`${API_URL}/account/authenticate`, {
-        email,
-        password,
-      })
+      .get(`${API_URL}/gamers/email=${email}`)
       .then((response) => {
-        // response.data.jwt
-        console.log('token', response.data.jwt)
-        getUserProfile(email)
+        const loggedUser = JSON.stringify(response.data)
+        sessionStorage.setItem(LOGIN_SESSION, loggedUser)
+        dispatch({
+          type: 'LOGIN',
+          payload: loggedUser,
+        })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
       })
   }
 
-  const getUserProfile = (email) => {
-    axios
-      .get(`${API_URL}/gamers/email=${email}`)
-      .then((response) => {
-        sessionStorage.setItem(LOGIN_SESSION, JSON.stringify(response.data))
+  const getLoggedUserInSession = () => {
+    if (isLoggedIn()) {
+      const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))
+      dispatch({
+        type: 'GET_LOGGED_USER',
+        payload: loggedUser,
       })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
+    }
   }
 
   const logout = () => {
@@ -86,7 +99,8 @@ export const UserProvider = ({ children }) => {
           type: 'REGISTER',
         })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -104,6 +118,7 @@ export const UserProvider = ({ children }) => {
         })
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -122,6 +137,7 @@ export const UserProvider = ({ children }) => {
         })
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -140,6 +156,7 @@ export const UserProvider = ({ children }) => {
         })
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -154,6 +171,7 @@ export const UserProvider = ({ children }) => {
         console.log(response.data)
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -168,6 +186,7 @@ export const UserProvider = ({ children }) => {
         console.log(response.data)
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: 'ERROR',
         })
@@ -210,15 +229,71 @@ export const UserProvider = ({ children }) => {
   //     })
   // }
 
+  const changeBio = async (bio) => {
+    const gamerID = state.user.userID
+    axios
+      .put(`${API_URL}/gamers/bio/change`, {
+        gamerID,
+        bio,
+      })
+      .then((response) => getUserByEmail(state.user.email))
+      .catch((err) => {
+        console.log(err)
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
+
+  const changeAvatar = async (url) => {
+    const gamerID = state.user.userID
+    axios
+      .put(`${API_URL}/gamers/changeAvatar`, {
+        gamerID,
+        url,
+      })
+      .then((response) => getUserByEmail(state.user.email))
+      .catch((err) => {
+        console.log(err)
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
+
+  const getFriends = async () => {
+    fetching()
+    //hardcode
+    const friends = [1, 2]
+    // const friends = state.user.friends;
+    const friendList = []
+    await friends.forEach(async (id) => {
+      await axios
+        .get(`${API_URL}/gamer={id}`)
+        .then((response) => friendList.push(response.data))
+    })
+
+    while (friendList.length < friends.length) {
+      setTimeout(10)
+    }
+
+    dispatch({
+      type: 'FRIENDS',
+      payload: friendList,
+    })
+  }
+
   return (
     <UserContext.Provider
       value={{
         error: state.error,
         reading: state.reading,
+        user: state.user,
         gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
         executeAuthenticationService,
+        getUserByEmail,
         logout,
         executeRegisterService,
         clickWantToPlay,
@@ -226,7 +301,11 @@ export const UserProvider = ({ children }) => {
         getGamerById,
         getWantToPlayByGamerId,
         getPlayedByGamerId,
+        changeBio,
+        changeAvatar,
+        getFriends,
         isLoggedIn,
+        getLoggedUserInSession,
       }}
     >
       {children}

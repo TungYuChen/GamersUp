@@ -7,12 +7,10 @@ import gameimage from '../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import ReviewForm from '../components/games/ReviewForm'
 import ReviewsList from '../components/games/ReviewsList'
-import AlertContext from '../context/alert/AlertContext'
 
 function GameDetailsPage() {
   const { getGameByGameId, game, loading } = useContext(GamesContext)
   const { getReviewsByGameId, reviews } = useContext(ReviewContext)
-  const { removeAlert } = useContext(AlertContext)
 
   const params = useParams()
 
@@ -28,9 +26,6 @@ function GameDetailsPage() {
   if (loading) {
     return <Loading />
   } else {
-    if (alert !== null) {
-      removeAlert()
-    }
     return (
       <>
         <div className='w-full mx-auto lg:w-10/12'>
@@ -71,7 +66,7 @@ function GameDetailsPage() {
             <div className='mb-3'>
               <div className='mb-4'>
                 <h1 className='text-3xl card-title mb-2'>{name}</h1>
-                {genres.map((genre) => (
+                {genres && genres.map((genre) => (
                   <div
                     className='ml-1 mr-1 badge badge-accent font-semibold'
                     key={genre.id}

@@ -65,6 +65,22 @@ public class GamersApi {
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
 
+    // get the bio from gamer
+    @GetMapping("/bio/gamer={gamerid}")
+    public ResponseEntity<String> getBioByGamer(@PathVariable("gamerid") long id) {
+        return new ResponseEntity<>(service.getBioById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("bio/changebio")
+    public ResponseEntity<Boolean> changeBioByGamerId(@RequestBody BioChangeRequest bioChangeRequest) {
+        return new ResponseEntity<>(service.changeBioById(bioChangeRequest.getUserId(), bioChangeRequest.getBio()), HttpStatus.OK);
+    }
+
+    @PutMapping("/changeAvatar")
+    public ResponseEntity<Boolean> changeAvatarByGamerId(@RequestBody AvatarChangeRequest avatarChangeRequest) {
+        return new ResponseEntity<>(service.changeAvatarById(avatarChangeRequest.getUserId(), avatarChangeRequest.getUrl()), HttpStatus.OK);
+    }
+
 //    @PostMapping("/searchwithmail")
 //    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
 //        GamerInfo gamer = service.getGamerByEmail(email.getEmail());

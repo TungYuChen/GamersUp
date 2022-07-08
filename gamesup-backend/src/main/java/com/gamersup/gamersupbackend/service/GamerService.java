@@ -142,4 +142,27 @@ public class GamerService implements UserDetailsService {
         return gamerRepository.findGamerByEmail(email).orElseThrow(() -> new ResourceNotFoundException("email", "gamer", email));
     }
 
+    public String getBioById(long id) {
+        GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "gamer", id));
+        return gamer.getBio();
+    }
+
+    public Boolean changeBioById(long id, String bio) {
+        GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "gamer", id));
+        gamer.setBio(bio);
+        if (gamerRepository.save(gamer) != null) {
+            return true;
+        } else
+            return false;
+    }
+
+    public Boolean changeAvatarById(long id, String url) {
+        GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "gamer", id));
+        gamer.setAvatarUrl(url);
+        if (gamerRepository.save(gamer) != null) {
+            return true;
+        } else
+            return false;
+    }
+
 }

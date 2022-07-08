@@ -6,7 +6,10 @@ import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import axios from 'axios'
 
-function GameItem({ game: { id, name, background_image, rating }, user: {userID} }) {
+function GameItem({
+  game: { id, name, background_image, rating },
+  user: { userID },
+}) {
   const navigate = useNavigate()
 
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
