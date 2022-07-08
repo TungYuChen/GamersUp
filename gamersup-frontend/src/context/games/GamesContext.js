@@ -31,7 +31,7 @@ export const GamesProvider = ({ children }) => {
   const setLoading = () => dispatch({ type: 'LOADING' })
 
   //Get first page with platform id
-  const getGames = async (id, text) => {
+  const getGames = (id, text) => {
     setLoading()
 
     //for all platforms
@@ -100,7 +100,7 @@ export const GamesProvider = ({ children }) => {
     }
   }
 
-  const getGameByGameId = async (id) => {
+  const getGameByGameId = (id) => {
     setLoading()
     const url = `${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`
     axios
@@ -136,32 +136,44 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
-
   const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
-    setLoading();    
-    const wannaGames = [];
+    setLoading()
+    const wannaGames = []
     for (var i = 0; i < gamesWantToPlay.length; i++) {
-      wannaGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+      wannaGames.push(
+        await axios
+          .get(
+            `${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`
+          )
+          .then((response) => response.data)
+      )
     }
-    console.log(wannaGames);
+    console.log(wannaGames)
     while (wannaGames.length < gamesWantToPlay.length) {
-      setTimeout(10);
+      setTimeout(10)
     }
 
-    const playedGames = [];
+    const playedGames = []
     for (var j = 0; j < gamesPlayed.length; j++) {
-      playedGames.push(await axios.get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`).then(response => response.data));      
+      playedGames.push(
+        await axios
+          .get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`)
+          .then((response) => response.data)
+      )
     }
-    console.log(playedGames);
+    console.log(playedGames)
     while (playedGames.length < gamesPlayed.length) {
-      setTimeout(10);
+      setTimeout(10)
     }
 
-    console.log(playedGames);   
+    console.log(playedGames)
 
     dispatch({
-      type:'LIST_GAMES',
-      payload: {'gamesWantToPlayObjects': wannaGames, 'gamesPlayedObjects': playedGames},
+      type: 'LIST_GAMES',
+      payload: {
+        gamesWantToPlayObjects: wannaGames,
+        gamesPlayedObjects: playedGames,
+      },
     })
   }
 
@@ -206,7 +218,6 @@ export const GamesProvider = ({ children }) => {
         getGamesByIdList,
         getWantToPlayGamersByGameId,
         getPlayedGamersByGameId,
-        
       }}
     >
       {children}
