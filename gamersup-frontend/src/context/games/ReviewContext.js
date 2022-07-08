@@ -8,7 +8,7 @@ const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
 export const ReviewProvider = ({ children }) => {
   const initialState = {
-    reviews: [],
+    reviews: [], // reviews of a specific game
     review: {},
     loading: true,
     error: false,
@@ -69,7 +69,9 @@ export const ReviewProvider = ({ children }) => {
       axios
         .delete(`${API_URL}/reviews/review=${reviewID}`)
         .then(() => {
-          const newReviews = state.reviews.filter((item) => item.id !== reviewID)
+          const newReviews = state.reviews.filter(
+            (item) => item.id !== reviewID
+          )
           dispatch({
             type: 'GET_GAME_REVIEWS',
             payload: newReviews,

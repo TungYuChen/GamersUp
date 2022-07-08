@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     error: false,
     reading: true,
     user: { userID: 0 }, // logged user
-    gamer: {}, // another gamer besides the user
+    // gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],
     fetching: true,
@@ -107,22 +107,21 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const getGamerById = async (id) => {
-    await axios
-      .get(`${API_URL}/gamers/gamer={id}`)
-      .then((response) => {
-        // console.log(response.data)
-        dispatch({
-          type: 'GET_GAMER',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-        dispatch({
-          type: 'ERROR',
-        })
-      })
+  const getGamerById = (id) => {
+    return axios.get(`${API_URL}/gamers/gamer=${id}`)
+    // .then((response) => {
+    //   // console.log(response.data)
+    //   dispatch({
+    //     type: 'GET_GAMER',
+    //     payload: response.data,
+    //   })
+    // })
+    // .catch((err) => {
+    //   console.log(err)
+    //   dispatch({
+    //     type: 'ERROR',
+    //   })
+    // })
   }
 
   const getWantToPlayByGamerId = async (id) => {
@@ -289,7 +288,7 @@ export const UserProvider = ({ children }) => {
         error: state.error,
         reading: state.reading,
         user: state.user,
-        gamer: state.gamer,
+        // gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
         executeAuthenticationService,

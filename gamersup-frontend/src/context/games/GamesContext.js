@@ -118,10 +118,15 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
+  // the last version of getGame
+  const getGameByID = (id) => {
+    return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`)
+  }
+
   const getWantToPlayGamersByGameId = async (id) => {
     setLoading()
     axios
-      .get(`${API_URL}/games/game={id}/wanttoplaygamerslist`)
+      .get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
       .then((response) => {
         console.log(response.data)
         dispatch({
@@ -180,7 +185,7 @@ export const GamesProvider = ({ children }) => {
   const getPlayedGamersByGameId = async (id) => {
     setLoading()
     axios
-      .get(`${API_URL}/games/game={id}/playedgamerslist`)
+      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
       .then((response) => {
         console.log(response.data)
         dispatch({
@@ -218,6 +223,7 @@ export const GamesProvider = ({ children }) => {
         getGamesByIdList,
         getWantToPlayGamersByGameId,
         getPlayedGamersByGameId,
+        getGameByID,
       }}
     >
       {children}

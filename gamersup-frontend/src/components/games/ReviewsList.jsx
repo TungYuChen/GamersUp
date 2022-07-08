@@ -1,4 +1,4 @@
-import { React, useContext, useEffect } from 'react'
+import { React } from 'react'
 import ReviewItem from './ReviewItem'
 
 function ReviewsList({ reviews }) {

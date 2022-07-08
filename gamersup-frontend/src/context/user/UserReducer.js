@@ -11,11 +11,11 @@ const userReducer = (state, action) => {
         ...state,
         user: action.payload,
       }
-    case 'GET_GAMER':
-      return {
-        ...state,
-        gamer: action.payload,
-      }
+    // case 'GET_GAMER':
+    //   return {
+    //     ...state,
+    //     gamer: action.payload,
+    //   }
     case 'LOGOUT':
       return {
         ...state,
