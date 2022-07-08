@@ -9,7 +9,7 @@ function Alert() {
   return (
     alert !== null && (
       <div className='flex place-content-center'>
-        <p className='flex items-start mt-4 space-x-2'>
+        <div className='flex items-start mt-4 space-x-2'>
           {alert.type === 'error' && (
             <img src={warning} alt='warning' width={30} />
           )}
@@ -19,7 +19,7 @@ function Alert() {
           <p className='flex-1 text-sm mt-2 text-warning'>
             <strong>{alert.msg}</strong>
           </p>
-        </p>
+        </div>
       </div>
     )
   )
