@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface GamerRepository extends JpaRepository<GamerInfo, Long> {
-    Optional<GamerInfo> findGamerByEmail(String email);
+    Optional<GamerInfo> findByEmail(String email);
 
     @Transactional
     @Modifying

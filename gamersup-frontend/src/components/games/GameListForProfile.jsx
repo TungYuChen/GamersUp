@@ -11,7 +11,8 @@ function GameListForProfile() {
   const { reading, gamesWantToPlay, gamesPlayed, getGamer} = useContext(UserContext); 
   //useEffect
   useEffect(() => {    
-    getGamer();     
+    getGamer(); 
+        
   }, []);
 
   
