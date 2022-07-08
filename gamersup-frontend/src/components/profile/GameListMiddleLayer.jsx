@@ -5,31 +5,18 @@ import PropTypes from 'prop-types';
 import GameListItem from './GameListItem';
 import Loading from '../layout/Loading';
 
-function GameListMiddleLayer({gamesWantToPlayIdList, gamesPlayedIdList, title}) {
-  const { loading, gamesWantToPlayObjects, gamesPlayedObjects,  getGamesByIdList } = useContext(GamesContext);  
-  
-  
-  //useEffect
-    useEffect(() => {              
-        console.log(title);
-        getGamesByIdList(gamesWantToPlayIdList, gamesPlayedIdList);      
-        console.log("Want");
-        console.log(gamesWantToPlayObjects);
-        console.log("Played");
-        console.log(gamesPlayedObjects);        
-    }, [])
-    
-
+function GameListMiddleLayer({title}) {
+  const {fetching, wantToPlayObject, playedObject} = useContext(UserContext);
   
 
-if (loading) {
+if (fetching) {
     return <Loading />
 } else {
     if (title === "Games Want To Play") {
         return (
             <>                             
                 <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
-                {gamesWantToPlayObjects.map((game) => (
+                {wantToPlayObject?.map((game) => (
                     <GameListItem key={game.id} game={game} />
               ))}
                 </div>        
@@ -39,7 +26,7 @@ if (loading) {
         return (
             <>                             
                 <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
-                {gamesPlayedObjects.map((game) => (
+                {playedObject?.map((game) => (
                     <GameListItem key={game.id} game={game} />
               ))}
                 </div>        

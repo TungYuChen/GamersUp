@@ -5,7 +5,6 @@ import UserContext from '../../context/user/UserContext'
 
 
 function ProfileCard() {
-
     const {userName, userEmail} = useContext(UserContext);
     var imageSource = "...";
 

@@ -121,7 +121,7 @@ export const GamesProvider = ({ children }) => {
   const getWantToPlayGamesByGameId = async (id) => {
     setLoading()
     axios
-      .get(`${API_URL}/games/game={id}/wanttoplaygamerslist`)
+      .get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
       .then((response) => {
         console.log(response.data)
         dispatch({
@@ -136,85 +136,46 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
-  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {    
-    const wannaGames = []
-    for (var i = 0; i < gamesWantToPlay.length; i++) {
-      wannaGames.push(
-        await axios
-          .get(
-            `${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`
-          )
-          .then((response) => response.data)
-      )
-    }
-    console.log(wannaGames)
-    while (wannaGames.length < gamesWantToPlay.length) {
-      setTimeout(10)
-    }
 
-    const playedGames = []
-    for (var j = 0; j < gamesPlayed.length; j++) {
-      playedGames.push(
-        await axios
-          .get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`)
-          .then((response) => response.data)
-      )
-    }
-    console.log(playedGames)
-    while (playedGames.length < gamesPlayed.length) {
-      setTimeout(10)
-    }  
+//   const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
+//     setLoading();
+//     const gamesWantToPlay = [];
+//     const gamesPlayed = [];
 
-    console.log(playedGames)
+//     await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
+//     .then(response => {
+//       response.data.array.forEach(gameId => {
+//         gamesWantToPlay.push(gameId);
+//       });
+//     });
 
-    dispatch({
-      type: 'LIST_GAMES',
-      payload: {
-        gamesWantToPlayObjects: wannaGames,
-        gamesPlayedObjects: playedGames,
-      },
-    })
-  }
+//     await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
+//     .then(response => {
+//       response.data.array.forEach(gameId => {
+//         gamesPlayed.push(gameId)
+//       })
+//     });
 
-  const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
-    setLoading();
-    const gamesWantToPlay = [];
-    const gamesPlayed = [];
+//     getGamesByIdList(gamesWantToPlay, gamesPlayed);
+// }
 
-    await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
-    .then(response => {
-      response.data.array.forEach(gameId => {
-        gamesWantToPlay.push(gameId);
-      });
-    });
-
-    await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
-    .then(response => {
-      response.data.array.forEach(gameId => {
-        gamesPlayed.push(gameId)
-      })
-    });
-
-    getGamesByIdList(gamesWantToPlay, gamesPlayed);
-}
-
-  const getPlayedGamesByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game={id}/playedgamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_PlAYED_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
-  }
+//   const getPlayedGamesByGameId = async (id) => {
+//     setLoading()
+//     axios
+//       .get(`${API_URL}/games/game={id}/playedgamerslist`)
+//       .then((response) => {
+//         console.log(response.data)
+//         dispatch({
+//           type: 'GET_PlAYED_GAMERS',
+//           payload: response.data,
+//         })
+//       })
+//       .catch((err) => {
+//         dispatch({
+//           type: 'ERROR',
+//         })
+//       })
+//   }
 
   return (
     <GamesContext.Provider
@@ -235,11 +196,9 @@ export const GamesProvider = ({ children }) => {
         setPrevPage,
         setPlatform,
         searchGames,
-        getGameByGameId,
-        getGamesByIdList,
+        getGameByGameId,       
         getWantToPlayGamesByGameId,
-        getPlayedGamesByGameId,
-        getGamesWantToPlayAndGamesPlayedById,
+ 
       }}
     >
       {children}

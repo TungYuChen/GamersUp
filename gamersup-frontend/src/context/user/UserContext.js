@@ -7,6 +7,9 @@ const UserContext = createContext()
 const API_URL = process.env.REACT_APP_BACKEND_API_URL
 const LOGIN_SESSION = process.env.REACT_APP_AUTH_SESSION
 const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
+const RAWG_API_URL = process.env.REACT_APP_RAWG_API_URL
+const RAWG_API_KEY = process.env.REACT_APP_RAWG_API_KEY
+
 
 export const UserProvider = ({ children }) => {
   const initialState = {
@@ -16,10 +19,12 @@ export const UserProvider = ({ children }) => {
     gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],
+    wantToPlayObject: [],
+    playedObject: [],
     fetching: true,
   }
 
-  const [state, dispatch] = useReducer(userReducer, initialState)
+  const [state, dispatch] = useReducer(userReducer, initialState)  
 
   const reading = (load) => {
     dispatch({ type: 'READING', payload: load })
@@ -27,7 +32,7 @@ export const UserProvider = ({ children }) => {
 
   const fetching = () => {
     dispatch({
-      type: 'Fetching',
+      type: 'FETCHING',
     })
   }
 
@@ -60,8 +65,7 @@ export const UserProvider = ({ children }) => {
 
   const getLoggedUserInSession = () => {
     if (isLoggedIn()) {
-      const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))
-      console.log(loggedUser);
+      const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))      
       dispatch({
         type: 'GET_LOGGED_USER',
         payload: loggedUser,
@@ -129,9 +133,8 @@ export const UserProvider = ({ children }) => {
   const getWantToPlayByGamerId = async (id) => {
     reading(true)
     await axios
-      .get(`${API_URL}/games/user={id}/wanttoplaylist`)
-      .then((response) => {
-        console.log(response.data)
+      .get(`${API_URL}/games/user=${id}/wanttoplaylist`)
+      .then((response) => {        
         dispatch({
           type: 'GET_WANT_TO_PLAY',
           payload: response.data,
@@ -148,10 +151,9 @@ export const UserProvider = ({ children }) => {
   const getPlayedByGamerId = async (id) => {
     reading(true)
     await axios
-      .get(`${API_URL}/games/user={id}/playedlist`)
+      .get(`${API_URL}/games/user=${id}/playedlist`)
       .then((response) => {
-        console.log(response.data)
-        dispatch({
+                dispatch({
           type: 'GET_PLAYED',
           payload: response.data,
         })
@@ -162,6 +164,39 @@ export const UserProvider = ({ children }) => {
           type: 'ERROR',
         })
       })
+  }
+
+  const getWantToPlayAndPlayedByGamerId = async (id) => {
+    fetching();
+    await getWantToPlayByGamerId(id);
+    await getPlayedByGamerId(id);
+    
+    const wantToPlayObject = [];
+    const playedObject = [];
+    console.log(state.wantToPlay);
+    for (let i = 0; i < state.wantToPlay.length; i++) {
+      wantToPlayObject.push(await loadGame(state.wantToPlay[i].gameID));
+    }    
+    for (let j = 0; j < state.played.length; j++) {
+      playedObject.push(await loadGame(state.played[j].gameID));
+    }
+
+    while (wantToPlayObject.length < state.wantToPlay || state.played.length < state.played) {
+      setTimeout(50);
+    }
+
+    console.log(playedObject);
+    
+    const resultList = [wantToPlayObject, playedObject];
+    dispatch({
+      tpye: 'TWOLISTREADY',
+      payload: resultList,
+    })
+  }
+
+  const loadGame = async (gameId) => {    
+    const url = `${RAWG_API_URL}/games/${gameId}?key=${RAWG_API_KEY}`
+    await axios.get(url).then(response => {return response.data});
   }
 
   const clickWantToPlay = async (gameID, gamerID) => {
@@ -270,7 +305,7 @@ export const UserProvider = ({ children }) => {
     const friendList = []
     await friends.forEach(async (id) => {
       await axios
-        .get(`${API_URL}/gamer={id}`)
+        .get(`${API_URL}/gamer=${id}`)
         .then((response) => friendList.push(response.data))
     })
 
@@ -293,6 +328,8 @@ export const UserProvider = ({ children }) => {
         gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
+        wantToPlayObject: state.wantToPlayObject,
+        playedObject: state.playedObject,
         executeAuthenticationService,
         getUserByEmail,
         logout,
@@ -307,6 +344,7 @@ export const UserProvider = ({ children }) => {
         getFriends,
         isLoggedIn,
         getLoggedUserInSession,
+        getWantToPlayAndPlayedByGamerId,
       }}
     >
       {children}

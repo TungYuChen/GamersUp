@@ -10,8 +10,8 @@ function ProfileComponent() {
   const [imageSelected, setImageSelected] = useState("");
   const { user, changeBio, changeAvatar } = useContext(UserContext);
   const [typingBio, setTypingBio] = useState(false);
- 
- 
+  const {userName, email, dob, level, likes, bio, avatarUrl} = user; 
+
 
   const uploadAvatar = async () => {
     if (imageSelected === "") {
@@ -65,18 +65,18 @@ function ProfileComponent() {
         <div id="left">
           <div className="justify-center flex ">
             <h1 className="text-neutral-content py-2 text-4xl shadow-inner shadow-black bg-secondary-focus px-4 rounded-[16px] mt-2">
-              {user.userName}
+              {userName}
             </h1>
           </div>
           <div className="avatar mt-4 justify-center mx-auto flex mb-6">
             <div className="mb-2 w-64 h-64 mask mask-squircle ">
-              {user.imageUrl === "" && (
+              {avatarUrl=== "" && (
                 <img
                   src="http://daisyui.com/tailwind-css-component-profile-1@94w.png"
                   alt="No Avatar"
                 />
               )}
-              {user.imageUrl !== "" && <img src={user.imageUrl} alt="No Avatar" />}
+              {avatarUrl !== "" && <img src={avatarUrl} alt="No Avatar" />}
             </div>
           </div>
           <div className="justify-center flex mb-6">
@@ -122,7 +122,7 @@ function ProfileComponent() {
               </h2>
               <h2 className="inline-flex text-neutral-content py-1 text-3xl">
                 {" "}
-                &nbsp;&nbsp;{user.userEmail}
+                &nbsp;&nbsp;{email}
               </h2>
             </div>
             <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
@@ -130,7 +130,7 @@ function ProfileComponent() {
                 BirthDay:{" "}
               </h2>{" "}
               <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                &nbsp;&nbsp;2022.07.01
+                &nbsp;&nbsp;{dob}
               </h2>
             </div>
             <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
@@ -138,7 +138,7 @@ function ProfileComponent() {
                 Game Level:{" "}
               </h2>{" "}
               <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                &nbsp;&nbsp;Noob
+                &nbsp;&nbsp;{level}
               </h2>
             </div>
             <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
@@ -147,7 +147,7 @@ function ProfileComponent() {
               </h2>
               <div>
                 <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                  &nbsp;&nbsp;1000
+                  &nbsp;&nbsp;{likes}
                 </h2>
                 <button className="btn-ghost badge badge-outline text-xs hover:bg-primary-focus mx-4 my-auto p-3">
                   <FiThumbsUp className="inline mr-1 w-5 py-auto mx-2" />
@@ -164,12 +164,12 @@ function ProfileComponent() {
               </h2>{" "}
               { !typingBio && (
                        <h2 className="inline-flex text-neutral-content py-1 text-2xl">
-                {user.bio}
+                {bio}
               </h2>
               )}
               { typingBio && (
                 <textarea  className="inline-flex text-neutral-content py-1 text-2xl" id="bioBlock">
-                  {user.bio}                  
+                  {bio}                  
                 </textarea>
               )}
        
