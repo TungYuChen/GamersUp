@@ -6,7 +6,7 @@ import GameListItem from './GameListItem';
 import Loading from '../layout/Loading';
 
 function GameListMiddleLayer({title}) {
-  const {fetching, wantToPlayObject, playedObject} = useContext(UserContext);
+  const {fetching, wantToPlay, played} = useContext(UserContext);
   
 
 if (fetching) {
@@ -16,7 +16,7 @@ if (fetching) {
         return (
             <>                             
                 <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
-                {wantToPlayObject?.map((game) => (
+                {wantToPlay?.map((game) => (
                     <GameListItem key={game.id} game={game} />
               ))}
                 </div>        
@@ -26,7 +26,7 @@ if (fetching) {
         return (
             <>                             
                 <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
-                {playedObject?.map((game) => (
+                {played?.map((game) => (
                     <GameListItem key={game.id} game={game} />
               ))}
                 </div>        

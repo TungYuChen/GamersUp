@@ -11,13 +11,13 @@ import LoginForm from "../components/account/LoginForm";
 // Multiple user view --> using variable as id and check
 function GamerProfile() {
 
-  const { isLoggedIn, user, getWantToPlayAndPlayedByGamerId} = useContext(UserContext);   
+  const { isLoggedIn, user, getWantToPlayAndPlayedByGamerId} = useContext(UserContext);    
 
-  useEffect(() => {
+  useEffect(() => {    
     getWantToPlayAndPlayedByGamerId(user.userID);
-  }, [])
+  }, [isLoggedIn()])
 
-  if (isLoggedIn) {
+  if (isLoggedIn()) {
          return (   
         <>
          <div className="card  bg-base-300 p-4 my-8">

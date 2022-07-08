@@ -166,26 +166,27 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const getWantToPlayAndPlayedByGamerId = async (id) => {
+  const getWantToPlayAndPlayedByGamerId = (id) => {
     fetching();
-    await getWantToPlayByGamerId(id);
-    await getPlayedByGamerId(id);
+    getWantToPlayByGamerId(id);
+    getPlayedByGamerId(id);
     
+
     const wantToPlayObject = [];
     const playedObject = [];
     console.log(state.wantToPlay);
-    for (let i = 0; i < state.wantToPlay.length; i++) {
-      wantToPlayObject.push(await loadGame(state.wantToPlay[i].gameID));
+    for (let i = 0; i < state.wantToPlay.length; i++) {      
+      wantToPlayObject.push(loadGame(state.wantToPlay[i].gameID));      
     }    
     for (let j = 0; j < state.played.length; j++) {
-      playedObject.push(await loadGame(state.played[j].gameID));
+      playedObject.push(loadGame(state.played[j].gameID));
     }
 
-    while (wantToPlayObject.length < state.wantToPlay || state.played.length < state.played) {
+    while (wantToPlayObject.length < state.wantToPlay.length || playedObject.length < state.played.length) {
       setTimeout(50);
     }
 
-    console.log(playedObject);
+    console.log(wantToPlayObject);
     
     const resultList = [wantToPlayObject, playedObject];
     dispatch({
@@ -194,9 +195,11 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  const loadGame = async (gameId) => {    
+  const loadGame = (gameId) => {    
     const url = `${RAWG_API_URL}/games/${gameId}?key=${RAWG_API_KEY}`
-    await axios.get(url).then(response => {return response.data});
+    axios.get(url).then(res => {      
+      return res.data;
+    })
   }
 
   const clickWantToPlay = async (gameID, gamerID) => {
