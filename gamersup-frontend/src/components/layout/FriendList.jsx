@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useEffect } from 'react';
 import UserContext from '../../context/user/UserContext'
 import FriendComponent from '../account/FriendComponent';
 import Loading from './Loading';
@@ -6,7 +7,11 @@ import Loading from './Loading';
 
 
 function FriendList() {
-    const { friends, getFriends, fetching} = useContext(UserContext);
+    const { isLoggedIn, friends, getFriends, fetching} = useContext(UserContext);
+
+    useEffect(() => {
+        getFriends();
+    })
 
     const friend1 = [];
     const friend2 = [];

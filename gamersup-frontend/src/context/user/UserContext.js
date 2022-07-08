@@ -61,6 +61,7 @@ export const UserProvider = ({ children }) => {
   const getLoggedUserInSession = () => {
     if (isLoggedIn()) {
       const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))
+      console.log(loggedUser);
       dispatch({
         type: 'GET_LOGGED_USER',
         payload: loggedUser,

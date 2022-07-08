@@ -3,7 +3,6 @@ import ForgotPassword from './components/account/ForgotPassword'
 import LoginForm from './components/account/LoginForm'
 import ResetPassword from './components/account/ResetPassword'
 import SignupForm from './components/account/SignupForm'
-import GameListForProfile from './components/games/GameListForProfile'
 import GamesList from './components/games/GamesList'
 import Alert from './components/layout/Alert'
 import Footer from './components/layout/Footer'
@@ -16,6 +15,7 @@ import { ReviewProvider } from './context/games/ReviewContext'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import GameDetailsPage from './pages/GameDetailsPage'
+import GamerProfile from './pages/GamerProfile'
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
                       element={<ForgotPassword />}
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
-                    <Route path='/profile' element={<GameListForProfile />} />
+                    <Route path='/profile' element={<GamerProfile />} />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
                   {/* <FriendList /> */}

@@ -94,7 +94,7 @@ function Navbar({ title }) {
           </a>
         </li> */}
                   <li>
-                    <Link to='/' className='text-lg'>
+                    <Link to='/profile' className='text-lg'>
                       Profile
                     </Link>
                   </li>

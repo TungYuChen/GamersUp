@@ -118,7 +118,7 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
-  const getWantToPlayGamersByGameId = async (id) => {
+  const getWantToPlayGamesByGameId = async (id) => {
     setLoading()
     axios
       .get(`${API_URL}/games/game={id}/wanttoplaygamerslist`)
@@ -136,8 +136,7 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
-  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
-    setLoading()
+  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {    
     const wannaGames = []
     for (var i = 0; i < gamesWantToPlay.length; i++) {
       wannaGames.push(
@@ -164,7 +163,7 @@ export const GamesProvider = ({ children }) => {
     console.log(playedGames)
     while (playedGames.length < gamesPlayed.length) {
       setTimeout(10)
-    }
+    }  
 
     console.log(playedGames)
 
@@ -177,7 +176,29 @@ export const GamesProvider = ({ children }) => {
     })
   }
 
-  const getPlayedGamersByGameId = async (id) => {
+  const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
+    setLoading();
+    const gamesWantToPlay = [];
+    const gamesPlayed = [];
+
+    await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
+    .then(response => {
+      response.data.array.forEach(gameId => {
+        gamesWantToPlay.push(gameId);
+      });
+    });
+
+    await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
+    .then(response => {
+      response.data.array.forEach(gameId => {
+        gamesPlayed.push(gameId)
+      })
+    });
+
+    getGamesByIdList(gamesWantToPlay, gamesPlayed);
+}
+
+  const getPlayedGamesByGameId = async (id) => {
     setLoading()
     axios
       .get(`${API_URL}/games/game={id}/playedgamerslist`)
@@ -216,8 +237,9 @@ export const GamesProvider = ({ children }) => {
         searchGames,
         getGameByGameId,
         getGamesByIdList,
-        getWantToPlayGamersByGameId,
-        getPlayedGamersByGameId,
+        getWantToPlayGamesByGameId,
+        getPlayedGamesByGameId,
+        getGamesWantToPlayAndGamesPlayedById,
       }}
     >
       {children}

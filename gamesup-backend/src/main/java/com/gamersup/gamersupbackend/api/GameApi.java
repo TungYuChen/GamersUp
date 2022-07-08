@@ -20,6 +20,7 @@ public class GameApi {
     // Get a gamer's want-to-play list with user id
     @GetMapping("/user={userid}/wanttoplaylist")
     public List<WantToPlay> getWantToPlayList(@PathVariable long userid) {
+        System.out.println("Get list");
         return gameService.getWantToPlayGamesByGamerID(userid);
     }
 
@@ -28,6 +29,7 @@ public class GameApi {
     public List<WantToPlay> getWantToPlayGamersList(@PathVariable long gameid) {
         return gameService.getWantToPlayGamersByGameID(gameid);
     }
+
 
     // Get a gamer's played list with user id
     @GetMapping("/user={userid}/playedlist")
