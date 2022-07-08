@@ -8,23 +8,19 @@ import PageBar from '../layout/PageBar'
 import GameItem from './GameItem'
 
 function GamesList() {
-  const LOGIN_SESSION = process.env.REACT_APP_AUTH_SESSION
-
   const { games, loading, platformId, searchText, getGames } =
     useContext(GamesContext)
 
   const { alert, setAlert, removeAlert } = useContext(AlertContext)
 
-  const { isLoggedIn } = useContext(UserContext)
-
-  const [user, setUser] = useState({'userID': 0})
+  const { user, isLoggedIn, getLoggedUserInSession } = useContext(UserContext)
 
   useEffect(() => {
     // get games with platformId
     getGames(platformId, searchText)
-    if (isLoggedIn()) {
-      setUser(JSON.parse(sessionStorage.getItem(LOGIN_SESSION)))
-    }
+
+    // get the logged user
+    getLoggedUserInSession()
   }, [isLoggedIn()])
 
   if (loading) {

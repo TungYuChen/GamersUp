@@ -1,5 +1,10 @@
 const userReducer = (state, action) => {
   switch (action.type) {
+    case 'GET_LOGGED_USER':
+      return {
+        ...state,
+        user: action.payload,
+      }
     case 'GET_GAMER':
       return {
         ...state,
@@ -8,7 +13,7 @@ const userReducer = (state, action) => {
     case 'LOGOUT':
       return {
         error: false,
-        user: {},
+        user: {'userID': 0},
       }
     case 'REGISTER':
       return {

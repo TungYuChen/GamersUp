@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
   const initialState = {
     error: false,
     reading: true,
+    user: {'userID': 0}, // logged user
     gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],
@@ -43,7 +44,7 @@ export const UserProvider = ({ children }) => {
       .then((response) => {
         // response.data.jwt
         console.log('token', response.data.jwt)
-        getUserProfile(email)
+        getUserByEmail(email)
       })
       .catch(() => {
         dispatch({
@@ -52,7 +53,7 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const getUserProfile = (email) => {
+  const getUserByEmail = (email) => {
     axios
       .get(`${API_URL}/gamers/email=${email}`)
       .then((response) => {
@@ -63,6 +64,16 @@ export const UserProvider = ({ children }) => {
           type: 'ERROR',
         })
       })
+  }
+
+  const getLoggedUserInSession = () => {
+    if (isLoggedIn()) {
+      const loggedUser =  JSON.parse(sessionStorage.getItem(LOGIN_SESSION))
+      dispatch({
+        type: 'GET_LOGGED_USER',
+        payload: loggedUser,
+      })
+    }
   }
 
   const logout = () => {
@@ -229,7 +240,7 @@ export const UserProvider = ({ children }) => {
     axios.put(`${API_URL}/gamers/bio/change`, {
       gamerID,
       bio
-    }).then((response) => getUserProfile(state.user.email))
+    }).then((response) => getUserByEmail(state.user.email))
     .catch((err) => {
       dispatch({
         type: 'ERROR'
@@ -242,7 +253,7 @@ export const UserProvider = ({ children }) => {
     axios.put(`${API_URL}/gamers/changeAvatar`, {
       gamerID,
       url
-    }).then((response) => getUserProfile(state.user.email))
+    }).then((response) => getUserByEmail(state.user.email))
     .catch((err) => {
       dispatch({
         type: 'ERROR'
@@ -275,6 +286,7 @@ export const UserProvider = ({ children }) => {
       value={{
         error: state.error,
         reading: state.reading,
+        user: state.user,
         gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
@@ -290,6 +302,7 @@ export const UserProvider = ({ children }) => {
         changeAvatar,
         getFriends,
         isLoggedIn,
+        getLoggedUserInSession,
       }}
     >
       {children}
