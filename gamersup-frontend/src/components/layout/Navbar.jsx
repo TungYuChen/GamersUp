@@ -109,9 +109,9 @@ function Navbar({ title }) {
                     </Link>
                   </li>
                   <li>
-                    <Link to='/' className='text-lg' onClick={logout}>
+                    <div className='text-lg' onClick={logout}>
                       Logout
-                    </Link>
+                    </div>
                   </li>
                 </ul>
               </div>

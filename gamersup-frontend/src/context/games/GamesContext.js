@@ -118,7 +118,12 @@ export const GamesProvider = ({ children }) => {
       })
   }
 
-  const getWantToPlayGamesByGameId = async (id) => {
+  // the last version of getGame
+  const getGameByID = (id) => {
+    return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`)
+  }
+
+  const getWantToPlayGamersByGameId = async (id) => {
     setLoading()
     axios
       .get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
@@ -135,6 +140,7 @@ export const GamesProvider = ({ children }) => {
         })
       })
   }
+
 
 
 //   const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
@@ -177,6 +183,34 @@ export const GamesProvider = ({ children }) => {
 //       })
 //   }
 
+  //   dispatch({
+  //     type: 'LIST_GAMES',
+  //     payload: {
+  //       gamesWantToPlayObjects: wannaGames,
+  //       gamesPlayedObjects: playedGames,
+  //     },
+  //   })
+  // }
+
+  const getPlayedGamersByGameId = async (id) => {
+    setLoading()
+    axios
+      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
+      .then((response) => {
+        console.log(response.data)
+        dispatch({
+          type: 'GET_PlAYED_GAMERS',
+          payload: response.data,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'ERROR',
+        })
+      })
+  }
+
+
   return (
     <GamesContext.Provider
       value={{
@@ -196,9 +230,11 @@ export const GamesProvider = ({ children }) => {
         setPrevPage,
         setPlatform,
         searchGames,
-        getGameByGameId,       
-        getWantToPlayGamesByGameId,
- 
+        getGameByGameId,
+        getWantToPlayGamersByGameId,
+        getPlayedGamersByGameId,
+        getGameByID,
+
       }}
     >
       {children}

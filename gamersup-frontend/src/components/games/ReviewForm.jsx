@@ -1,9 +1,11 @@
 import { React, useContext, useState } from 'react'
 import RatingSelect from './RatingSelect'
 import ReviewContext from '../../context/games/ReviewContext'
+import UserContext from '../../context/user/UserContext'
 
 function ReviewForm({ gameId }) {
   const { addReview } = useContext(ReviewContext)
+  const { user, isLoggedIn } = useContext(UserContext)
 
   const [text, setText] = useState('')
   const [rating, setRating] = useState(5)
@@ -11,7 +13,9 @@ function ReviewForm({ gameId }) {
   const [message, setMessage] = useState('')
 
   const handleTextChange = (e) => {
-    if (text === '') {
+    if (!isLoggedIn()) {
+      setMessage('Please sign in to make a review.')
+    } else if (text === '') {
       setBtnDisabled(true)
       setMessage(null)
     } else if (text !== '' && text.trim().length < 4) {
@@ -30,8 +34,7 @@ function ReviewForm({ gameId }) {
   }
 
   const handleSubmit = (e) => {
-    // hardcode user id for now
-    addReview(1, gameId, rating, text)
+    addReview(user.userID, gameId, rating, text)
   }
 
   return (
