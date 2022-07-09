@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -65,6 +66,28 @@ public class GamersApi {
         return new ResponseEntity<>("Gamer deleted successfully!", HttpStatus.OK);
     }
 
+
+    @PostMapping("friendsAdd/{idA}&{idB}")
+    public ResponseEntity<String> addFriend(@PathVariable("idA") long idA, @PathVariable("idB") long idB) {
+        if (service.createFriendRequest(idA, idB)) {
+            return new ResponseEntity<>("Created!", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Failed", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/friends/{id}")
+    public ResponseEntity<List<GamerProfile>> getFriendsListById(@PathVariable("id") long id) {
+        List<Long> friendIdList = service.getFriendListById(id);
+        List<GamerProfile> friends = new ArrayList<>();
+        for (long friendId : friendIdList) {
+            friends.add(service.getGamerProfileById(friendId));
+        }
+        return new ResponseEntity<>(friends, HttpStatus.OK);
+    }
+
+
+
     // get the bio from gamer
     @GetMapping("/bio/gamer={gamerid}")
     public ResponseEntity<String> getBioByGamer(@PathVariable("gamerid") long id) {
@@ -80,6 +103,7 @@ public class GamersApi {
     public ResponseEntity<Boolean> changeAvatarByGamerId(@RequestBody AvatarChangeRequest avatarChangeRequest) {
         return new ResponseEntity<>(service.changeAvatarById(avatarChangeRequest.getUserId(), avatarChangeRequest.getUrl()), HttpStatus.OK);
     }
+
 
 //    @PostMapping("/searchwithmail")
 //    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {

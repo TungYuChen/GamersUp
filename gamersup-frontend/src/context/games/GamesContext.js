@@ -175,30 +175,56 @@ export const GamesProvider = ({ children }) => {
     while (wannaGames.length < gamesWantToPlay.length) {
       setTimeout(10)
     }
-
-    const playedGames = []
-    for (var j = 0; j < gamesPlayed.length; j++) {
-      playedGames.push(
-        await axios
-          .get(`${RAWG_API_URL}/games/${gamesPlayed[j]}?key=${RAWG_API_KEY}`)
-          .then((response) => response.data)
-      )
-    }
-    console.log(playedGames)
-    while (playedGames.length < gamesPlayed.length) {
-      setTimeout(10)
-    }
-
-    console.log(playedGames)
-
-    dispatch({
-      type: 'LIST_GAMES',
-      payload: {
-        gamesWantToPlayObjects: wannaGames,
-        gamesPlayedObjects: playedGames,
-      },
-    })
   }
+
+  //   const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
+  //     setLoading();
+  //     const gamesWantToPlay = [];
+  //     const gamesPlayed = [];
+
+  //     await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
+  //     .then(response => {
+  //       response.data.array.forEach(gameId => {
+  //         gamesWantToPlay.push(gameId);
+  //       });
+  //     });
+
+  //     await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
+  //     .then(response => {
+  //       response.data.array.forEach(gameId => {
+  //         gamesPlayed.push(gameId)
+  //       })
+  //     });
+
+  //     getGamesByIdList(gamesWantToPlay, gamesPlayed);
+  // }
+
+  //   const getPlayedGamesByGameId = async (id) => {
+  //     setLoading()
+  //     axios
+  //       .get(`${API_URL}/games/game={id}/playedgamerslist`)
+  //       .then((response) => {
+  //         console.log(response.data)
+  //         dispatch({
+  //           type: 'GET_PlAYED_GAMERS',
+  //           payload: response.data,
+  //         })
+  //       })
+  //       .catch((err) => {
+  //         dispatch({
+  //           type: 'ERROR',
+  //         })
+  //       })
+  //   }
+
+  //   dispatch({
+  //     type: 'LIST_GAMES',
+  //     payload: {
+  //       gamesWantToPlayObjects: wannaGames,
+  //       gamesPlayedObjects: playedGames,
+  //     },
+  //   })
+  // }
 
   return (
     <GamesContext.Provider
@@ -220,7 +246,6 @@ export const GamesProvider = ({ children }) => {
         setPlatform,
         searchGames,
         getGameByGameId,
-        getGamesByIdList,
         getWantToPlayGamersByGameId,
         getPlayedGamersByGameId,
         getGameByID,
