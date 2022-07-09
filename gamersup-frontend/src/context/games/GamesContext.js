@@ -20,8 +20,8 @@ export const GamesProvider = ({ children }) => {
     searchText: '',
     gamesWantToPlay: {},
     gamesPlayed: {},
-    wantToPlayGamers: [], // a list of gamers who what to play this game
-    playedGamers: [], // a list of gamers who played this game
+    // wantToPlayGamers: [], // a list of gamers who what to play this game
+    // playedGamers: [], // a list of gamers who played this game
     gameError: false,
   }
 
@@ -123,40 +123,36 @@ export const GamesProvider = ({ children }) => {
     return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`)
   }
 
-  const getWantToPlayGamersByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_WANT_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
+  const getWantToPlayGamersByGameId = (id) => {
+    return axios.get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
+    // .then((response) => {
+    //   console.log(response.data)
+    //   dispatch({
+    //     type: 'GET_WANT_GAMERS',
+    //     payload: response.data,
+    //   })
+    // })
+    // .catch((err) => {
+    //   dispatch({
+    //     type: 'ERROR',
+    //   })
+    // })
   }
 
-  const getPlayedGamersByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_PlAYED_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
+  const getPlayedGamersByGameId = (id) => {
+    return axios.get(`${API_URL}/games/game=${id}/playedgamerslist`)
+    // .then((response) => {
+    //   console.log(response.data)
+    //   dispatch({
+    //     type: 'GET_PlAYED_GAMERS',
+    //     payload: response.data,
+    //   })
+    // })
+    // .catch((err) => {
+    //   dispatch({
+    //     type: 'ERROR',
+    //   })
+    // })
   }
 
   const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
@@ -237,8 +233,8 @@ export const GamesProvider = ({ children }) => {
         game: state.game,
         gamesWantToPlayObjects: state.gamesWantToPlayObjects,
         gamesPlayedObjects: state.gamesPlayedObjects,
-        wantToPlayGamers: state.wantToPlayGamers,
-        playedGamers: state.playedGamers,
+        // wantToPlayGamers: state.wantToPlayGamers,
+        // playedGamers: state.playedGamers,
         gameError: state.gameError,
         getGames,
         setNextPage,
