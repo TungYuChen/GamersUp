@@ -36,16 +36,16 @@ const gamesReducer = (state, action) => {
         ...state,
         page: action.payload,
       }
-    case 'GET_WANT_GAMERS':
-      return {
-        ...state,
-        wantToPlayGamers: action.payload,
-      }
-    case 'GET_PlAYED_GAMERS':
-      return {
-        ...state,
-        playedGamers: action.payload,
-      }
+    // case 'GET_WANT_GAMERS':
+    //   return {
+    //     ...state,
+    //     wantToPlayGamers: action.payload,
+    //   }
+    // case 'GET_PlAYED_GAMERS':
+    //   return {
+    //     ...state,
+    //     playedGamers: action.payload,
+    //   }
     case 'LOADING':
       return {
         ...state,

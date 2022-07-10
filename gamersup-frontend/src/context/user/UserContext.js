@@ -192,6 +192,20 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  const checkWantToPlay = async (id) => {
+    return axios.post(`${API_URL}/games/check/wanttoplay`, {
+      gameID: id,
+      gamerID: state.user.userID,
+    })
+  }
+
+  const checkPlayed = async (id) => {
+    return await axios.post(`${API_URL}/games/check/played`, {
+      gameID: id,
+      gamerID: state.user.userID,
+    })
+  }
+
   // const checkWantToPlay = async (gameID) => {
   //   const gamerID = state.userID
   //   return await axios
@@ -306,6 +320,8 @@ export const UserProvider = ({ children }) => {
         executeRegisterService,
         clickWantToPlay,
         clickPlayed,
+        checkWantToPlay,
+        checkPlayed,
         getGamerById,
         getWantToPlayByGamerId,
         getPlayedByGamerId,

@@ -20,8 +20,8 @@ export const GamesProvider = ({ children }) => {
     searchText: '',
     gamesWantToPlay: {},
     gamesPlayed: {},
-    wantToPlayGamers: [], // a list of gamers who what to play this game
-    playedGamers: [], // a list of gamers who played this game
+    // wantToPlayGamers: [], // a list of gamers who what to play this game
+    // playedGamers: [], // a list of gamers who played this game
     gameError: false,
   }
 
@@ -123,65 +123,95 @@ export const GamesProvider = ({ children }) => {
     return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`);
   }
 
-  const getWantToPlayGamersByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_WANT_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
+  const getWantToPlayGamersByGameId = (id) => {
+    return axios.get(`${API_URL}/games/game=${id}/wanttoplaygamerslist`)
+    // .then((response) => {
+    //   console.log(response.data)
+    //   dispatch({
+    //     type: 'GET_WANT_GAMERS',
+    //     payload: response.data,
+    //   })
+    // })
+    // .catch((err) => {
+    //   dispatch({
+    //     type: 'ERROR',
+    //   })
+    // })
   }
 
+  const getPlayedGamersByGameId = (id) => {
+    return axios.get(`${API_URL}/games/game=${id}/playedgamerslist`)
+    // .then((response) => {
+    //   console.log(response.data)
+    //   dispatch({
+    //     type: 'GET_PlAYED_GAMERS',
+    //     payload: response.data,
+    //   })
+    // })
+    // .catch((err) => {
+    //   dispatch({
+    //     type: 'ERROR',
+    //   })
+    // })
+  }
 
+  const getGamesByIdList = async (gamesWantToPlay, gamesPlayed) => {
+    setLoading()
+    const wannaGames = []
+    for (var i = 0; i < gamesWantToPlay.length; i++) {
+      wannaGames.push(
+        await axios
+          .get(
+            `${RAWG_API_URL}/games/${gamesWantToPlay[i]}?key=${RAWG_API_KEY}`
+          )
+          .then((response) => response.data)
+      )
+    }
+    console.log(wannaGames)
+    while (wannaGames.length < gamesWantToPlay.length) {
+      setTimeout(10)
+    }
+  }
 
-//   const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
-//     setLoading();
-//     const gamesWantToPlay = [];
-//     const gamesPlayed = [];
+  //   const getGamesWantToPlayAndGamesPlayedById = async (userid) => {
+  //     setLoading();
+  //     const gamesWantToPlay = [];
+  //     const gamesPlayed = [];
 
-//     await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
-//     .then(response => {
-//       response.data.array.forEach(gameId => {
-//         gamesWantToPlay.push(gameId);
-//       });
-//     });
+  //     await axios.get(`${API_URL}/games/user=${userid}/wanttoplaylist`)
+  //     .then(response => {
+  //       response.data.array.forEach(gameId => {
+  //         gamesWantToPlay.push(gameId);
+  //       });
+  //     });
 
-//     await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
-//     .then(response => {
-//       response.data.array.forEach(gameId => {
-//         gamesPlayed.push(gameId)
-//       })
-//     });
+  //     await axios.get(`${API_URL}/games/user=${userid}/playedlist`)
+  //     .then(response => {
+  //       response.data.array.forEach(gameId => {
+  //         gamesPlayed.push(gameId)
+  //       })
+  //     });
 
-//     getGamesByIdList(gamesWantToPlay, gamesPlayed);
-// }
+  //     getGamesByIdList(gamesWantToPlay, gamesPlayed);
+  // }
 
-//   const getPlayedGamesByGameId = async (id) => {
-//     setLoading()
-//     axios
-//       .get(`${API_URL}/games/game={id}/playedgamerslist`)
-//       .then((response) => {
-//         console.log(response.data)
-//         dispatch({
-//           type: 'GET_PlAYED_GAMERS',
-//           payload: response.data,
-//         })
-//       })
-//       .catch((err) => {
-//         dispatch({
-//           type: 'ERROR',
-//         })
-//       })
-//   }
+  //   const getPlayedGamesByGameId = async (id) => {
+  //     setLoading()
+  //     axios
+  //       .get(`${API_URL}/games/game={id}/playedgamerslist`)
+  //       .then((response) => {
+  //         console.log(response.data)
+  //         dispatch({
+  //           type: 'GET_PlAYED_GAMERS',
+  //           payload: response.data,
+  //         })
+  //       })
+  //       .catch((err) => {
+  //         dispatch({
+  //           type: 'ERROR',
+  //         })
+  //       })
+  //   }
 
   //   dispatch({
   //     type: 'LIST_GAMES',
@@ -191,25 +221,6 @@ export const GamesProvider = ({ children }) => {
   //     },
   //   })
   // }
-
-  const getPlayedGamersByGameId = async (id) => {
-    setLoading()
-    axios
-      .get(`${API_URL}/games/game=${id}/playedgamerslist`)
-      .then((response) => {
-        console.log(response.data)
-        dispatch({
-          type: 'GET_PlAYED_GAMERS',
-          payload: response.data,
-        })
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'ERROR',
-        })
-      })
-  }
-
 
   return (
     <GamesContext.Provider
@@ -222,8 +233,8 @@ export const GamesProvider = ({ children }) => {
         game: state.game,
         gamesWantToPlayObjects: state.gamesWantToPlayObjects,
         gamesPlayedObjects: state.gamesPlayedObjects,
-        wantToPlayGamers: state.wantToPlayGamers,
-        playedGamers: state.playedGamers,
+        // wantToPlayGamers: state.wantToPlayGamers,
+        // playedGamers: state.playedGamers,
         gameError: state.gameError,
         getGames,
         setNextPage,
@@ -234,7 +245,6 @@ export const GamesProvider = ({ children }) => {
         getWantToPlayGamersByGameId,
         getPlayedGamersByGameId,
         getGameByID,
-
       }}
     >
       {children}
