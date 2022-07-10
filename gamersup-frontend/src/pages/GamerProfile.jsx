@@ -1,39 +1,43 @@
 import { useContext, useEffect, React  } from "react";
-import { Route } from "react-router-dom";
-import GamesContext from "../context/games/GamesContext";
 import UserContext from "../context/user/UserContext";
 import GameListForProfile from "../components/profile/GameListForProfile";
 import ProfileComponent from "../components/profile/ProfileComponent";
-import Loading from "../components/layout/Loading";
 import LoginForm from "../components/account/LoginForm";
+import Loading from "../components/layout/Loading";
 
 
 // Multiple user view --> using variable as id and check
 function GamerProfile() {
 
-  const { isLoggedIn, user, getWantToPlayAndPlayedByGamerId} = useContext(UserContext);    
+  const { isLoggedIn, user, getWantToPlayByGamerId, getPlayedByGamerId, reading, fetching} = useContext(UserContext);    
 
   useEffect(() => {    
-    getWantToPlayAndPlayedByGamerId(user.userID);
-  }, [isLoggedIn()])
+    getWantToPlayByGamerId(user.userID);
+    getPlayedByGamerId(user.userID);
+  }, [])
 
-  if (isLoggedIn()) {
-         return (   
-        <>
-         <div className="card  bg-base-300 p-4 my-8">
-          <ProfileComponent />      
-        </div>
-     
-         <div>
-          <GameListForProfile />
-         </div>
-        
-        </>
-      );
-     
+  if (reading || fetching) {
+    return <Loading />
   } else {
-    return <LoginForm />
+    if (isLoggedIn()) {
+      return (   
+     <>
+      <div className="card  bg-base-300 p-4 my-8">
+       <ProfileComponent theUser={user}/>      
+     </div>
+  
+      <div>
+       <GameListForProfile />
+      </div>
+     
+     </>
+   );
+  
+} else {
+ return <LoginForm />
+}
   }
+  
   
 }
 

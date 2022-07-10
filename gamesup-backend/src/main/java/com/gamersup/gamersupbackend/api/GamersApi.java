@@ -94,7 +94,7 @@ public class GamersApi {
         return new ResponseEntity<>(service.getBioById(id), HttpStatus.OK);
     }
 
-    @PutMapping("bio/changebio")
+    @PutMapping("/bio/changebio")
     public ResponseEntity<Boolean> changeBioByGamerId(@RequestBody BioChangeRequest bioChangeRequest) {
         return new ResponseEntity<>(service.changeBioById(bioChangeRequest.getUserId(), bioChangeRequest.getBio()), HttpStatus.OK);
     }

@@ -36,7 +36,7 @@ const userReducer = (state, action) => {
       return {
         ...state,
         played: action.payload,
-        reading: false,
+        fetching: false,
       }
     case 'READING':
       return {
@@ -55,18 +55,6 @@ const userReducer = (state, action) => {
         ...state,
         friends: action.payload,
         fetching: false,
-      }
-    case 'FETCHING':
-      return {
-        ...state,
-        fetching: true,
-      }
-    case 'TWOLISTREADY':
-      return {
-        ...state,
-        fetching: false,
-        wantToPlayObject: action.payload[0],
-        playedObject: action.payload[1],
       }
     default:
       return state

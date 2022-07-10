@@ -1,23 +1,20 @@
 import { useContext, useEffect, useState } from 'react'
-import GamesContext from '../../context/games/GamesContext'
 import UserContext from "../../context/user/UserContext";
 import PropTypes from 'prop-types';
 import GameListItem from './GameListItem';
-import Loading from '../layout/Loading';
+
 
 function GameListMiddleLayer({title}) {
-  const {fetching, wantToPlay, played} = useContext(UserContext);
+  const { wantToPlay, played} = useContext(UserContext); 
   
 
-if (fetching) {
-    return <Loading />
-} else {
+
     if (title === "Games Want To Play") {
         return (
             <>                             
-                <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
+                <div className='flex overflow-auto mt-2 mb-2'>  
                 {wantToPlay?.map((game) => (
-                    <GameListItem key={game.id} game={game} />
+                    <GameListItem key={game.gameID} id={game.gameID} />
               ))}
                 </div>        
             </>
@@ -25,17 +22,16 @@ if (fetching) {
     } else if (title === "Games Played") {
         return (
             <>                             
-                <div className='grid gap-5 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-2 mb-2'>  
+                <div className='flex overflow-auto mt-2 mb-2'>  
                 {played?.map((game) => (
-                    <GameListItem key={game.id} game={game} />
+                    <GameListItem key={game.gameID} id={game.gameID} />
               ))}
                 </div>        
             </>
         )
-    }
-   
+    }  
  
-}
+
     
    
 }

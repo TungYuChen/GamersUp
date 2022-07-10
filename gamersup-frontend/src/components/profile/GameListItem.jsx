@@ -5,13 +5,19 @@ import gameimage from '../../images/gameimage.jpg'
 import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
 import Loading from '../layout/Loading'
 
-function GameListItem({ game: { id, name, background_image, rating } }) {  
-  const [validImage, setValidImage] = useState(true)
+function GameListItem({ id }) {  
+  const { getGameByID } = useContext(GamesContext);
+  const [ validImage, setValidImage ] = useState(true)
+  
+  const [game, setGame] = useState();
+  
 
   
   useEffect(() => {     
-    console.log(id);
-    if (background_image == null) {
+    getGameByID(id).then( response => {
+      setGame(response.data);      
+    })
+    if (game?.background_image == null) {
       setValidImage(false)
     }         
    
@@ -19,12 +25,12 @@ function GameListItem({ game: { id, name, background_image, rating } }) {
 
 
     return (
-      <div className='card w-72 bg-base-200 shadow-xl'>
+      <div className='card w-72 bg-base-200 shadow-xl flex-none mr-5'>
         {validImage && (
           <figure>
             <img
               className='custom-card-image'
-              src={background_image}
+              src={gameimage}
               alt={'game_image'}
             />
           </figure>
@@ -34,7 +40,7 @@ function GameListItem({ game: { id, name, background_image, rating } }) {
           <figure>
             <img
               className='custom-card-image'
-              src={gameimage}
+              src={game?.background_image}
               alt={'default_game_image'}
             />
           </figure>
@@ -42,10 +48,10 @@ function GameListItem({ game: { id, name, background_image, rating } }) {
   
         <div className='card-body'>
           <div className='card-title text-base mb-3'>
-            <div className='inline badge badge-accent font-bold'>{rating}</div>
-            {name}
+            <div className='inline badge badge-accent font-bold'>{game?.rating}</div>
+            {game?.name}
           </div>
-          <div className='card-actions justify-start'>
+          {/* <div className='card-actions justify-start'>
             <button className='btn-ghost badge badge-outline text-xs hover:bg-primary-focus'>
               <PlusIcon className='inline mr-1 w-5' />
               Want to Play
@@ -54,7 +60,7 @@ function GameListItem({ game: { id, name, background_image, rating } }) {
               <CheckIcon className='inline mr-1 w-5' />
               Played
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     )

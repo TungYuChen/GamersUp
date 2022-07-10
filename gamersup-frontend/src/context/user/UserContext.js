@@ -18,10 +18,7 @@ export const UserProvider = ({ children }) => {
     user: { userID: 0 }, // logged user
     // gamer: {}, // another gamer besides the user
     wantToPlay: [],
-    played: [],
-    wantToPlayObject: [],
-    playedObject: [],
-    fetching: true,
+    played: [],  
   }
 
   const [state, dispatch] = useReducer(userReducer, initialState)  
@@ -48,7 +45,7 @@ export const UserProvider = ({ children }) => {
     axios
       .get(`${API_URL}/gamers/email=${email}`)
       .then((response) => {
-        const loggedUser = JSON.stringify(response.data)
+        const loggedUser = JSON.stringify(response.data)        
         sessionStorage.setItem(LOGIN_SESSION, loggedUser)
         dispatch({
           type: 'LOGIN',
@@ -133,7 +130,7 @@ export const UserProvider = ({ children }) => {
     reading(true)
     await axios
       .get(`${API_URL}/games/user=${id}/wanttoplaylist`)
-      .then((response) => {        
+      .then((response) => {          
         dispatch({
           type: 'GET_WANT_TO_PLAY',
           payload: response.data,
@@ -148,7 +145,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const getPlayedByGamerId = async (id) => {
-    reading(true)
+    fetching(true)
     await axios
       .get(`${API_URL}/games/user=${id}/playedlist`)
       .then((response) => {
@@ -163,42 +160,6 @@ export const UserProvider = ({ children }) => {
           type: 'ERROR',
         })
       })
-  }
-
-  const getWantToPlayAndPlayedByGamerId = (id) => {
-    fetching();
-    getWantToPlayByGamerId(id);
-    getPlayedByGamerId(id);
-    
-
-    const wantToPlayObject = [];
-    const playedObject = [];
-    console.log(state.wantToPlay);
-    for (let i = 0; i < state.wantToPlay.length; i++) {      
-      wantToPlayObject.push(loadGame(state.wantToPlay[i].gameID));      
-    }    
-    for (let j = 0; j < state.played.length; j++) {
-      playedObject.push(loadGame(state.played[j].gameID));
-    }
-
-    while (wantToPlayObject.length < state.wantToPlay.length || playedObject.length < state.played.length) {
-      setTimeout(50);
-    }
-
-    console.log(wantToPlayObject);
-    
-    const resultList = [wantToPlayObject, playedObject];
-    dispatch({
-      tpye: 'TWOLISTREADY',
-      payload: resultList,
-    })
-  }
-
-  const loadGame = (gameId) => {    
-    const url = `${RAWG_API_URL}/games/${gameId}?key=${RAWG_API_KEY}`
-    axios.get(url).then(res => {      
-      return res.data;
-    })
   }
 
   const clickWantToPlay = async (gameID, gamerID) => {
@@ -268,13 +229,16 @@ export const UserProvider = ({ children }) => {
   // }
 
   const changeBio = async (bio) => {
-    const gamerID = state.user.userID
+    const userId = state.user.userID
     axios
-      .put(`${API_URL}/gamers/bio/change`, {
-        gamerID,
+      .put(`${API_URL}/gamers/bio/changebio`, {
+        userId,
         bio,
       })
-      .then((response) => getUserByEmail(state.user.email))
+      .then((response) => {
+        console.log(response.data)
+        getUserByEmail(state.user.email)
+      })
       .catch((err) => {
         console.log(err)
         dispatch({
@@ -284,13 +248,17 @@ export const UserProvider = ({ children }) => {
   }
 
   const changeAvatar = async (url) => {
-    const gamerID = state.user.userID
+    const userId = state.user.userID
     axios
       .put(`${API_URL}/gamers/changeAvatar`, {
-        gamerID,
+        userId,
         url,
       })
-      .then((response) => getUserByEmail(state.user.email))
+      .then((response) => 
+      {
+        console.log(response);
+        getUserByEmail(state.user.email)
+      })
       .catch((err) => {
         console.log(err)
         dispatch({
@@ -346,7 +314,7 @@ export const UserProvider = ({ children }) => {
         getFriends,
         isLoggedIn,
         getLoggedUserInSession,
-        getWantToPlayAndPlayedByGamerId,
+        
       }}
     >
       {children}

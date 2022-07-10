@@ -120,7 +120,7 @@ export const GamesProvider = ({ children }) => {
 
   // the last version of getGame
   const getGameByID = (id) => {
-    return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`)
+    return axios.get(`${RAWG_API_URL}/games/${id}?key=${RAWG_API_KEY}`);
   }
 
   const getWantToPlayGamersByGameId = async (id) => {
