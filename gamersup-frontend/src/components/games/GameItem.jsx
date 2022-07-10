@@ -11,8 +11,6 @@ function GameItem({
 }) {
   const navigate = useNavigate()
 
-  // const API_URL = process.env.REACT_APP_BACKEND_API_URL
-
   const {
     isLoggedIn,
     clickWantToPlay,
@@ -24,22 +22,6 @@ function GameItem({
   const [wantToPlay, setWantToPlay] = useState(false)
   const [played, setPlayed] = useState(false)
   const [click, setClick] = useState(0)
-
-  // const checkWantToPlay = async (gameID) => {
-  //   const { data } = await axios.post(`${API_URL}/games/check/wanttoplay`, {
-  //     gameID,
-  //     gamerID: userID,
-  //   })
-  //   setWantToPlay(data)
-  // }
-
-  // const checkPlayed = async (gameID) => {
-  //   const { data } = await axios.post(`${API_URL}/games/check/played`, {
-  //     gameID,
-  //     gamerID: userID,
-  //   })
-  //   setPlayed(data)
-  // }
 
   useEffect(() => {
     if (background_image == null) {
