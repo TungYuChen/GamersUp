@@ -7,8 +7,6 @@ const UserContext = createContext()
 const API_URL = process.env.REACT_APP_BACKEND_API_URL
 const LOGIN_SESSION = process.env.REACT_APP_AUTH_SESSION
 const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
-const RAWG_API_URL = process.env.REACT_APP_RAWG_API_URL
-const RAWG_API_KEY = process.env.REACT_APP_RAWG_API_KEY
 
 
 export const UserProvider = ({ children }) => {
@@ -16,7 +14,6 @@ export const UserProvider = ({ children }) => {
     error: false,
     reading: true,
     user: { userID: 0 }, // logged user
-    // gamer: {}, // another gamer besides the user
     wantToPlay: [],
     played: [],  
   }
@@ -111,19 +108,6 @@ export const UserProvider = ({ children }) => {
 
   const getGamerById = (id) => {
     return axios.get(`${API_URL}/gamers/gamer=${id}`)
-    // .then((response) => {
-    //   // console.log(response.data)
-    //   dispatch({
-    //     type: 'GET_GAMER',
-    //     payload: response.data,
-    //   })
-    // })
-    // .catch((err) => {
-    //   console.log(err)
-    //   dispatch({
-    //     type: 'ERROR',
-    //   })
-    // })
   }
 
   const getWantToPlayByGamerId = async (id) => {
@@ -299,7 +283,6 @@ export const UserProvider = ({ children }) => {
         error: state.error,
         reading: state.reading,
         user: state.user,
-        // gamer: state.gamer,
         wantToPlay: state.wantToPlay,
         played: state.played,
         wantToPlayObject: state.wantToPlayObject,
