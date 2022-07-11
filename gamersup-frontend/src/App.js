@@ -39,7 +39,7 @@ function App() {
                       element={<ForgotPassword />}
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
-                    <Route path='/profile' element={<GamerProfile />} />
+                    <Route path='/profile/:id' element={<GamerProfile />} />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
                   {/* <FriendList /> */}

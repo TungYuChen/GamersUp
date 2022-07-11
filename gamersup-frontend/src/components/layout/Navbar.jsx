@@ -5,7 +5,7 @@ import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { isLoggedIn, logout, getLoggedUserInSession } = useContext(UserContext)
+  const { isLoggedIn, logout, getLoggedUserInSession, user } = useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
 
@@ -99,7 +99,7 @@ function Navbar({ title }) {
           </a>
         </li> */}
                   <li>
-                    <Link to='/profile' className='text-lg'>
+                    <Link to={`/profile/${user.userID}`} className='text-lg'>
                       Profile
                     </Link>
                   </li>

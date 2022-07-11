@@ -206,42 +206,6 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  // const checkWantToPlay = async (gameID) => {
-  //   const gamerID = state.userID
-  //   return await axios
-  //     .post(`${API_URL}/games/check/wanttoplay`, {
-  //       gameID,
-  //       gamerID,
-  //     })
-  // .then((response) => {
-  //   // console.log(response.data)
-  //   return response.data
-  // })
-  // .catch((err) => {
-  //   dispatch({
-  //     type: 'ERROR',
-  //   })
-  // })
-  // }
-
-  // const checkPlayed = async (gameID) => {
-  //   const gamerID = state.userID
-  //   axios
-  //     .post(`${API_URL}/games/check/played`, {
-  //       gameID,
-  //       gamerID,
-  //     })
-  //     .then((response) => {
-  //       // console.log(response.data)
-  //       return response.data
-  //     })
-  //     .catch((err) => {
-  //       dispatch({
-  //         type: 'ERROR',
-  //       })
-  //     })
-  // }
-
   const changeBio = async (bio) => {
     const userId = state.user.userID
     axios
@@ -281,6 +245,30 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  const changeBirthday = dob => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeBirthday`, {
+      userId,
+      dob,
+    });
+  }
+
+  const changeLevel = level => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeLevel`, {
+      userId,
+      level,
+    })
+  }
+
+  const changeLikes = likes => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeLikes`, {
+      userId,
+      likes,
+    })
+  }
+
   const getFriends = async () => {
     fetching()
     //hardcode
@@ -302,6 +290,8 @@ export const UserProvider = ({ children }) => {
       payload: friendList,
     })
   }
+
+  
 
   return (
     <UserContext.Provider
@@ -330,6 +320,9 @@ export const UserProvider = ({ children }) => {
         getFriends,
         isLoggedIn,
         getLoggedUserInSession,
+        changeBirthday,
+        changeLevel,
+        changeLikes,
         
       }}
     >

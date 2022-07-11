@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +38,9 @@ public class GamerService implements UserDetailsService {
 
 
     public GamerInfo saveGamer(GamerInfo gamer) {
+        // Default likes and level
+        gamer.setLikes(0);
+        gamer.setLevel(0);
         return gamerRepository.save(gamer);
     }
 
@@ -186,6 +190,40 @@ public class GamerService implements UserDetailsService {
         List<Long> tempListB = friendRepository.findGamerBByGamerAAndAccepted(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
 
         return Stream.concat(tempListA.stream(), tempListB.stream()).toList();
+    }
+
+    public boolean changeBirthdayById(long id, Date birthday) {
+        try {
+            GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
+            gamer.setDob(birthday);
+            gamerRepository.save(gamer);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+
+    }
+
+    public boolean changeLevel(long id, int level) {
+        try {
+            GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
+            gamer.setLevel(level);
+            gamerRepository.save(gamer);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public boolean changeLikes(long id, int likes) {
+        try {
+            GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
+            gamer.setLikes(likes);
+            gamerRepository.save(gamer);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     private String buildAcceptFriendshipEmail(String nameA, String nameB, long idA, long idB){
