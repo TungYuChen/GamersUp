@@ -99,7 +99,7 @@ function Navbar({ title }) {
           </a>
         </li> */}
                   <li>
-                    <Link to={`/profile/${user.userID}`} className='text-lg'>
+                    <Link to={`/profile/${JSON.parse(sessionStorage.getItem('user')).userID}`} className='text-lg'>
                       Profile
                     </Link>
                   </li>
