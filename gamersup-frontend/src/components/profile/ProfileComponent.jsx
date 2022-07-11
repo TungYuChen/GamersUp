@@ -1,25 +1,25 @@
 import { useContext, useState } from "react";
-import { FiThumbsUp } from "react-icons/fi";
-import { FaPencilAlt } from "react-icons/fa";
 import UserContext from "../../context/user/UserContext";
 import AlertContext from "../../context/alert/AlertContext";
 import axios from "axios";
-import GamerProfile from "../../pages/GamerProfile";
-import { useEffect } from "react";
+import UserBirthday from "../../components/profile/ProfileCard/UserBirthday";
+import UserLevel from "../../components/profile/ProfileCard/UserLevel";
+import UserLikes from "../../components/profile/ProfileCard/UserLikes";
+import UserBio from "../../components/profile/ProfileCard/UserBio";
 
-function ProfileComponent( { theUser: {userName, email, dob, level, likes, bio, avatarUrl}}) {
+function ProfileComponent( { theUser: { userID, userName, email, dob, level, likes, bio, avatarUrl}}) {
   const { setAlertWithTimeout } = useContext(AlertContext);
   const [imageSelected, setImageSelected] = useState("");
-  const { user, changeBio, changeAvatar} = useContext(UserContext);
-  const [typingBio, setTypingBio] = useState(false);
+  const { changeAvatar} = useContext(UserContext);
+  // const [typingBio, setTypingBio] = useState(false);
   // const {userName, email, dob, level, likes, bio, avatarUrl} = user; 
   const [ myName, setMyName ] = useState(userName);
   const [ myEmail, setMyEmail ] = useState(email);
-  const [ myBio, setMyBio ] = useState(bio);
-  const [ myLevel, setMyLevel ] = useState(level);
+  // const [ myBio, setMyBio ] = useState(bio);
+  // const [ myLevel, setMyLevel ] = useState(level);
   const [ imgUrl, setImgUrl ] = useState(avatarUrl);  
-  const [ myDob, setMyDob] = useState(dob);
-  const [ myLikes, setMyLikes ] = useState(likes);
+  // const [ myDob, setMyDob] = useState(dob);
+  // const [ myLikes, setMyLikes ] = useState(likes);
 
   
   const uploadAvatar = async () => {
@@ -56,28 +56,11 @@ function ProfileComponent( { theUser: {userName, email, dob, level, likes, bio, 
     //     api_key: "",
     //     signature: ""
     // })
-  };
-
-  const uploadBio = async (e) => {
-    let newBio = e.target.bioBlock.value;    
-    await changeBio(newBio);    
-    setMyBio(newBio);
-    
-  }
-
-  const bioBlockChange = () => {
-    if (typingBio) { 
-      setTypingBio(false)
-
-    } else {
-      setTypingBio(true)
-    }
-      
-  }
-    
+  };   
 
   return (
     <>
+    {/* Avatar part */}
       <div className="grid grid-cols-[2fr_3fr] gap-4">
         <div id="left">
           <div className="justify-center flex ">
@@ -126,6 +109,7 @@ function ProfileComponent( { theUser: {userName, email, dob, level, likes, bio, 
             </button>
           </div>
         </div>
+        {/* Detail Part */}
         <div id="right" className="bg-neutral px-10 pt-2 ">
           <div className="justify-center flex ">
             <h1 className="text-neutral-content py-2 text-4xl  px-4 rounded-[16px] mb-4">
@@ -141,59 +125,11 @@ function ProfileComponent( { theUser: {userName, email, dob, level, likes, bio, 
                 {" "}
                 &nbsp;&nbsp;{myEmail}
               </h2>
-            </div>
-            <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
-              <h2 className="inline-flex text-accent-focus py-1 text-xl">
-                BirthDay:{" "}
-              </h2>{" "}
-              <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                &nbsp;&nbsp;{myDob}
-              </h2>
-            </div>
-            <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
-              <h2 className="inline-flex text-accent-focus py-1 text-xl">
-                Game Level:{" "}
-              </h2>{" "}
-              <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                &nbsp;&nbsp;{myLevel}
-              </h2>
-            </div>
-            <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
-              <h2 className="inline-flex text-accent-focus py-1 text-xl">
-                Likes :{" "}
-              </h2>
-              <div>
-                <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-                  &nbsp;&nbsp;{myLikes}
-                </h2>
-                <button className="btn-ghost badge badge-outline text-xs hover:bg-primary-focus mx-4 my-auto p-3">
-                  <FiThumbsUp className="inline mr-1 w-5 py-auto mx-2" />
-                </button>
-              </div>
-            </div>
-            <div id="bio" className="col-span-2 grid grid-cols-1 bg-base-200 rounded-[16px] shadow-inner shadow-black p-2" >
-              {" "}
-              <h2 className="inline-flex text-accent-focus py-1 text-xl">
-                Bio:{" "}
-                <button className="btn-ghost badge badge-outline text-xs mx-4 my-auto p-3 absolute right-12" onClick={bioBlockChange}>
-                 <FaPencilAlt/>
-                </button>
-              </h2>{" "}
-              { !typingBio && (
-                       <h2 className="inline-flex text-neutral-content py-1 text-2xl">
-                {myBio}
-              </h2>
-              )}
-              { typingBio && (
-                <form onSubmit={uploadBio}>
-                  <textarea  className="inline-flex text-neutral-content py-1 text-2xl" id="bioBlock" defaultValue={myBio}/>                   
-                  <button type="submit"
-                   className='group align-middle float-right relative w-20 justify-center px-10 border border-transparent h-6 min-h-6 text-sm rounded-full btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'>
-                    Submit</button>
-                </form>
-              )}
-       
-            </div>
+            </div>         
+            < UserBirthday gamerId={userID} dob={dob}/>        
+            < UserLevel gamerId={userID} level={level}/>          
+            < UserLikes gamerId={userID} likes={likes}/>         
+            < UserBio gamerId={userID} bio={bio}/>
           </div>
         </div>
       </div>
@@ -202,3 +138,63 @@ function ProfileComponent( { theUser: {userName, email, dob, level, likes, bio, 
 }
 
 export default ProfileComponent;
+
+
+// Redundant HTML
+//
+  //  {/* <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black" id="userBirthday">
+  //             <h2 className="inline-flex text-accent-focus py-1 text-xl">
+  //               BirthDay:{" "}
+  //             </h2>{" "}
+  //             <h2 className="inline-flex text-neutral-content py-1 text-3xl">
+  //               &nbsp;&nbsp;{myDob}
+  //             </h2>
+  //     </div> */}
+
+// 
+      // {/* <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
+      //         <h2 className="inline-flex text-accent-focus py-1 text-xl">
+      //           Game Level:{" "}
+      //         </h2>{" "}
+      //         <h2 className="inline-flex text-neutral-content py-1 text-3xl">
+      //           &nbsp;&nbsp;{myLevel}
+      //         </h2>
+      //       </div> */}
+//
+  // {/* <div className="justify-center flex bg-base-200 rounded-[16px] p-2 grid grid-cols-1 gap-4 shadow-inner shadow-black">
+  //             <h2 className="inline-flex text-accent-focus py-1 text-xl">
+  //               Likes :{" "}
+  //             </h2>
+  //             <div>
+  //               <h2 className="inline-flex text-neutral-content py-1 text-3xl">
+  //                 &nbsp;&nbsp;{myLikes}
+  //               </h2>
+  //               <button className="btn-ghost badge badge-outline text-xs hover:bg-primary-focus mx-4 my-auto p-3">
+  //                 <FiThumbsUp className="inline mr-1 w-5 py-auto mx-2" />
+  //               </button>
+  //             </div>
+  //           </div> */}
+//
+  //  {/* <div id="bio" className="col-span-2 grid grid-cols-1 bg-base-200 rounded-[16px] shadow-inner shadow-black p-2" >
+  //             {" "}
+  //             <h2 className="inline-flex text-accent-focus py-1 text-xl">
+  //               Bio:{" "}
+  //               <button className="btn-ghost badge badge-outline text-xs mx-4 my-auto p-3 absolute right-12" onClick={bioBlockChange}>
+  //                <FaPencilAlt/>
+  //               </button>
+  //             </h2>{" "}
+  //             { !typingBio && (
+  //                      <h2 className="inline-flex text-neutral-content py-1 text-2xl">
+  //               {myBio}
+  //             </h2>
+  //             )}
+  //             { typingBio && (
+  //               <form onSubmit={uploadBio}>
+  //                 <textarea  className="inline-flex text-neutral-content py-1 text-2xl text-black" id="bioBlock" defaultValue={myBio}/>                   
+  //                 <button type="submit"
+  //                  className='group align-middle float-right relative w-20 justify-center px-10 border border-transparent h-6 min-h-6 text-sm rounded-full btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'>
+  //                   Submit</button>
+  //               </form>
+  //             )}
+       
+  //           </div> */}

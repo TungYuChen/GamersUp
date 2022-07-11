@@ -86,52 +86,44 @@ public class GamersApi {
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
-
-
     // get the bio from gamer
     @GetMapping("/bio/gamer={gamerid}")
     public ResponseEntity<String> getBioByGamer(@PathVariable("gamerid") long id) {
         return new ResponseEntity<>(service.getBioById(id), HttpStatus.OK);
     }
 
+    // change bio
     @PutMapping("/bio/changebio")
     public ResponseEntity<Boolean> changeBioByGamerId(@RequestBody BioChangeRequest bioChangeRequest) {
         return new ResponseEntity<>(service.changeBioById(bioChangeRequest.getUserId(), bioChangeRequest.getBio()), HttpStatus.OK);
     }
 
+    // change avatar
     @PutMapping("/changeAvatar")
     public ResponseEntity<Boolean> changeAvatarByGamerId(@RequestBody AvatarChangeRequest avatarChangeRequest) {
         return new ResponseEntity<>(service.changeAvatarById(avatarChangeRequest.getUserId(), avatarChangeRequest.getUrl()), HttpStatus.OK);
     }
 
+    // change birthday
+    @PutMapping("/changeBirthday")
+    public ResponseEntity<Boolean> changeBirthdayByGamerId(@RequestBody BirthdayRequest birthdayRequest) {
+        return new ResponseEntity<>(service.changeBirthdayById(birthdayRequest.getUserId(), birthdayRequest.getDob()), HttpStatus.OK);
+    }
 
-//    @PostMapping("/searchwithmail")
-//    public ResponseEntity<GamerProfile> searchGamerByEmail(@RequestBody EmailRequest email) {
-//        GamerInfo gamer = service.getGamerByEmail(email.getEmail());
-//        String gamesWantToPlay = (gamer.getGamesWantToPlay() == null)? "-1": gamer.getGamesWantToPlay();
-//        String gamersPlayed = (gamer.getGamesPlayed() == null)? "-1": gamer.getGamesPlayed();
-//        String friends = (gamer.getFriends() == null)? "-1": gamer.getFriends();
-//        GamerProfile profile = new GamerProfile(gamer.getUsername(), gamer.getEmail(),
-//                gamer.getEnable(), gamesWantToPlay,
-//                gamersPlayed, friends);
-//        return new ResponseEntity<>(profile, HttpStatus.OK);
-//    }
+    // change level
+    @PutMapping("/changeLevel")
+    public ResponseEntity<Boolean> changeLevelByGamerId(@RequestBody LevelRequest levelRequest) {
+        return new ResponseEntity<>(service.changeLevel(levelRequest.getUserId(), levelRequest.getLevel()), HttpStatus.OK);
+    }
 
-
-
-
-//    @PostMapping("/registration")
-//    public String register(@RequestBody RegistrationRequest request) {
-//        return registrationService.register(request);
-//    }
+    // change likes
+    @PutMapping("/changeLikes")
+    public ResponseEntity<Boolean> changeLikesByGamerId(@RequestBody LikesRequest likesRequest) {
+        return new ResponseEntity<>(service.changeLikes(likesRequest.getUserId(), likesRequest.getLikes()), HttpStatus.OK);
+    }
 
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Gamer> login(@RequestBody GamerLogin request) {
-//        if (service.checkGamerExisting(request.getEmail(), request.getPassword())) {
-//
-//        }
-//    }
+
 
 
 

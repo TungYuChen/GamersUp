@@ -229,6 +229,30 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  const changeBirthday = dob => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeBirthday`, {
+      userId,
+      dob,
+    });
+  }
+
+  const changeLevel = level => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeLevel`, {
+      userId,
+      level,
+    })
+  }
+
+  const changeLikes = likes => {
+    const userId = state.user.userID;
+    return axios.put(`${API_URL}/gamers/changeLikes`, {
+      userId,
+      likes,
+    })
+  }
+
   const getFriends = async () => {
     fetching()
     //hardcode
@@ -250,6 +274,8 @@ export const UserProvider = ({ children }) => {
       payload: friendList,
     })
   }
+
+  
 
   return (
     <UserContext.Provider
@@ -277,6 +303,9 @@ export const UserProvider = ({ children }) => {
         getFriends,
         isLoggedIn,
         getLoggedUserInSession,
+        changeBirthday,
+        changeLevel,
+        changeLikes,
         
       }}
     >

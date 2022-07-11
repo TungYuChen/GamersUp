@@ -47,7 +47,7 @@ public class GamerInfo implements UserDetails {
     private String bio;
 
     @Column(name="level")
-    private Integer level; //0-Newbie, 1-Pro Gamer, 2-Veteran
+    private Integer level; //0-Newbie, 1-Veteran, 2-Pro Gamer
 
     @Column(name="likes")
     private Integer likes;

@@ -1,10 +1,7 @@
-import { useContext, useEffect } from "react";
-import PropTypes from "prop-types";
 import GameListMiddleLayer from "./GameListMiddleLayer";
-import UserContext from "../../context/user/UserContext";
 
-function GameListForProfile() { 
-  
+
+function GameListForProfile() {   
     return (   
       <>    
         <div className="card  bg-base-300 p-4 my-8">
@@ -21,10 +18,5 @@ function GameListForProfile() {
  
  
 }
-
-GameListForProfile.propTypes = {
-  title: PropTypes.string,
-};
-
 
 export default GameListForProfile;
