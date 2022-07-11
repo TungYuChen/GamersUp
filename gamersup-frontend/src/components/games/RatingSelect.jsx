@@ -1,23 +1,15 @@
 import React from 'react'
-import { useState, useContext, useEffect } from 'react'
-// import ReviewContext from '../../context/games/ReviewContext'
+import { useState } from 'react'
 
 function RatingSelect({ handleSelect }) {
   const [selected, setSelected] = useState(5)
-
-  // const { rating } = useContext(ReviewContext)
 
   const handleChange = (e) => {
     //+:make the value a number
     setSelected(+e.currentTarget.value)
     handleSelect(+e.currentTarget.value)
+    console.log('add')
   }
-
-  //   const { itemEdit } = useContext(FeedbackContext)
-
-  //   useEffect(() => {
-  //     setSelected(itemEdit.item.rating)
-  //   }, [itemEdit])
 
   return (
     <ul className='rating rating-ul'>
