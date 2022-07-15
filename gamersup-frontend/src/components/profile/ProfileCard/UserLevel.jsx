@@ -1,22 +1,29 @@
 import { useContext, useState } from "react";
 import UserContext from "../../../context/user/UserContext";
 import { FaPencilAlt } from "react-icons/fa";
+import LevelSelect from "./LevelSelect";
 
 
 function UserLevel({gamerId, level}) {
   const { user, changeLevel } = useContext(UserContext);
   const [ currentLevel, setCurrentLevel] = useState(level);  
   const [ changing, setChanging ] = useState(false);
+  const [ tempLevel, setTempLevel ] = useState(currentLevel);
+  
+  console.log(tempLevel);
 
-  const uploadLevel = async (e) => {
-      let newLevel = e.target.levelBlock.value;
-      console.log(newLevel);
-      await changeLevel(newLevel);
-      setCurrentLevel(newLevel);
+  const uploadLevel = async (e) => {      
+      console.log(tempLevel);
+      await changeLevel(tempLevel);
+      setCurrentLevel(tempLevel);
   }
 
   const levelChange = () => {      
       setChanging(!changing);     
+  }
+
+  const changeTempLevel = (selected) => {    
+    setTempLevel(selected);
   }
 
 
@@ -33,15 +40,29 @@ function UserLevel({gamerId, level}) {
       </h2>{" "}
       {!changing && (
           <h2 className="inline-flex text-neutral-content py-1 text-3xl">
-              &nbsp;&nbsp;{currentLevel}
+              &nbsp;&nbsp;{
+              currentLevel == "0" && (
+                <p>NewBie</p>
+              )}
+              {
+                currentLevel == "1" && (
+                  <p>Veteran</p>
+                )
+              }
+              {
+                currentLevel == "2" && (
+                  <p>Pro</p>
+                )
+              }
           </h2>
       )}
       {changing && (
            <form onSubmit={uploadLevel}>
-           <textarea  className="inline-flex text-neutral-content py-1 text-2xl text-black" id="levelBlock" defaultValue={currentLevel}/>                   
-           <button type="submit"
-            className='group align-middle float-right relative w-20 justify-center px-10 border border-transparent h-6 min-h-6 text-sm rounded-full btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'>
-             Submit</button>
+              <LevelSelect handleChange={changeTempLevel} tempLevel={tempLevel}/>          
+              <button type="submit"
+              className='group align-middle float-right relative w-20 justify-center px-10 border border-transparent h-6 min-h-6 text-sm rounded-full btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'>
+              Submit</button>
+          
          </form>
       )}
     
