@@ -16,6 +16,7 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import GameDetailsPage from './pages/GameDetailsPage'
 import GamerProfile from './pages/GamerProfile'
+import Settings from './pages/Settings'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                       element={<ForgotPassword />}
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
+                    <Route path='/settings' element={<Settings />} />
                     <Route path='/profile/:id' element={<GamerProfile />} />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
