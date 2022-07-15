@@ -5,7 +5,8 @@ import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 
 function Navbar({ title }) {
-  const { isLoggedIn, logout, getLoggedUserInSession, user } = useContext(UserContext)
+  const { isLoggedIn, logout, getLoggedUserInSession, user } =
+    useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
 
@@ -82,10 +83,15 @@ function Navbar({ title }) {
               <div className='dropdown dropdown-end'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle avatar'>
                   <div className='w-12 rounded-full mt-2'>
-                    <img
-                      src='https://api.lorem.space/image/face?hash=33791'
-                      alt='avatar'
-                    />
+                    {user.avatarUrl !== null && (
+                      <img src={user.avatarUrl} alt='avatar' />
+                    )}
+                    {user.avatarUrl === null && (
+                      <img
+                        src='https://api.lorem.space/image/face?hash=33791'
+                        alt='avatar'
+                      />
+                    )}
                   </div>
                 </label>
                 <ul
@@ -99,7 +105,12 @@ function Navbar({ title }) {
           </a>
         </li> */}
                   <li>
-                    <Link to={`/profile/${JSON.parse(sessionStorage.getItem('user')).userID}`} className='text-lg'>
+                    <Link
+                      to={`/profile/${
+                        JSON.parse(sessionStorage.getItem('user')).userID
+                      }`}
+                      className='text-lg'
+                    >
                       Profile
                     </Link>
                   </li>
