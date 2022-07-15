@@ -25,6 +25,7 @@ function GameListItem({ id }) {
 
 
     return (
+      <Link to={`/game/${id}`}>
       <div className='card w-72 bg-base-200 shadow-xl flex-none mr-5'>
         {validImage && (
           <figure>
@@ -33,6 +34,7 @@ function GameListItem({ id }) {
               src={gameimage}
               alt={'game_image'}
             />
+            
           </figure>
         )}
   
@@ -43,6 +45,7 @@ function GameListItem({ id }) {
               src={game?.background_image}
               alt={'default_game_image'}
             />
+            
           </figure>
         )}
   
@@ -63,6 +66,7 @@ function GameListItem({ id }) {
           </div> */}
         </div>
       </div>
+      </Link>
     )
   }
 
