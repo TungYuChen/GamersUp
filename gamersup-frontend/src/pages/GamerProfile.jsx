@@ -10,14 +10,12 @@ import { useParams } from 'react-router-dom'
 
 // Multiple user view --> using variable as id and check
 function GamerProfile() {
-
-  const { isLoggedIn, user, getWantToPlayByGamerId, getPlayedByGamerId, reading, fetching, getGamerById} = useContext(UserContext);
+  const { isLoggedIn, getWantToPlayByGamerId, getPlayedByGamerId, reading, fetching, getGamerById} = useContext(UserContext);
   const params = useParams();
   const [ gamer, setGamer ] = useState();
   const [ userReady, setUserReady ] = useState(false);
 
-  useEffect(() => {  
-    console.log(params.id);  
+  useEffect(() => {      
     getGamerById(params.id).then( response => {           
       setGamer(response.data);      
       setUserReady(true);
