@@ -46,7 +46,7 @@ export const UserProvider = ({ children }) => {
         sessionStorage.setItem(LOGIN_SESSION, loggedUser)
         dispatch({
           type: 'LOGIN',
-          payload: loggedUser,
+          payload: response.data,
         })
       })
       .catch((err) => {
