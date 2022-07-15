@@ -23,7 +23,7 @@ function GamerProfile() {
     getWantToPlayByGamerId(params.id);
     getPlayedByGamerId(params.id);
     
-  }, [])
+  }, [isLoggedIn()])
 
   if (reading || fetching || !userReady) {
     return <Loading />

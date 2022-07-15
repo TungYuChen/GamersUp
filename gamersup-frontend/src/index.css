@@ -26,6 +26,13 @@
   text-align: center;
 }
 
+.review-card-edit {
+  border-radius: 15px;
+  padding: 1px 50px 25px 50px;
+  margin: 20px 0;
+  position: relative;
+}
+
 /* for rating lists */
 .rating-ul {
   list-style: none;

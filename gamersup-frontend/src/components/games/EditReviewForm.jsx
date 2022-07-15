@@ -1,16 +1,25 @@
 import { React, useContext, useState, useEffect } from 'react'
-import RatingSelect from './RatingSelect'
+import EditRatingSelect from './EditRatingSelect'
 import ReviewContext from '../../context/games/ReviewContext'
 import UserContext from '../../context/user/UserContext'
+import PropTypes from 'prop-types'
 
-function ReviewForm({ gameId }) {
-  const { addReview } = useContext(ReviewContext)
+function EditReviewForm({ gameId, itemEdit }) {
+  const { editReview } = useContext(ReviewContext)
   const { user, isLoggedIn } = useContext(UserContext)
 
   const [text, setText] = useState('')
   const [rating, setRating] = useState(5)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    if (itemEdit.edit === true) {
+      setBtnDisabled(false)
+      setText(itemEdit.item.comment)
+      setRating(itemEdit.item.rating)
+    }
+  }, [itemEdit])
 
   const handleTextChange = (e) => {
     if (!isLoggedIn()) {
@@ -28,23 +37,31 @@ function ReviewForm({ gameId }) {
     setText(e.target.value)
   }
 
-  const handleSelectChange = (selected) => {
+  const handleSelectEdit = (selected) => {
     console.log(selected)
     setRating(selected)
   }
 
   const handleSubmit = (e) => {
-    addReview(user.userID, gameId, rating, text)
+    const reviewID = itemEdit.item.id
+    const userID = user.userID
+    const newItem = {
+      id: reviewID,
+      userID: userID,
+      gameID: gameId,
+      rating: rating,
+      comment: text,
+    }
+    editReview(reviewID, newItem)
   }
 
   return (
-    <div className='w-full rounded-lg shadow-lg review-card bg-base-300'>
+    <div className='w-full rounded-lg shadow-lg review-card-edit bg-fuchsia-900'>
       <form onSubmit={handleSubmit}>
-        <h2>How would you rate this game?</h2>
-        <RatingSelect handleSelect={handleSelectChange} />
+        <EditRatingSelect select={handleSelectEdit} itemEdit={itemEdit} />
         <div className='input-group text-neutral-content'>
           <input
-            className='review-input bg-base-100 text-lg input input-bordered'
+            className='review-input bg-fuchsia-800 text-lg input input-bordered'
             onChange={handleTextChange}
             type='text'
             placeholder='Write a review'
@@ -64,4 +81,12 @@ function ReviewForm({ gameId }) {
   )
 }
 
-export default ReviewForm
+EditReviewForm.defaultProps = {
+  itemEdit: { item: {}, edit: false },
+}
+
+EditReviewForm.propTypes = {
+  itemEdit: PropTypes.object,
+}
+
+export default EditReviewForm

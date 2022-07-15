@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useState } from 'react'
 import reviewReducer from './ReviewReducer'
 import axios from 'axios'
 
@@ -85,7 +85,9 @@ export const ReviewProvider = ({ children }) => {
     }
   }
 
-  const editReview = (reviewID) => {}
+  const editReview = (reviewID, newItem) => {
+    return axios.put(`${API_URL}/reviews/review=${reviewID}`, newItem)
+  }
 
   return (
     <ReviewContext.Provider

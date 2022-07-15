@@ -61,6 +61,7 @@ public class ReviewApi {
     @PutMapping("/review={reviewid}")
     public ResponseEntity<Review> editReview(@PathVariable long reviewid, @RequestBody Review review) {
         Review originalReview = reviewService.findReviewById(reviewid).get();
+        originalReview.setRating(review.getRating());
         originalReview.setComment(review.getComment());
         Review reviewUpdated = reviewService.saveReview(originalReview);
         return new ResponseEntity<>(reviewUpdated, HttpStatus.OK);
