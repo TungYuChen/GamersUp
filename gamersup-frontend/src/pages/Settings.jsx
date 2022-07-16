@@ -1,4 +1,5 @@
 import React from 'react'
+import SettingLikeGames from '../components/account/settings/SettingLikeGames'
 import SettingProfile from '../components/account/settings/SettingProfile'
 
 function Settings() {
@@ -14,6 +15,8 @@ function Settings() {
           <div className='border-t border-gray-200' />
         </div>
       </div>
+
+      <SettingLikeGames />
     </>
   )
 }
