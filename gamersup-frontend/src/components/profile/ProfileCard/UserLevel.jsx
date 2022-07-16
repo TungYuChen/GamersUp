@@ -42,7 +42,7 @@ function UserLevel({gamerId, level}) {
           <h2 className="inline-flex text-neutral-content py-1 text-3xl">
               &nbsp;&nbsp;{
               currentLevel == "0" && (
-                <p>NewBie</p>
+                <p>Newbie</p>
               )}
               {
                 currentLevel == "1" && (

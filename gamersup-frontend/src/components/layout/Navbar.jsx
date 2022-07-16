@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
+import gamerAvatar from '../../images/gamers-logo.png'
 
 function Navbar({ title }) {
   const { isLoggedIn, logout, getLoggedUserInSession, user } =
@@ -87,10 +88,7 @@ function Navbar({ title }) {
                       <img src={user.avatarUrl} alt='avatar' />
                     )}
                     {user.avatarUrl === null && (
-                      <img
-                        src='https://api.lorem.space/image/face?hash=33791'
-                        alt='avatar'
-                      />
+                      <img src={gamerAvatar} alt='avatar' />
                     )}
                   </div>
                 </label>
@@ -115,7 +113,7 @@ function Navbar({ title }) {
                     </Link>
                   </li>
                   <li>
-                    <Link to='/' className='text-lg'>
+                    <Link to='/settings' className='text-lg'>
                       Settings
                     </Link>
                   </li>
