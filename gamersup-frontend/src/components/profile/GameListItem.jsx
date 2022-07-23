@@ -2,8 +2,7 @@ import { React, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import GamesContext from '../../context/games/GamesContext'
 import gameimage from '../../images/gameimage.jpg'
-import { PlusIcon, CheckIcon } from '@heroicons/react/solid'
-import Loading from '../layout/Loading'
+
 
 function GameListItem({ id }) {  
   const { getGameByID } = useContext(GamesContext);
