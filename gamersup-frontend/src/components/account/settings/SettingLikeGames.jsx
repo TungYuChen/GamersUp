@@ -8,10 +8,10 @@ function SettingLikeGames() {
         <div className='card-body min-h-full px-10'>
           <div className='space-y-3'>
             <h2 className='card-title text-center text-2xl font-extrabold text-neutral-content'>
-              Like or Hate
+              Love or Hate
             </h2>
             <p className='text-sm text-gray-300'>
-              Please choose games that you like or hate.
+              Please choose games that you love or hate.
             </p>
           </div>
           <div>
