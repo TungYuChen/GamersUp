@@ -1,27 +1,52 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 
-function SettingAvatar() {
+function SettingAvatar({ setImgFile }) {
+
+  const [selected, setSelected] = useState(null)
+  const [imgUrl, setImgUrl] = useState('')
+
+  useEffect(() => {
+    if (selected) {
+      setImgUrl(URL.createObjectURL(selected))
+    }
+  }, [selected])
+
+  const handleChange = (e) => {
+    setSelected(e.target.files[0])
+    setImgFile(e.target.files[0])
+  }
+
   return (
     <div className='mb-10 pb-1'>
       <label className='block text-sm font-medium'>Upload your avatar</label>
       <div className='mt-5'>
-        <div className='mt-1 flex items-center'>
-          <span className='inline-block h-14 w-14 rounded-full overflow-hidden bg-gray-100'>
-            <svg
-              className='h-full w-full text-gray-300'
-              fill='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path d='M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z' />
-            </svg>
-          </span>
-          <button
-            type='button'
-            className='btn ml-8 py-2 px-8 bg-secondary rounded-3xl shadow-sm text-base leading-4 font-medium text-gray-700 hover:bg-secondary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-          >
-            Change
-          </button>
+        <div className='mt-1 '>
+          <input
+            accept='image/*'
+            type='file'
+            id='select-image'
+            style={{ display: 'none' }}
+            onChange={handleChange}
+          />
+          <label htmlFor='select-image'>
+            <span className='btn ml-2 py-2 px-8 bg-secondary rounded-3xl shadow-sm text-base leading-4 font-medium text-gray-700 hover:bg-secondary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+              Choose Avatar
+            </span>
+          </label>
         </div>
+        {imgUrl && selected && (
+          <div>
+            <img
+              className='mt-4 w-64 h-64 mask mask-squircle'
+              src={imgUrl}
+              alt='avatar'
+            />
+            <span className='text-sm mt-2 font-semibold text-gray-400'>
+              {selected.name}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )

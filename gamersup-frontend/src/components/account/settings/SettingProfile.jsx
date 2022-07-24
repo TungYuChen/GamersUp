@@ -1,11 +1,43 @@
-import React from 'react'
+import { React, useContext, useState } from 'react'
+import UserContext from '../../../context/user/UserContext'
+import AlertContext from '../../../context/alert/AlertContext'
 import SettingAvatar from './SettingAvatar'
 import SettingBday from './SettingBday'
 import SettingBio from './SettingBio'
 import SettingLevel from './SettingLevel'
+import axios from 'axios'
 
 function SettingProfile() {
-  const handleSubmitProfile = () => {}
+  const { changeAvatar } = useContext(UserContext)
+  const { setAlertWithTimeout } = useContext(AlertContext)
+
+  const [img, setImgFile] = useState('')
+
+  const handleSubmitProfile = () => {
+    uploadAvatar(img)
+  }
+
+  const uploadAvatar = async (imageSelected) => {
+    if (imageSelected === '') {
+      setAlertWithTimeout('Please select your avatar.', 'information')
+    } else {
+      const formData = new FormData()
+      formData.append('file', imageSelected)
+      formData.append('upload_preset', 'douglas_finalProject')
+
+      axios
+        .post(
+          'https://api.cloudinary.com/v1_1/mydouglasproject/upload',
+          formData
+        )
+        .then((response) => {
+          changeAvatar(response.data.url)
+        })
+        .catch((error) => {
+          setAlertWithTimeout('The file size is too big!', 'information')
+        })
+    }
+  }
 
   return (
     <>
@@ -21,8 +53,8 @@ function SettingProfile() {
             </p>
           </div>
 
-          <form className='mt-8 space-y-6' onSubmit={handleSubmitProfile}>
-            <SettingAvatar />
+          <div className='mt-8 space-y-6'>
+            <SettingAvatar setImgFile={setImgFile} />
             <SettingLevel />
             <SettingBday />
             <SettingBio />
@@ -30,12 +62,13 @@ function SettingProfile() {
             <div>
               <button
                 type='submit'
+                onClick={handleSubmitProfile}
                 className='group relative w-40 mx-auto flex justify-center py-2 px-4 border border-transparent text-base font-medium rounded-md btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'
               >
                 Save
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </>

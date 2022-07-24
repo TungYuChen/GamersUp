@@ -12,9 +12,9 @@ function LikeGameItem({
       </figure>
       <div className='card-body'>
         <div className='text-base font-semibold'>{name}</div>
-        <div class='card-actions justify-end'>
-          <ThumbUpIcon className='btn btn-ghost btn-circle mr-1 w-8' />
-          <ThumbDownIcon className='btn btn-ghost btn-circle mr-1 w-8' />
+        <div className='card-actions justify-end'>
+          <ThumbUpIcon className='btn btn-ghost btn-circle mr-1 w-8 hover:text-primary' />
+          <ThumbDownIcon className='btn btn-ghost btn-circle mr-1 w-8 hover:text-primary' />
         </div>
       </div>
     </div>
