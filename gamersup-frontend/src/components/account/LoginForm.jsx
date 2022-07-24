@@ -7,17 +7,18 @@ import {
   EyeOffIcon,
   MailIcon,
 } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Home from '../../pages/Home'
 
 function LoginForm() {
+  const navigate = useNavigate()
 
   // Set show password icon and function
   const [showPassword, setShowPassword] = useState(false)
 
   const { setAlertWithTimeout } = useContext(AlertContext)
 
-  const { isLoggedIn, executeAuthenticationService, getUserByEmail } =
+  const { user, isLoggedIn, executeAuthenticationService, getUserByEmail } =
     useContext(UserContext)
 
   // not working for now
@@ -45,9 +46,11 @@ function LoginForm() {
         } else {
           setAlertWithTimeout(err.message, 'error')
         }
-        
       })
 
+    if (isLoggedIn && user.avatarUrl == null) {
+      navigate('/settings', { replace: true })
+    }
   }
 
   if (isLoggedIn()) {
