@@ -259,6 +259,18 @@ export const UserProvider = ({ children }) => {
     return axios.get(`${API_URL}/gamers/getLikes/${id}`);
   }
 
+  const isFriend = (userId, gamerId) => {
+    return axios.get(`${API_URL}/gamers/isFriend/ida=${userId}&idb=${gamerId}`);
+  }
+
+  const addFriend = (userId, gamerId) => {
+    return axios.post(`${API_URL}/gamers/addfriendrequest/${userId}&${gamerId}`);
+  }
+
+  const acceptFriend = (userId, gamerId) => {
+    return axios.post(`${API_URL}/gamers/friendsAdd/${userId}&${gamerId}`);
+  }
+
   
 
   return (
@@ -291,6 +303,9 @@ export const UserProvider = ({ children }) => {
         changeLevel,
         changeLikes,
         getLikes,
+        isFriend,
+        addFriend,
+        acceptFriend,
         
       }}
     >

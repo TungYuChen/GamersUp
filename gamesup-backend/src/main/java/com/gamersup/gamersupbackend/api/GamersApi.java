@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/gamers")
 @AllArgsConstructor
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin
 public class GamersApi {
 
     private GamerService service;
@@ -67,13 +67,18 @@ public class GamersApi {
     }
 
 
-    @PostMapping("friendsAdd/{idA}&{idB}")
+    @PostMapping("/friendsAdd/{idA}&{idB}")
     public ResponseEntity<String> addFriend(@PathVariable("idA") long idA, @PathVariable("idB") long idB) {
-        if (service.createFriendRequest(idA, idB)) {
+        if (service.acceptFriendRequest(idA, idB)) {
             return new ResponseEntity<>("Created!", HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("Failed", HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @PostMapping("/addfriendrequest/{idA}&{idB}")
+    public ResponseEntity<Boolean> requestFriend(@PathVariable("idA") long idA, @PathVariable("idB") long idB) {
+        return new ResponseEntity<>(service.createFriendRequest(idA, idB), HttpStatus.OK);
     }
 
     @GetMapping("/friends/{id}")
@@ -126,6 +131,13 @@ public class GamersApi {
     @GetMapping("/getLikes/{id}")
     public ResponseEntity<Integer> getLikesByGamerId(@PathVariable Long id) {
         return new ResponseEntity<>(service.getLikesById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/isFriend/ida={ida}&idb={idb}")
+    public ResponseEntity<Boolean> isFriend(@PathVariable Long ida, @PathVariable Long idb) {
+        System.out.println("Get ids: " + ida +" &: " +idb);
+        return new ResponseEntity<>(service.getFriendListById(ida).contains(idb), HttpStatus.OK);
+
     }
 
 

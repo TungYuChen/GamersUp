@@ -8,7 +8,7 @@ import UserLikes from "../../components/profile/ProfileCard/UserLikes";
 import UserBio from "../../components/profile/ProfileCard/UserBio";
 
 function ProfileComponent( { theUser: { userID, userName, email, dob, level, likes, bio, avatarUrl}}) {
-  const { user } = useContext(UserContext);
+  const { user, isFriend, addFriend } = useContext(UserContext);
   const { setAlertWithTimeout } = useContext(AlertContext);
   const [imageSelected, setImageSelected] = useState("");
   const { changeAvatar} = useContext(UserContext);
@@ -21,6 +21,10 @@ function ProfileComponent( { theUser: { userID, userName, email, dob, level, lik
   const [ imgUrl, setImgUrl ] = useState(avatarUrl);  
   // const [ myDob, setMyDob] = useState(dob);
   // const [ myLikes, setMyLikes ] = useState(likes);
+  const [ friend, setFriend] = useState(isFriend(userID, user.userID).then( res => {
+    setFriend(res.data);
+  }    
+  ));
 
   
   const uploadAvatar = async () => {
@@ -46,7 +50,7 @@ function ProfileComponent( { theUser: { userID, userName, email, dob, level, lik
 
         
         
-    }
+    } 
 
 
 
@@ -58,6 +62,10 @@ function ProfileComponent( { theUser: { userID, userName, email, dob, level, lik
     //     signature: ""
     // })
   };   
+
+  const askForFriend = async () => {
+    await addFriend(user.userID, userID);
+  }
 
   return (
     <>
@@ -111,9 +119,19 @@ function ProfileComponent( { theUser: { userID, userName, email, dob, level, lik
              </button>
            </div>
           )}
-          {userID !== user.userID && (
-            <h1 className="px-auto text-center text-2xl">Hello, {user.userName}</h1>
+          {(userID !== user.userID && friend) && (
+            
+              <h1 className="px-auto text-center text-2xl">Hello, {user.userName}</h1>
+            
+            
           )}
+          {
+            (userID !== user.userID && !friend) && (
+              <div className="flex justify-center">
+                <button className="rounded-full bg-primary px-10 " onClick={askForFriend}>Become Friend</button>
+              </div>
+            )
+          }
         </div>
         {/* Detail Part */}
         <div id="right" className="bg-neutral px-10 pt-2 ">

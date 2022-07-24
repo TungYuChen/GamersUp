@@ -53,7 +53,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 //                .antMatchers("api/account/**").permitAll()
 //                .antMatchers("/registration/**").permitAll()
 //                .antMatchers("api/reviews/**").permitAll()
-                .antMatchers("api/gamers/**", "/**").permitAll()
+                .antMatchers("/**").permitAll()
 //                .antMatchers("api/games").permitAll()
 //                .hasAnyRole("USER", "ADMIN")
                 .anyRequest()
