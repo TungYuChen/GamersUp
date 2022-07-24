@@ -8,17 +8,16 @@ const API_URL = process.env.REACT_APP_BACKEND_API_URL
 const LOGIN_SESSION = process.env.REACT_APP_AUTH_SESSION
 const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
 
-
 export const UserProvider = ({ children }) => {
   const initialState = {
     error: false,
     reading: true,
     user: { userID: 0 }, // logged user
     wantToPlay: [],
-    played: [],  
+    played: [],
   }
 
-  const [state, dispatch] = useReducer(userReducer, initialState)  
+  const [state, dispatch] = useReducer(userReducer, initialState)
 
   const reading = (load) => {
     dispatch({ type: 'READING', payload: load })
@@ -42,7 +41,7 @@ export const UserProvider = ({ children }) => {
     axios
       .get(`${API_URL}/gamers/email=${email}`)
       .then((response) => {
-        const loggedUser = JSON.stringify(response.data)        
+        const loggedUser = JSON.stringify(response.data)
         sessionStorage.setItem(LOGIN_SESSION, loggedUser)
         dispatch({
           type: 'LOGIN',
@@ -59,7 +58,7 @@ export const UserProvider = ({ children }) => {
 
   const getLoggedUserInSession = () => {
     if (isLoggedIn()) {
-      const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))      
+      const loggedUser = JSON.parse(sessionStorage.getItem(LOGIN_SESSION))
       dispatch({
         type: 'GET_LOGGED_USER',
         payload: loggedUser,
@@ -114,7 +113,7 @@ export const UserProvider = ({ children }) => {
     reading(true)
     await axios
       .get(`${API_URL}/games/user=${id}/wanttoplaylist`)
-      .then((response) => {          
+      .then((response) => {
         dispatch({
           type: 'GET_WANT_TO_PLAY',
           payload: response.data,
@@ -133,7 +132,7 @@ export const UserProvider = ({ children }) => {
     await axios
       .get(`${API_URL}/games/user=${id}/playedlist`)
       .then((response) => {
-                dispatch({
+        dispatch({
           type: 'GET_PLAYED',
           payload: response.data,
         })
@@ -216,9 +215,8 @@ export const UserProvider = ({ children }) => {
         userId,
         url,
       })
-      .then((response) => 
-      {
-        console.log(response);
+      .then((response) => {
+        console.log(response)
         getUserByEmail(state.user.email)
       })
       .catch((err) => {
@@ -229,24 +227,24 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const changeBirthday = dob => {
-    const userId = state.user.userID;
+  const changeBirthday = (dob) => {
+    const userId = state.user.userID
     return axios.put(`${API_URL}/gamers/changeBirthday`, {
       userId,
       dob,
-    });
+    })
   }
 
-  const changeLevel = level => {
-    const userId = state.user.userID;
+  const changeLevel = (level) => {
+    const userId = state.user.userID
     return axios.put(`${API_URL}/gamers/changeLevel`, {
       userId,
       level,
     })
   }
 
-  const changeLikes = likes => {
-    const userId = state.user.userID;
+  const changeLikes = (likes) => {
+    const userId = state.user.userID
     return axios.put(`${API_URL}/gamers/changeLikes`, {
       userId,
       likes,
@@ -275,7 +273,50 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  
+  /* add a game review with rating 5 when the user clicks love for a game */
+  const addLoveGameReview = async (gameID) => {
+    const userID = state.user.userID
+    return axios.put(`${API_URL}/reviews/lovegame`, {
+      userID,
+      gameID,
+    })
+  }
+
+  /* add a game review with rating 0 when the user clicks hate for a game */
+  const addHateGameReview = async (gameID) => {
+    const userID = state.user.userID
+    return axios.put(`${API_URL}/reviews/hategame`, {
+      userID,
+      gameID,
+    })
+  }
+
+  /** delete a review when the user cancel love or hate a game */
+  const cancelLoveHate = async (gameID) => {
+    const userID = state.user.userID
+    return axios.delete(`${API_URL}/reviews/user=${userID}&game=${gameID}`, {
+      userID,
+      gameID,
+    })
+  }
+
+  /** check whether the user loves a game */
+  const checkLoveGame = async (gameID) => {
+    const userID = state.user.userID
+    return axios.post(`${API_URL}/reviews/check/love`, {
+      userID,
+      gameID,
+    })
+  }
+
+  /** check whether the user hates a game */
+  const checkHateGame = async (gameID) => {
+    const userID = state.user.userID
+    return axios.post(`${API_URL}/reviews/check/hate`, {
+      userID,
+      gameID,
+    })
+  }
 
   return (
     <UserContext.Provider
@@ -306,7 +347,11 @@ export const UserProvider = ({ children }) => {
         changeBirthday,
         changeLevel,
         changeLikes,
-        
+        addLoveGameReview,
+        addHateGameReview,
+        checkLoveGame,
+        checkHateGame,
+        cancelLoveHate,
       }}
     >
       {children}

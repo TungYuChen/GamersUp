@@ -6,8 +6,6 @@ import com.gamersup.gamersupbackend.repo.ReplyRepository;
 import com.gamersup.gamersupbackend.repo.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -60,5 +58,29 @@ public class ReviewService {
 
     public Optional<Review> findReviewById(long reviewid) {
         return reviewRepository.findById(reviewid);
+    }
+
+    // return a review whether a review exists
+    public Optional<Review> getReview(long userID, long gameID) {
+        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
+        return review;
+    }
+
+    // Check whether gamer love a game
+    public boolean checkLoveGame(long userID, long gameID) {
+        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
+        if (review.isPresent() && review.get().getRating() == 5) {
+            return true;
+        }
+        return false;
+    }
+
+    // Check whether gamer hate a game
+    public boolean checkHateGame(long userID, long gameID) {
+        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
+        if (review.isPresent() && review.get().getRating() == 0) {
+            return true;
+        }
+        return false;
     }
 }

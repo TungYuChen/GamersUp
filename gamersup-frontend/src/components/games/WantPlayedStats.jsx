@@ -26,22 +26,6 @@ function WantPlayedStats({ gameID, user: { userID } }) {
   const [played, setPlayed] = useState(false)
   const [click, setClick] = useState(0)
 
-  //   const checkWantToPlay = async (id) => {
-  //     const { data } = await axios.post(`${API_URL}/games/check/wanttoplay`, {
-  //       gameID: id,
-  //       gamerID: userID,
-  //     })
-  //     setWantToPlay(data)
-  //   }
-
-  //   const checkPlayed = async (id) => {
-  //     const { data } = await axios.post(`${API_URL}/games/check/played`, {
-  //       gameID: id,
-  //       gamerID: userID,
-  //     })
-  //     setPlayed(data)
-  //   }
-
   useEffect(() => {
     console.log(gameID)
     if (gameID !== null) {

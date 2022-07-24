@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/reviews")
@@ -29,6 +30,50 @@ public class ReviewApi {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newReview.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    // Create/Update a review for a love game
+    @PutMapping("/lovegame")
+    public ResponseEntity<Review> addLoveGameReview(@RequestBody Review review) {
+        Optional<Review> optionalReview = reviewService.getReview(review.getUserID(), review.getGameID());
+        Review reviewUpdated = null;
+        if (optionalReview.isPresent()) {
+            Review originalReview = optionalReview.get();
+            originalReview.setRating(5);
+            reviewUpdated = reviewService.saveReview(originalReview);
+        } else {
+            review.setRating(5);
+            reviewUpdated = reviewService.saveReview(review);
+        }
+        return new ResponseEntity<>(reviewUpdated, HttpStatus.OK);
+    }
+
+    // Create/Update a review for a hate game
+    @PutMapping("/hategame")
+    public ResponseEntity<Review> addHateGameReview(@RequestBody Review review) {
+        Optional<Review> optionalReview = reviewService.getReview(review.getUserID(), review.getGameID());
+        Review reviewUpdated = null;
+        if (optionalReview.isPresent()) {
+            Review originalReview = optionalReview.get();
+            originalReview.setRating(0);
+            reviewUpdated = reviewService.saveReview(originalReview);
+        } else {
+            review.setRating(0);
+            reviewUpdated = reviewService.saveReview(review);
+        }
+        return new ResponseEntity<>(reviewUpdated, HttpStatus.OK);
+    }
+
+    // Check whether gamer loves a game
+    @PostMapping("/check/love")
+    public boolean checkLoveGame(@RequestBody Review review) {
+        return reviewService.checkLoveGame(review.getUserID(), review.getGameID());
+    }
+
+    // Check whether gamer hates a game
+    @PostMapping("/check/hate")
+    public boolean checkHateGame(@RequestBody Review review) {
+        return reviewService.checkHateGame(review.getUserID(), review.getGameID());
     }
 
     // Create a new reply
@@ -71,6 +116,17 @@ public class ReviewApi {
     @DeleteMapping("/review={reviewid}")
     public ResponseEntity<Void> deleteReview(@PathVariable long reviewid) {
         reviewService.deleteReview(reviewid);
+        return ResponseEntity.noContent().build();
+    }
+
+    // with userID and gameID
+    @DeleteMapping("/user={userID}&game={gameID}")
+    public ResponseEntity<Void> deleteReviewWithUserIDGameID(@PathVariable long userID, @PathVariable long gameID) {
+        Optional<Review> optionalReview = reviewService.getReview(userID, gameID);
+        if (optionalReview.isPresent()) {
+            Review originalReview = optionalReview.get();
+            reviewService.deleteReview(originalReview.getId());
+        }
         return ResponseEntity.noContent().build();
     }
 
