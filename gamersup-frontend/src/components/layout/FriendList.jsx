@@ -15,10 +15,8 @@ function FriendList() {
         getFriends().then(response => {
             console.log(response.data)
             setLocalFriends(response.data)
-            setLoading(false);});
-        
-        
-    }, [])  
+            setLoading(false);});          
+    }, [localFriends])  
 
     
     

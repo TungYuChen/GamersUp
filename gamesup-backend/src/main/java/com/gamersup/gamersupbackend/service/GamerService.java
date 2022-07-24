@@ -188,7 +188,6 @@ public class GamerService implements UserDetailsService {
     public List<Long> getFriendListById(Long id) {
         List<Long> tempListA = friendRepository.findGamerAByGamerBAndAccepted(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
         List<Long> tempListB = friendRepository.findGamerBByGamerAAndAccepted(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
-
         return Stream.concat(tempListA.stream(), tempListB.stream()).toList();
     }
 

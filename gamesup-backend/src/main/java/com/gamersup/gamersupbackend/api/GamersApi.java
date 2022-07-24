@@ -81,6 +81,7 @@ public class GamersApi {
         List<Long> friendIdList = service.getFriendListById(id);
         List<GamerProfile> friends = new ArrayList<>();
         for (long friendId : friendIdList) {
+            System.out.println(friendId);
             friends.add(service.getGamerProfileById(friendId));
         }
         return new ResponseEntity<>(friends, HttpStatus.OK);
