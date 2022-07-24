@@ -1,14 +1,13 @@
-import { React, useContext, useState } from 'react'
+import { React, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import UserContext from '../../../context/user/UserContext'
 
-function SettingBday() {
-  const { user, changeBirthday } = useContext(UserContext)
-  const [newBirthday, setNewBirthDay] = useState(new Date())
+function SettingBday({ setBirthday }) {
+  const [newBirthday, setNewBirthDay] = useState()
 
-//   const uploadBirthday = async (e) => {
-//     changeBirthday(newBirthday)
-//   }
+  const handleChangeBd = async (newDate) => {
+    setBirthday(newDate)
+    setNewBirthDay(newDate)
+  }
 
   return (
     <div className='mb-10 pb-4'>
@@ -16,17 +15,11 @@ function SettingBday() {
       <div className='mt-5 relative'>
         <DatePicker
           className='w-full pr-40 bg-gray-200 rounded h-14 text-black'
-          selected={new Date(newBirthday)}
+          selected={newBirthday}
           id='datepicker'
-          onChange={(newDate) => setNewBirthDay(new Date(newDate))}
+          onChange={(newDate) => handleChangeBd(newDate)}
+          showYearDropdown 
         />
-        {/* <button
-          type='submit'
-          onClick={uploadBirthday}
-          className='absolute top-0 right-0 rounded-l-none w-40 btn btn-lg bg-secondary'
-        >
-          Submit
-        </button> */}
       </div>
     </div>
   )

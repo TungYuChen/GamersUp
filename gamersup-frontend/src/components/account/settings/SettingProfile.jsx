@@ -5,38 +5,48 @@ import SettingAvatar from './SettingAvatar'
 import SettingBday from './SettingBday'
 import SettingBio from './SettingBio'
 import SettingLevel from './SettingLevel'
+import Alert from '../../layout/Alert'
 import axios from 'axios'
 
 function SettingProfile() {
-  const { changeAvatar } = useContext(UserContext)
+  const { changeAvatar, changeLevel, changeBirthday, changeBio } =
+    useContext(UserContext)
   const { setAlertWithTimeout } = useContext(AlertContext)
 
   const [img, setImgFile] = useState('')
+  const [level, setLevel] = useState('')
+  const [birthday, setBirthday] = useState(null)
+  const [bio, setBio] = useState('')
 
   const handleSubmitProfile = () => {
-    uploadAvatar(img)
+    if (img !== '') {
+      uploadAvatar(img)
+    }
+    if (level !== '') {
+      changeLevel(level)
+    }
+    if (birthday !== null) {
+      changeBirthday(birthday)
+    }
+    if (bio !== '') {
+      changeBio(bio)
+    }
+    setAlertWithTimeout('Saved successfully!', 'information')
   }
 
   const uploadAvatar = async (imageSelected) => {
-    if (imageSelected === '') {
-      setAlertWithTimeout('Please select your avatar.', 'information')
-    } else {
-      const formData = new FormData()
-      formData.append('file', imageSelected)
-      formData.append('upload_preset', 'douglas_finalProject')
+    const formData = new FormData()
+    formData.append('file', imageSelected)
+    formData.append('upload_preset', 'douglas_finalProject')
 
-      axios
-        .post(
-          'https://api.cloudinary.com/v1_1/mydouglasproject/upload',
-          formData
-        )
-        .then((response) => {
-          changeAvatar(response.data.url)
-        })
-        .catch((error) => {
-          setAlertWithTimeout('The file size is too big!', 'information')
-        })
-    }
+    axios
+      .post('https://api.cloudinary.com/v1_1/mydouglasproject/upload', formData)
+      .then((response) => {
+        changeAvatar(response.data.url)
+      })
+      .catch((error) => {
+        setAlertWithTimeout('The file size is too big!', 'information')
+      })
   }
 
   return (
@@ -55,9 +65,9 @@ function SettingProfile() {
 
           <div className='mt-8 space-y-6'>
             <SettingAvatar setImgFile={setImgFile} />
-            <SettingLevel />
-            <SettingBday />
-            <SettingBio />
+            <SettingLevel setLevel={setLevel} />
+            <SettingBday setBirthday={setBirthday} />
+            <SettingBio setBio={setBio} />
 
             <div>
               <button
@@ -67,6 +77,7 @@ function SettingProfile() {
               >
                 Save
               </button>
+              <Alert />
             </div>
           </div>
         </div>
