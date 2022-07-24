@@ -81,7 +81,6 @@ public class GamersApi {
         List<Long> friendIdList = service.getFriendListById(id);
         List<GamerProfile> friends = new ArrayList<>();
         for (long friendId : friendIdList) {
-            System.out.println(friendId);
             friends.add(service.getGamerProfileById(friendId));
         }
         return new ResponseEntity<>(friends, HttpStatus.OK);
@@ -118,9 +117,15 @@ public class GamersApi {
     }
 
     // change likes
-    @PutMapping("/changeLikes")
-    public ResponseEntity<Boolean> changeLikesByGamerId(@RequestBody LikesRequest likesRequest) {
-        return new ResponseEntity<>(service.changeLikes(likesRequest.getUserId(), likesRequest.getLikes()), HttpStatus.OK);
+    @PutMapping("/changeLikes/{id}")
+    public ResponseEntity<Boolean> changeLikesByGamerId(@PathVariable Long id) {
+        System.out.println("User ID: " + id);
+        return new ResponseEntity<>(service.changeLikes(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/getLikes/{id}")
+    public ResponseEntity<Integer> getLikesByGamerId(@PathVariable Long id) {
+        return new ResponseEntity<>(service.getLikesById(id), HttpStatus.OK);
     }
 
 

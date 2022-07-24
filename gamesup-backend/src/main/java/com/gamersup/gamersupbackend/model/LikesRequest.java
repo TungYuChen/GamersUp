@@ -11,5 +11,4 @@ import lombok.Setter;
 @Setter
 public class LikesRequest {
     long userId;
-    int likes;
 }

@@ -245,19 +245,18 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  const changeLikes = likes => {
-    const userId = state.user.userID;
-    return axios.put(`${API_URL}/gamers/changeLikes`, {
-      userId,
-      likes,
-    })
+  const changeLikes = (gamerId) => {    
+    return axios.put(`${API_URL}/gamers/changeLikes/${gamerId}`);
   }
 
   const getFriends = () => {   
-    const userId = state.user.userID;
-    console.log(userId);
+    const userId = state.user.userID;    
     return axios.get(`${API_URL}/gamers/friends/${userId}`);
     
+  }
+
+  const getLikes = (id) => {
+    return axios.get(`${API_URL}/gamers/getLikes/${id}`);
   }
 
   
@@ -291,6 +290,7 @@ export const UserProvider = ({ children }) => {
         changeBirthday,
         changeLevel,
         changeLikes,
+        getLikes,
         
       }}
     >

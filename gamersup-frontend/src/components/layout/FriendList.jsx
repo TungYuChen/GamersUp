@@ -12,8 +12,7 @@ function FriendList() {
     const [ loading, setLoading ] = useState(true);
 
     useEffect(() => {        
-        getFriends().then(response => {
-            console.log(response.data)
+        getFriends().then(response => {                       
             setLocalFriends(response.data)
             setLoading(false);});          
     }, [localFriends])  

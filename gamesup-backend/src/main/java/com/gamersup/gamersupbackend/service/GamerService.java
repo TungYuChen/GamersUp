@@ -119,6 +119,7 @@ public class GamerService implements UserDetailsService {
         }
         String encodedPassword = encoder.passwordEncoder().encode(gamer.getPassword());
         gamer.setPassword(encodedPassword);
+        gamer.setLikes(0);
 
         gamerRepository.save(gamer);
 
@@ -214,15 +215,20 @@ public class GamerService implements UserDetailsService {
         }
     }
 
-    public boolean changeLikes(long id, int likes) {
+    public boolean changeLikes(long id) {
         try {
             GamerInfo gamer = gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id));
-            gamer.setLikes(likes);
+            gamer.setLikes(gamer.getLikes() + 1);
+            System.out.println(gamer.getLikes());
             gamerRepository.save(gamer);
             return true;
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    public Integer getLikesById(long id) {
+        return gamerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id", "Gamer", id)).getLikes();
     }
 
     private String buildAcceptFriendshipEmail(String nameA, String nameB, long idA, long idB){
