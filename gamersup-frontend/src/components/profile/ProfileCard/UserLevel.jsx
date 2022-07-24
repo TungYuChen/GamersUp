@@ -12,8 +12,8 @@ function UserLevel({gamerId, level}) {
   
   console.log(tempLevel);
 
-  const uploadLevel = async (e) => {      
-      console.log(tempLevel);
+  const uploadLevel = async (e) => {     
+      
       await changeLevel(tempLevel);
       setCurrentLevel(tempLevel);
   }

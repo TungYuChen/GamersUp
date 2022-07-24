@@ -251,26 +251,11 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  const getFriends = async () => {
-    fetching()
-    //hardcode
-    const friends = [1, 2]
-    // const friends = state.user.friends;
-    const friendList = []
-    await friends.forEach(async (id) => {
-      await axios
-        .get(`${API_URL}/gamer=${id}`)
-        .then((response) => friendList.push(response.data))
-    })
-
-    while (friendList.length < friends.length) {
-      setTimeout(10)
-    }
-
-    dispatch({
-      type: 'FRIENDS',
-      payload: friendList,
-    })
+  const getFriends = () => {   
+    const userId = state.user.userID;
+    console.log(userId);
+    return axios.get(`${API_URL}/gamers/friends/${userId}`);
+    
   }
 
   /* add a game review with rating 5 when the user clicks love for a game */
