@@ -1,6 +1,7 @@
 package com.gamersup.gamersupbackend.audio;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -17,18 +18,33 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+@Service
 public class Server implements Runnable{
-
+    // ArrayList for connection -> nickname
     private ArrayList<ConnectionHandler> connectionList;
+
+    // create a server by ServerSocket
     private ServerSocket server;
+
+    // if done, close all
     private boolean done = false;
+
+    // thread pool for handling connections
     private ExecutorService pool;
+
+    // port for link, TODO: become input param
     private int port = 9999;
+
+    // buffer for writing and reading audio
     public SourceDataLine audioOut;
+
+    // calling status
     public static boolean calling = false;
 
-
+    /**
+     * the default audio format
+     * @return AudioFormat with sample rate, sample size in bite, channel, signed, store in big endian or not
+     */
     public static AudioFormat getAudioFormat() {
         float sampleRate = 8000.0F;
         int sampleSizeInbites = 16;
@@ -38,16 +54,25 @@ public class Server implements Runnable{
         return new AudioFormat(sampleRate, sampleSizeInbites, channel, signed, bigEndian);
     }
 
+    /**
+     * When server be created, array list for multiple connections be initialized
+     */
     public Server() {
         connectionList = new ArrayList<>();
     }
 
 
-
+    /**
+     * Start to run the server
+     * Server is initialized with port
+     * Audio init -> Audio in would be opened, the thread for catch audio input start
+     * Thread Pool start
+     */
     @Override
     public void run() {
         try {
             server = new ServerSocket(port);
+            initAudio();
             pool = Executors.newCachedThreadPool();
             while (!done) {
                 Socket client = server.accept();
@@ -62,6 +87,11 @@ public class Server implements Runnable{
         }
     }
 
+    /**
+     * Broadcast the message
+     * When someone speak, broadcast the text
+     * @param message
+     */
     public void broadcast(String message) {
         for (ConnectionHandler ch : connectionList) {
             if (ch != null) {
@@ -70,6 +100,9 @@ public class Server implements Runnable{
         }
     }
 
+    /**
+     * Close server and all connection handler
+     */
     public void shutdown() {
         try {
             done = true;
@@ -85,8 +118,13 @@ public class Server implements Runnable{
 
     }
 
+    /**
+     * initialize Audio for audio out, will catch the datagram socket by port
+     */
     public void initAudio() {
+        // get audio format
         AudioFormat format = getAudioFormat();
+        // get the source data for audio output
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
         if (!AudioSystem.isLineSupported(info)) {
@@ -94,13 +132,17 @@ public class Server implements Runnable{
             System.exit(0);
         }
         try {
+            // setting audio output
             audioOut = (SourceDataLine) AudioSystem.getLine(info);
             audioOut.open(format);
             audioOut.start();
+            // create new thread for play the sound
             PlayThread play = new PlayThread();
+            // set input as socket input
             play.din = new DatagramSocket(port);
+            // assign the audio as our setting
             play.audioOut = audioOut;
-            this.calling = true;
+            calling = true;
             play.start();
 
         } catch (Exception e) {
@@ -110,14 +152,21 @@ public class Server implements Runnable{
     }
 
 
-
-
+    /**
+     * Connection handler for client connect in the group for chatting
+     */
     class ConnectionHandler implements Runnable {
 
         private Socket client;
         private BufferedReader in;
         private PrintWriter out;
+        // should be username
         private String nickname;
+
+        /**
+         * When new client connected, create a new one
+         * @param client
+         */
         public ConnectionHandler(Socket client) {
             this.client = client;
         }
@@ -133,22 +182,23 @@ public class Server implements Runnable{
                 broadcast(nickname + " joined the chat!");
                 String message;
                 while ((message = in.readLine()) != null) {
-                    if (message.startsWith("/nick")) {
-                        String[] messageSplit = message.split("", 2);
-                        if (messageSplit.length == 2) {
-                            broadcast(nickname + " renamed themselves to " + messageSplit[1]);
-                            System.out.println(nickname + " renamed themselves to " + messageSplit[1]);
-                            nickname = messageSplit[1];
-                            out.print("Successfully change nickname to " + nickname);
-                        } else {
-                            out.println("No nickname provided");
-                        }
-                    }else if (message.startsWith("/quit")) {
-                        broadcast(nickname + " left the chat ");
-                    } else {
-                        broadcast(nickname + ": " + message);
-                    }
-
+                    // we don't support chat room commands
+//                    if (message.startsWith("/nick")) {
+//                        String[] messageSplit = message.split("", 2);
+//                        if (messageSplit.length == 2) {
+//                            broadcast(nickname + " renamed themselves to " + messageSplit[1]);
+//                            System.out.println(nickname + " renamed themselves to " + messageSplit[1]);
+//                            nickname = messageSplit[1];
+//                            out.print("Successfully change nickname to " + nickname);
+//                        } else {
+//                            out.println("No nickname provided");
+//                        }
+//                    }else if (message.startsWith("/quit")) {
+//                        broadcast(nickname + " left the chat ");
+//                    } else {
+//                        broadcast(nickname + ": " + message);
+//                    }
+                    broadcast(nickname + ": " + message);
                 }
             } catch (IOException e) {
                 shutdown();
@@ -156,6 +206,7 @@ public class Server implements Runnable{
         }
 
         public void sendMessage(String message) {
+            // TODO: should become string send to frontend
             out.println(message);
         }
 

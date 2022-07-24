@@ -13,11 +13,16 @@ public class RecordThread extends Thread{
     byte[] byteBuff = new byte[512];
     public InetAddress serverIp;
     public int serverPort;
+    public boolean calling;
+
+    public RecordThread(boolean calling) {
+        this.calling = calling;
+    }
 
     @Override
     public void run() {
         int i = 0;
-        while (ClientVoice.calling) {
+        while (calling) {
             audioIn.read(byteBuff, 0, byteBuff.length);
             DatagramPacket data = new DatagramPacket(byteBuff, byteBuff.length, serverIp, serverPort);
             System.out.println("Sent #" + i++);

@@ -5,20 +5,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.Buffer;
+
 
 public class Client implements Runnable{
-
 
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
     private boolean done = false;
+    // should be input
+    private int port = 9999;
 
+    /**
+     * Create new client with port and link, initialing output writter and input stream
+     */
     @Override
     public void run() {
         try {
-            client = new Socket("127.0.0.1", 9999);
+            client = new Socket("127.0.0.1", port);
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
@@ -49,6 +53,9 @@ public class Client implements Runnable{
         }
     }
 
+    /**
+     * When input, buffer reader read the data and output it
+     */
     class InputHandler implements Runnable {
         @Override
         public void run() {
@@ -56,12 +63,12 @@ public class Client implements Runnable{
                 BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
                 while (!done) {
                     String message = inReader.readLine();
-                    if (message.equals("/quit")) {
-                        inReader.close();
-                        shutdown();
-                    } else {
+//                    if (message.equals("/quit")) {
+//                        inReader.close();
+//                        shutdown();
+//                    } else {
                         out.println(message);
-                    }
+//                    }
                 }
             } catch (IOException e) {
                 // TODO: handle
