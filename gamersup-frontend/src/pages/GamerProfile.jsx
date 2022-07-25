@@ -31,7 +31,7 @@ function GamerProfile() {
     if (isLoggedIn()) {
       return (   
      <>
-      <div className="card  bg-base-300 p-4 my-8">
+      <div className="card bg-base-300 p-4 my-8">
        <ProfileComponent theUser = {gamer} />      
      </div>
   
