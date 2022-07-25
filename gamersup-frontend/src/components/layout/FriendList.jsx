@@ -23,13 +23,13 @@ function FriendList() {
     if (isLoggedIn()) {        
         if (loading) {
             return (
-                <div className="float-right w-64 h-full">
+                <div className="float-right w-48 h-full">
                     <Loading />
                 </div>
                 );
         } else {
             return (
-                <div className="float-right w-64 h-full mt-8 ml-2">
+                <div className="float-right w-48 h-full mt-8 ml-2">
                     <div className=" bg-base-300 p-2 drop-shadow-lg rounded-full "><h2 className="text-xl text-center">Friend List</h2></div>
                     <div id="friendListBody" className="grid grid-cols-1 bg-neutral pl-2 ">
                     { localFriends.map((friend) => 
