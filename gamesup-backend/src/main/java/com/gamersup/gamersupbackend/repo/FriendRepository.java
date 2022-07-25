@@ -24,6 +24,10 @@ public interface FriendRepository extends JpaRepository<Friends, Long> {
     @Query("SELECT accepted FROM Friends WHERE (gamerAId = ?1 OR gamerBId = ?1) AND (gamerAId = ?2 OR gamerBId = ?2)")
     Optional<Integer> checkFriendRecord(long idA, long idB);
 
+    @Query(value = "SELECT * FROM friends WHERE (gamerAId = ?1 OR gamerBId = ?1) AND (gamerAId = ?2 OR gamerBId = ?2)",
+    nativeQuery = true)
+    Optional<Friends> findFriendsRecordByIds(long idA, long idB);
+
     @Transactional
     @Modifying
     @Query("UPDATE Friends a " + "SET a.accepted = 1 WHERE a.gamerAId = ?1 AND a.gamerBId = ?2")

@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound'
 import GameDetailsPage from './pages/GameDetailsPage'
 import GamerProfile from './pages/GamerProfile'
 import Settings from './pages/Settings'
+import AcceptFriendPage from './pages/AcceptFriendPage'
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
                     <Route path='/resetpassword' element={<ResetPassword />} />
                     <Route path='/settings' element={<Settings />} />
                     <Route path='/profile/:id' element={<GamerProfile />} />
+                    <Route path='/acceptFriend/:idA&:idB' element={<AcceptFriendPage />}/>
                     <Route path='/*' element={<NotFound />} />
                   </Routes>                  
                 </main>
