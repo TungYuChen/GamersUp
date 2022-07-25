@@ -62,14 +62,21 @@ public class ReviewService {
 
     // return a review whether a review exists
     public Optional<Review> getReview(long userID, long gameID) {
-        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
-        return review;
+        Optional<Review> hateReview = reviewRepository.findByUserIDAndGameIDAndRating(userID, gameID, 0);
+        Optional<Review> loveReview = reviewRepository.findByUserIDAndGameIDAndRating(userID, gameID, 6);
+        if (hateReview.isPresent()) {
+            return hateReview;
+        }
+        if (loveReview.isPresent()) {
+            return loveReview;
+        }
+        return null;
     }
 
     // Check whether gamer love a game
     public boolean checkLoveGame(long userID, long gameID) {
-        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
-        if (review.isPresent() && review.get().getRating() == 5) {
+        Optional<Review> review = reviewRepository.findByUserIDAndGameIDAndRating(userID, gameID, 6);
+        if (review.isPresent()) {
             return true;
         }
         return false;
@@ -77,8 +84,8 @@ public class ReviewService {
 
     // Check whether gamer hate a game
     public boolean checkHateGame(long userID, long gameID) {
-        Optional<Review> review = reviewRepository.findByUserIDAndGameID(userID, gameID);
-        if (review.isPresent() && review.get().getRating() == 0) {
+        Optional<Review> review = reviewRepository.findByUserIDAndGameIDAndRating(userID, gameID, 0);
+        if (review.isPresent()) {
             return true;
         }
         return false;
