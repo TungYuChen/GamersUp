@@ -17,10 +17,12 @@ function UserLikes({gamerId, likes}) {
     }, [currentLikes])
     
 
-    const likesAdd = () => {               
-        setCurrentLikes(currentLikes + 1);        
-        changeLikes(params.id);
-        setTimeout(500);
+    const likesAdd = () => {    
+        changeLikes(params.id).then( response => {
+            setCurrentLikes(currentLikes + 1);
+        });       
+             
+        
     } 
 
 
