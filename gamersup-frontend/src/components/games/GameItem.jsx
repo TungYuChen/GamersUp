@@ -59,7 +59,7 @@ function GameItem({
   }
 
   return (
-    <div className='card w-72 bg-base-200 shadow-xl'>
+    <div className='card w-72 mb-5 bg-base-200 shadow-xl'>
       <Link to={`/game/${id}`}>
         {validImage && (
           <figure>

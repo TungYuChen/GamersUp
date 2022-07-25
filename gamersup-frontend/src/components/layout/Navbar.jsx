@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
 import gamerAvatar from '../../images/gamers-logo.png'
+import FriendList from './FriendList'
 
 function Navbar({ title }) {
   const { isLoggedIn, logout, getLoggedUserInSession, user } =
@@ -53,12 +54,7 @@ function Navbar({ title }) {
               </Link>
             )}
             {isLoggedIn() && (
-              <Link to='/' className='btn btn-ghost btn-lg rounded-btn ml-3'>
-                Chats
-              </Link>
-            )}
-            {isLoggedIn() && (
-              <div className='w-12 rounded-full mt-2 mr-6'>
+              <div className='w-12 rounded-full mt-2 mx-2'>
                 <button className='btn btn-ghost btn-circle'>
                   <div className='indicator'>
                     <svg
@@ -82,6 +78,25 @@ function Navbar({ title }) {
             )}
             {isLoggedIn() && (
               <div className='dropdown dropdown-end'>
+                <label tabIndex='0' className='btn btn-ghost btn-lg rounded-btn mr-2'>
+                    Friends
+                </label>
+                <ul
+                  tabIndex='0'
+                  className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-60'
+                >
+                  {/* <li>
+        <a className="justify-between">
+          Notifications
+          <span className="badge">New</span>
+        </a>
+      </li> */}
+                  <FriendList />
+                </ul>
+              </div>
+            )}
+            {isLoggedIn() && (
+              <div className='dropdown dropdown-end'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle avatar'>
                   <div className='w-12 rounded-full mt-2'>
                     {user.avatarUrl !== null && (
@@ -96,12 +111,6 @@ function Navbar({ title }) {
                   tabIndex='0'
                   className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-40'
                 >
-                  {/* <li>
-          <a className="justify-between">
-            Notifications
-            <span className="badge">New</span>
-          </a>
-        </li> */}
                   <li>
                     <Link
                       to={`/profile/${

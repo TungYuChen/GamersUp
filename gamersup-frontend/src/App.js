@@ -30,7 +30,7 @@ function App() {
                 <Navbar />
                 <main className='container mx-auto px-4 pb-15'>
                   <Alert />
-                  <FriendList />
+                  {/* <FriendList /> */}
                   <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/platform/:id' element={<GamesList />} />
@@ -44,9 +44,12 @@ function App() {
                     <Route path='/resetpassword' element={<ResetPassword />} />
                     <Route path='/settings' element={<Settings />} />
                     <Route path='/profile/:id' element={<GamerProfile />} />
-                    <Route path='/acceptFriend/:idA&:idB' element={<AcceptFriendPage />}/>
+                    <Route
+                      path='/acceptFriend/:idA&:idB'
+                      element={<AcceptFriendPage />}
+                    />
                     <Route path='/*' element={<NotFound />} />
-                  </Routes>                  
+                  </Routes>
                 </main>
                 <Footer />
               </div>
