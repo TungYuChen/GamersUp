@@ -14,16 +14,18 @@ function GamerProfile() {
   const params = useParams();
   const [ gamer, setGamer ] = useState();
   const [ userReady, setUserReady ] = useState(false);
+  
 
   useEffect(() => {      
+    setUserReady(false);
     getGamerById(params.id).then( response => {           
-      setGamer(response.data);      
+      setGamer(response.data);     
       setUserReady(true);
     })
     getWantToPlayByGamerId(params.id);
     getPlayedByGamerId(params.id);
     
-  }, [isLoggedIn()])
+  }, [params.id])
 
   if (reading || fetching || !userReady) {
     return <Loading />

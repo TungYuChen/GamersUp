@@ -4,7 +4,7 @@ import React from 'react'
 
 function FriendComponent({key, friend}) {    
     return (
-        <div className='.card grid grid-cols-3 rounded-full bg-base-300 mx-3 my-2 '>
+        <div className='grid grid-cols-3 rounded-full bg-base-300 mx-3 my-2 ' key={key}>
             <a href={'/profile/' + friend.userID}>
                 <img src={friend.avatarUrl} alt="No Avatar" />
             </a>
