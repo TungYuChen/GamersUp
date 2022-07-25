@@ -8,10 +8,16 @@ import javax.sound.sampled.TargetDataLine;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+/**
+ * It's an audio output
+ */
 public class Audio {
+
+    // port should be input
     public int port = 9999;
     public String address = "127.0.0.1";
     TargetDataLine audioIn;
+    private RecordThread recordThread;
 
     public static AudioFormat getAudioFormat() {
         float sampleRate = 8000.0F;
@@ -23,7 +29,10 @@ public class Audio {
     }
 
 
-
+    /**
+     * Initialized audio output as the audio input
+     * TODO: Recognize userId then ignore the audio by their own
+     */
     public void initAudio() {
         AudioFormat format = getAudioFormat();
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -36,7 +45,7 @@ public class Audio {
             audioIn = (TargetDataLine) AudioSystem.getLine(info);
             audioIn.open(format);
             audioIn.start();
-            RecordThread recordThread = new RecordThread();
+            recordThread = new RecordThread(true);
             InetAddress inetAddress = InetAddress.getByName(address);
             recordThread.audioIn = audioIn;
             recordThread.dout = new DatagramSocket();
@@ -55,11 +64,16 @@ public class Audio {
 
     }
 
+    public void close() {
+        recordThread.calling = false;
+    }
+
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Audio();
+                Audio audio = new Audio();
+                audio.initAudio();
             }
         });
     }

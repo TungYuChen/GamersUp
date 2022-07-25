@@ -243,17 +243,12 @@ export const UserProvider = ({ children }) => {
     })
   }
 
-  const changeLikes = (likes) => {
-    const userId = state.user.userID
-    return axios.put(`${API_URL}/gamers/changeLikes`, {
-      userId,
-      likes,
-    })
+  const changeLikes = (gamerId) => {    
+    return axios.put(`${API_URL}/gamers/changeLikes/${gamerId}`);
   }
 
   const getFriends = () => {   
-    const userId = state.user.userID;
-    console.log(userId);
+    const userId = state.user.userID;    
     return axios.get(`${API_URL}/gamers/friends/${userId}`);
     
   }
@@ -303,6 +298,27 @@ export const UserProvider = ({ children }) => {
     })
   }
 
+  /** get Likes number for profile page*/
+  const getLikes = (id) => {
+    return axios.get(`${API_URL}/gamers/getLikes/${id}`);
+  }
+
+  /** check is friend or not for profile page */
+  const isFriend = (userId, gamerId) => {
+    return axios.get(`${API_URL}/gamers/isFriend/ida=${userId}&idb=${gamerId}`);
+  }
+
+  /** create friend request for adding friend */
+  const addFriend = (userId, gamerId) => {
+    return axios.post(`${API_URL}/gamers/addfriendrequest/${userId}&${gamerId}`);
+  }
+
+  /** accept friend  */
+  const acceptFriend = (userId, gamerId) => {
+    return axios.post(`${API_URL}/gamers/friendsAdd/${userId}&${gamerId}`);
+  }
+  
+
   return (
     <UserContext.Provider
       value={{
@@ -337,6 +353,11 @@ export const UserProvider = ({ children }) => {
         checkLoveGame,
         checkHateGame,
         cancelLoveHate,
+        getLikes,
+        isFriend,
+        addFriend,
+        acceptFriend,
+        
       }}
     >
       {children}

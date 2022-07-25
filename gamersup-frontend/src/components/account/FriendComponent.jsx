@@ -2,11 +2,12 @@ import React from 'react'
 
 
 
-function FriendComponent({key, friend}) {
-    console.log(friend);
+function FriendComponent({key, friend}) {    
     return (
         <div className='.card grid grid-cols-3 rounded-full bg-base-300 mx-3 my-2 '>
-            <img src={friend.avatarUrl} alt="No Avatar" />
+            <a href={'/profile/' + friend.userID}>
+                <img src={friend.avatarUrl} alt="No Avatar" />
+            </a>
             <div className='col-span-2 my-auto'>
                 <h1>{friend.userName}</h1>
             </div>
