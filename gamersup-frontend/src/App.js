@@ -7,7 +7,6 @@ import GamesList from './components/games/GamesList'
 import Alert from './components/layout/Alert'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
-import FriendList from './components/layout/FriendList'
 import { AlertProvider } from './context/alert/AlertContext'
 import { GamesProvider } from './context/games/GamesContext'
 import { UserProvider } from './context/user/UserContext'
@@ -30,7 +29,6 @@ function App() {
                 <Navbar />
                 <main className='container mx-auto px-4 pb-15'>
                   <Alert />
-                  {/* <FriendList /> */}
                   <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/platform/:id' element={<GamesList />} />
