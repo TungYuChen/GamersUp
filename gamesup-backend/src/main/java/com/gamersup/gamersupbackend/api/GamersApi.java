@@ -124,7 +124,6 @@ public class GamersApi {
     // change likes
     @PutMapping("/changeLikes/{id}")
     public ResponseEntity<Boolean> changeLikesByGamerId(@PathVariable Long id) {
-        System.out.println("User ID: " + id);
         return new ResponseEntity<>(service.changeLikes(id), HttpStatus.OK);
     }
 
@@ -135,7 +134,6 @@ public class GamersApi {
 
     @GetMapping("/isFriend/ida={ida}&idb={idb}")
     public ResponseEntity<Boolean> isFriend(@PathVariable Long ida, @PathVariable Long idb) {
-        System.out.println("Get ids: " + ida +" &: " +idb);
         return new ResponseEntity<>(service.getFriendListById(ida).contains(idb), HttpStatus.OK);
 
     }

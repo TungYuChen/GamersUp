@@ -18,6 +18,7 @@ import GameDetailsPage from './pages/GameDetailsPage'
 import GamerProfile from './pages/GamerProfile'
 import Settings from './pages/Settings'
 import AcceptFriendPage from './pages/AcceptFriendPage'
+import {ContextProvider} from './context/Context'
 
 function App() {
   return (
@@ -25,35 +26,37 @@ function App() {
       <UserProvider>
         <ReviewProvider>
           <AlertProvider>
-            <Router>
-              <div className='flex flex-col justify-between h-screen'>
-                <Navbar />
-                <main className='container mx-auto px-4 pb-15'>
-                  <Alert />
-                  {/* <FriendList /> */}
-                  <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/platform/:id' element={<GamesList />} />
-                    <Route path='/game/:id' element={<GameDetailsPage />} />
-                    <Route path='/login' element={<LoginForm />} />
-                    <Route path='/signup' element={<SignupForm />} />
-                    <Route
-                      path='/forgotpassword'
-                      element={<ForgotPassword />}
-                    />
-                    <Route path='/resetpassword' element={<ResetPassword />} />
-                    <Route path='/settings' element={<Settings />} />
-                    <Route path='/profile/:id' element={<GamerProfile />} />
-                    <Route
-                      path='/acceptFriend/:idA&:idB'
-                      element={<AcceptFriendPage />}
-                    />
-                    <Route path='/*' element={<NotFound />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </div>
-            </Router>
+            <ContextProvider>
+              <Router>
+                <div className='flex flex-col justify-between h-screen'>
+                  <Navbar />                
+                  <main className='container mx-auto px-4 pb-15'>
+                    <Alert />
+                    {/* <FriendList /> */}
+                    <Routes>
+                      <Route path='/' element={<Home />} />
+                      <Route path='/platform/:id' element={<GamesList />} />
+                      <Route path='/game/:id' element={<GameDetailsPage />} />
+                      <Route path='/login' element={<LoginForm />} />
+                      <Route path='/signup' element={<SignupForm />} />
+                      <Route
+                        path='/forgotpassword'
+                        element={<ForgotPassword />}
+                      />
+                      <Route path='/resetpassword' element={<ResetPassword />} />
+                      <Route path='/settings' element={<Settings />} />
+                      <Route path='/profile/:id' element={<GamerProfile />} />
+                      <Route
+                        path='/acceptFriend/:idA&:idB'
+                        element={<AcceptFriendPage />}
+                      />
+                      <Route path='/*' element={<NotFound />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
+              </Router>
+            </ContextProvider>
           </AlertProvider>
         </ReviewProvider>
       </UserProvider>

@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "cloudinary-react": "^1.8.0",
+    "cors": "^2.8.5",
     "daisyui": "^2.15.0",
     "moment": "^2.29.4",
     "react": "^18.1.0",
@@ -19,9 +20,9 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.5.1",
     "use-file-picker": "^1.5.0",
-    "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
