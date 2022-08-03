@@ -1,32 +1,30 @@
-package com.gamersup.gamersupbackend.model;
+package com.gamersup.gamersupbackend.service;
 
-import com.gamersup.gamersupbackend.service.GamerService;
-import com.gamersup.gamersupbackend.service.ReviewService;
+import com.gamersup.gamersupbackend.model.Rater;
+import com.gamersup.gamersupbackend.model.Rating;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
-public class RecommendationRunner {
-
-    private static GamerService gamerService;
-    private static ReviewService reviewService;
+@Service
+@AllArgsConstructor
+public class RecommendationService {
 
     /**
      * This method computes a similarity rating for each rater to see how similar they are to the user.
      *
-     * @param userID
+     * @param
      * @return a list of type Rating with the item property is a rater's ID and the value property is the dot product
      * comparison, sorted by values from highest to lowest and only including positive similarity ratings
      */
-    public static ArrayList<Rating> getSimilarRaters(long userID) {
+    public ArrayList<Rating> getSimilarRaters(Rater user, ArrayList<Rater> allRaters) {
         ArrayList<Rating> raters = new ArrayList<>();
-        Rater user = new Rater(userID);
-        ArrayList<Rater> allRaters = getAllRaters();
         for (Rater rater: allRaters) {
             long raterID = rater.getUserID();
-            if (raterID != userID) {
+            if (raterID != user.getUserID()) {
                 double dotProductC = dotProduct(user, rater);
                 if (dotProductC > 0) {
                     raters.add(new Rating(raterID, dotProductC));
@@ -48,15 +46,16 @@ public class RecommendationRunner {
      * @return a hashmap of games with the gameID as key and the type Rating as values, with which the item is a game ID
      * and the value is the average rating
      */
-    public static HashMap<Long, Rating> recommendGames(long userID, int numSimilarRaters, int minRaters) {
+    public HashMap<Long, Rating> recommendGames(long userID, ArrayList<Rater> allRaters, int numSimilarRaters, int minRaters) {
         HashMap<Long, Rating> recommendations = new HashMap<>();
-        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(userID).subList(0, numSimilarRaters);
-        Rater user = new Rater(userID);
+        Rater user = getRaterByID(userID, allRaters);
+        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(user, allRaters).subList(0, numSimilarRaters);
         // the rated games of the user
         HashMap<Long, Rating> ratings = user.getRatings();
         for (Rating rater: topRaters) {
+            Rater gamer = getRaterByID(rater.getItem(), allRaters);
             // get the similar ratings of the top rater
-            ArrayList<Rating> similarRatings = getSimilarRatings(rater.getItem(), numSimilarRaters, minRaters);
+            ArrayList<Rating> similarRatings = getSimilarRatings(gamer, allRaters, numSimilarRaters, minRaters);
             for (Rating rating: similarRatings) {
                 // if the game is not rated by the user and is not in the recommendations yet
                 if (!ratings.containsKey(rating.getItem()) && !recommendations.containsKey(rating.getItem())) {
@@ -71,15 +70,14 @@ public class RecommendationRunner {
      * This method is to get a list of Rating and their weighted average ratings of the top similar raters and including
      * only those games that have at least minRaters ratings from the most similar raters.
      *
-     * @param gamerID
+     * @param
      * @param numSimilarRaters the number of the top similar raters
      * @param minRaters the game must be rated by a minimal number of raters
      * @return a list of type Rating with the item is a game ID and the value is the average rating, in sorted order from highest to lowest
      */
-    public static ArrayList<Rating> getSimilarRatings(long gamerID, int numSimilarRaters, int minRaters) {
+    public ArrayList<Rating> getSimilarRatings(Rater gamer, ArrayList<Rater> allRaters, int numSimilarRaters, int minRaters) {
         ArrayList<Rating> ratings = new ArrayList<>();
-        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(gamerID).subList(0, numSimilarRaters);
-        Rater gamer = new Rater(gamerID);
+        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(gamer, allRaters).subList(0, numSimilarRaters);
         ArrayList<Long> games = gamer.getGamesRated();
         for (long gameID: games) {
             double avg = getWeightedAvgByGameID(gameID, minRaters, topRaters);
@@ -91,19 +89,6 @@ public class RecommendationRunner {
         return ratings;
     }
 
-    private static ArrayList<Rater> getAllRaters() {
-        ArrayList<Rater> allRaters = new ArrayList<>();
-        List<GamerInfo> gamers = gamerService.getAllGamers();
-        for (GamerInfo gamer: gamers) {
-            long gamerID = gamer.getId();
-            List<Review> reviewList = reviewService.getAllReviewsByUserID(gamerID);
-            if (!reviewList.isEmpty()) {
-                allRaters.add(new Rater(gamerID));
-            }
-        }
-        return allRaters;
-    }
-
     /**
      * This method translates a rating from the scale 0 to 6 to the scale -3 to 3 and returns the dot product of the
      * ratings of games that they both rated.
@@ -112,7 +97,7 @@ public class RecommendationRunner {
      * @param b other user to be compared
      * @return the dot product of the ratings of games
      */
-    private static double dotProduct(Rater a, Rater b) {
+    private double dotProduct(Rater a, Rater b) {
         double denominator = 0;
         double numerator = 1;
         ArrayList<Long> aGames = a.getGamesRated();
@@ -135,7 +120,7 @@ public class RecommendationRunner {
      * @param topRaters the top similar raters
      * @return the weighted average ranking on a game, 0 if no minRaters raters gave ratings on the game
      */
-    private static double getWeightedAvgByGameID(long gameID, int minRaters, ArrayList<Rating> topRaters) {
+    private double getWeightedAvgByGameID(long gameID, int minRaters, ArrayList<Rating> topRaters) {
         int raters = 0;
         double totalRating = 0;
         for (Rating rating: topRaters) {
@@ -153,4 +138,12 @@ public class RecommendationRunner {
         return 0;
     }
 
+    private Rater getRaterByID(long userID, ArrayList<Rater> allRaters) {
+        for (Rater rater: allRaters) {
+            if (rater.getUserID() == userID) {
+                return rater;
+            }
+        }
+        return null;
+    }
 }

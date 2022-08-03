@@ -15,6 +15,10 @@ import javax.persistence.*;
 @Table(name = "games")
 public class RatedGame {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long Id;
+
     @Column(name="gameid")
     private long gameID;
 
