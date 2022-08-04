@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,22 +17,23 @@ public class RecommendationService {
     /**
      * This method computes a similarity rating for each rater to see how similar they are to the user.
      *
-     * @param
-     * @return a list of type Rating with the item property is a rater's ID and the value property is the dot product
-     * comparison, sorted by values from highest to lowest and only including positive similarity ratings
+     * @param user
+     * @param allRaters all raters from database
+     * @return a list of type Rating with the item property is a rater's ID and the value property is the cosine
+     * similarity, sorted by values from highest to lowest and only including positive similarity raters.
      */
-    public ArrayList<Rating> getSimilarRaters(Rater user, ArrayList<Rater> allRaters) {
-        ArrayList<Rating> raters = new ArrayList<>();
+    public List<Rating> getSimilarRaters(Rater user, List<Rater> allRaters) {
+        List<Rating> raters = new ArrayList<>();
         for (Rater rater: allRaters) {
             long raterID = rater.getUserID();
             if (raterID != user.getUserID()) {
-                double dotProductC = dotProduct(user, rater);
-                if (dotProductC > 0) {
-                    raters.add(new Rating(raterID, dotProductC));
+                double cosineSimilarity = getCosineSimilarity(user, rater);
+                if (cosineSimilarity > 0) {
+                    raters.add(new Rating(raterID, cosineSimilarity));
                 }
             }
         }
-        // sort raters from highest dot product to lowest
+        // sort raters from the highest to lowest similarity
         Collections.sort(raters, Collections.reverseOrder());
         return raters;
     }
@@ -41,21 +43,24 @@ public class RecommendationService {
      * The games recommended must be rated by the most similar raters and have at least minRaters ratings.
      *
      * @param userID
+     * @param allRaters all raters from database
      * @param numSimilarRaters the number of the top similar raters
      * @param minRaters the recommended game must be rated by a minimal number of raters
-     * @return a hashmap of games with the gameID as key and the type Rating as values, with which the item is a game ID
-     * and the value is the average rating
+     * @return a list of type Rating, with which the item is a game ID and the value is the weighted average rating.
      */
-    public HashMap<Long, Rating> recommendGames(long userID, ArrayList<Rater> allRaters, int numSimilarRaters, int minRaters) {
+    public List<Rating> recommendGames(long userID, List<Rater> allRaters, int numSimilarRaters, int minRaters) {
         HashMap<Long, Rating> recommendations = new HashMap<>();
         Rater user = getRaterByID(userID, allRaters);
-        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(user, allRaters).subList(0, numSimilarRaters);
+        List<Rating> topRaters = getSimilarRaters(user, allRaters);
+        if (numSimilarRaters < topRaters.size()) {
+            topRaters = topRaters.subList(0, numSimilarRaters);
+        }
         // the rated games of the user
         HashMap<Long, Rating> ratings = user.getRatings();
         for (Rating rater: topRaters) {
             Rater gamer = getRaterByID(rater.getItem(), allRaters);
             // get the similar ratings of the top rater
-            ArrayList<Rating> similarRatings = getSimilarRatings(gamer, allRaters, numSimilarRaters, minRaters);
+            List<Rating> similarRatings = getSimilarRatings(gamer, allRaters, numSimilarRaters, minRaters);
             for (Rating rating: similarRatings) {
                 // if the game is not rated by the user and is not in the recommendations yet
                 if (!ratings.containsKey(rating.getItem()) && !recommendations.containsKey(rating.getItem())) {
@@ -63,25 +68,33 @@ public class RecommendationService {
                 }
             }
         }
-        return recommendations;
+        List<Rating> result = new ArrayList(recommendations.values());
+        Collections.sort(result, Collections.reverseOrder());
+        return result;
     }
 
     /**
      * This method is to get a list of Rating and their weighted average ratings of the top similar raters and including
      * only those games that have at least minRaters ratings from the most similar raters.
      *
-     * @param
+     * @param gamer
+     * @param allRaters all raters from database
      * @param numSimilarRaters the number of the top similar raters
      * @param minRaters the game must be rated by a minimal number of raters
-     * @return a list of type Rating with the item is a game ID and the value is the average rating, in sorted order from highest to lowest
+     * @return a list of type Rating with the item is a game ID and the value is the average rating, in sorted order
+     * from highest to lowest.
      */
-    public ArrayList<Rating> getSimilarRatings(Rater gamer, ArrayList<Rater> allRaters, int numSimilarRaters, int minRaters) {
+    public List<Rating> getSimilarRatings(Rater gamer, List<Rater> allRaters, int numSimilarRaters, int minRaters) {
         ArrayList<Rating> ratings = new ArrayList<>();
-        ArrayList<Rating> topRaters = (ArrayList<Rating>) getSimilarRaters(gamer, allRaters).subList(0, numSimilarRaters);
+        List<Rating> topRaters = getSimilarRaters(gamer, allRaters);
+        if (numSimilarRaters < topRaters.size()) {
+            topRaters = topRaters.subList(0, numSimilarRaters);
+        }
         ArrayList<Long> games = gamer.getGamesRated();
         for (long gameID: games) {
-            double avg = getWeightedAvgByGameID(gameID, minRaters, topRaters);
-            if (avg > 0) {
+            double avg = getWeightedAvgByGameID(gameID, allRaters, minRaters, topRaters);
+            // add the game to ratings if avg is greater than 4
+            if (avg > 4) {
                 ratings.add(new Rating(gameID, avg));
             }
         }
@@ -90,26 +103,34 @@ public class RecommendationService {
     }
 
     /**
-     * This method translates a rating from the scale 0 to 6 to the scale -3 to 3 and returns the dot product of the
+     * This method translates a rating from the scale 0 to 6 to the scale -3 to 3 and returns the cosine similarity of the
      * ratings of games that they both rated.
      *
      * @param a the user
      * @param b other user to be compared
-     * @return the dot product of the ratings of games
+     * @return the cosine similarity of the ratings of games
      */
-    private double dotProduct(Rater a, Rater b) {
-        double denominator = 0;
-        double numerator = 1;
+    private double getCosineSimilarity(Rater a, Rater b) {
+        double dotProduct = 0;
+        double aLength = 0;
+        double bLength = 0;
+        int numRatings = 0;
         ArrayList<Long> aGames = a.getGamesRated();
         ArrayList<Long> bGames = b.getGamesRated();
         for (Long game: aGames) {
             if (bGames.contains(game)) {
-                denominator += (a.getRating(game) - 3) * (b.getRating(game) - 3);
-                numerator *= Math.sqrt((a.getRating(game) - 3) * (a.getRating(game) - 3)
-                        + (b.getRating(game) - 3) * (b.getRating(game) - 3));
+                dotProduct += (a.getRating(game) - 3) * (b.getRating(game) - 3);
+                aLength += (a.getRating(game) - 3) * (a.getRating(game) - 3);
+                bLength += (b.getRating(game) - 3) * (b.getRating(game) - 3);
+                numRatings++;
             }
         }
-        return denominator / numerator;
+        // the user have at least 3 common ratings on games
+        if (numRatings > 2) {
+            double crossProduct = Math.sqrt(aLength) * Math.sqrt(bLength);
+            return dotProduct / crossProduct;
+        }
+        return 0;
     }
 
     /**
@@ -120,12 +141,12 @@ public class RecommendationService {
      * @param topRaters the top similar raters
      * @return the weighted average ranking on a game, 0 if no minRaters raters gave ratings on the game
      */
-    private double getWeightedAvgByGameID(long gameID, int minRaters, ArrayList<Rating> topRaters) {
+    private double getWeightedAvgByGameID(long gameID, List<Rater> allRaters, int minRaters, List<Rating> topRaters) {
         int raters = 0;
         double totalRating = 0;
         for (Rating rating: topRaters) {
             long raterID = rating.getItem();
-            Rater rater = new Rater(raterID);
+            Rater rater = getRaterByID(raterID, allRaters);
             if (rater.hasRating(gameID)) {
                 raters++;
                 // the rating on the game * rater's dot product
@@ -138,7 +159,7 @@ public class RecommendationService {
         return 0;
     }
 
-    private Rater getRaterByID(long userID, ArrayList<Rater> allRaters) {
+    private Rater getRaterByID(long userID, List<Rater> allRaters) {
         for (Rater rater: allRaters) {
             if (rater.getUserID() == userID) {
                 return rater;

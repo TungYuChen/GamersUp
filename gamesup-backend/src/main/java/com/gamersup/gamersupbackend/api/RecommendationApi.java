@@ -21,34 +21,53 @@ public class RecommendationApi {
     private ReviewService reviewService;
     private RecommendationService recommendationService;
 
-    // Get a gamer's recommendation friend list
-    @GetMapping("/friendlist/user={userid}")
-    public List<Rating> getWantToPlayList(@PathVariable long userid) {
+    // Get a list of recommendation gamers for a user
+    @GetMapping("/gamerlist/user={userid}")
+    public List<Rating> getRecommendGamers(@PathVariable long userid) {
         Rater user = new Rater(userid);
-        loadRatings(user);
+        user.setRatings(getAllRatings(userid));
         return recommendationService.getSimilarRaters(user, getAllRaters());
     }
 
-    private ArrayList<Rater> getAllRaters() {
+    // Get a list of recommendation games list for a user
+    @GetMapping("/games/user={userid}")
+    public List<Rating> getRecommendGames(@PathVariable long userid) {
+        return recommendationService.recommendGames(userid, getAllRaters(), 5, 2);
+    }
+
+    /**
+     * This method is to get all the raters from the database using ReviewServie
+     *
+     * @return a list of type Rater
+     */
+    private List<Rater> getAllRaters() {
         ArrayList<Rater> allRaters = new ArrayList<>();
         List<GamerInfo> gamers = gamerService.getAllGamers();
         for (GamerInfo gamer: gamers) {
             long gamerID = gamer.getId();
             List<Review> reviewList = reviewService.getAllReviewsByUserID(gamerID);
             if (!reviewList.isEmpty()) {
-                allRaters.add(new Rater(gamerID));
+                Rater rater = new Rater(gamerID);
+                rater.setRatings(getAllRatings(gamerID));
+                allRaters.add(rater);
             }
         }
         return allRaters;
     }
 
-    private void loadRatings(Rater rater) {
+    /**
+     * This method is to get all the ratings of a user from the database using ReviewService.
+     * @param userID
+     * @return a map of gameID and Rating pair
+     */
+    private HashMap<Long, Rating> getAllRatings(long userID) {
         HashMap<Long, Rating> ratings = new HashMap<>();
-        List<Review> reviews = reviewService.getAllReviewsByUserID(rater.getUserID());
+        List<Review> reviews = reviewService.getAllReviewsByUserID(userID);
         Collections.reverse(reviews); // in chronological order
         for (Review review: reviews) {
+            // put the newest rating for each game in ratings
             ratings.put(review.getGameID(), new Rating(review.getGameID(), review.getRating()));
         }
-        rater.setRatings(ratings);
+        return ratings;
     }
 }

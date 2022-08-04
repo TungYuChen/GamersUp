@@ -72,12 +72,5 @@ public class Rater {
         return gamesList;
     }
 
-//    public void loadRatings(long userId) {
-//        List<Review> reviews = reviewService.getAllReviewsByUserID(userId);
-//        Collections.reverse(reviews); // in chronological order
-//        for (Review review: reviews) {
-//            ratings.put(review.getGameID(), new Rating(review.getGameID(), review.getRating()));
-//        }
-//    }
 
 }
