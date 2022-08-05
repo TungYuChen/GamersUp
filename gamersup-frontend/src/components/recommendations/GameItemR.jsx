@@ -41,7 +41,7 @@ function GameItemR({ userID, gameID }) {
   const { name, background_image, website, rating, genres } = game
 
   return (
-    <div className='card h-40 bg-base-100 shadow-xl image-full'>
+    <div className='card h-44 bg-base-100 shadow-xl image-full'>
       <figure>
         <img src={background_image} alt='Game_Image' />
       </figure>
@@ -65,10 +65,12 @@ function GameItemR({ userID, gameID }) {
         </div>
         <div className='card-actions justify-between'>
           <div className='btn-ghost rounded text-xs px-1 text-sm'>
-            <a href={`${website}`} target='_blank'>
-              More Info
-              <LinkIcon className='inline w-5 ml-1' />
-            </a>
+            {website && (
+              <a href={`${website}`} target='_blank'>
+                More Info
+                <LinkIcon className='inline w-5 ml-1' />
+              </a>
+            )}
           </div>
           {wantToPlay && (
             <div

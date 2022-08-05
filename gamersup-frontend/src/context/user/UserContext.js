@@ -327,6 +327,11 @@ export const UserProvider = ({ children }) => {
   const getRecommendGames = (userId) => {
     return axios.get(`${API_URL}/recommendations/games/user=${userId}`)
   }
+
+  /** check whether the user has ratings */
+  const hasRatings = (userId) => {
+    return axios.get(`${API_URL}/recommendations/hasratings/user=${userId}`)
+  }
   
 
   return (
@@ -369,6 +374,7 @@ export const UserProvider = ({ children }) => {
         acceptFriend,
         getRecommendFriends,
         getRecommendGames,
+        hasRatings,
       }}
     >
       {children}

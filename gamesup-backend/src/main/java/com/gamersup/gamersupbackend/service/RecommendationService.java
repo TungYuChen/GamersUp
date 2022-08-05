@@ -159,6 +159,14 @@ public class RecommendationService {
         return 0;
     }
 
+    public boolean hasRatings(long userID, List<Rater> allRaters) {
+        Rater user = getRaterByID(userID, allRaters);
+        if (user.numRatings() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     private Rater getRaterByID(long userID, List<Rater> allRaters) {
         for (Rater rater: allRaters) {
             if (rater.getUserID() == userID) {

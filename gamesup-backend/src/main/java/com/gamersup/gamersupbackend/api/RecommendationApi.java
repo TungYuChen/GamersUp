@@ -35,6 +35,12 @@ public class RecommendationApi {
         return recommendationService.recommendGames(userid, getAllRaters(), 5, 2);
     }
 
+    // Check whether a gamer has ratings
+    @GetMapping("/hasratings/user={userid}")
+    public boolean checkLoveGame(@PathVariable long userid) {
+        return recommendationService.hasRatings(userid, getAllRaters());
+    }
+
     /**
      * This method is to get all the raters from the database using ReviewServie
      *
