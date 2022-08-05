@@ -5,9 +5,18 @@ import { PlusCircleIcon, ThumbUpIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 
 function FriendItemR({ userID, gamerID }) {
-  const { getGamerById, isFriend, addFriend } = useContext(UserContext)
+  const {
+    isLoggedIn,
+    getGamerById,
+    isFriend,
+    addFriend,
+    changeLikes,
+    getLikes,
+  } = useContext(UserContext)
+
   const [gamer, setGamer] = useState({})
   const [friend, setFriend] = useState(false)
+  const [clickLike, setClickLike] = useState(false)
 
   useEffect(() => {
     getGamerById(gamerID)
@@ -21,10 +30,24 @@ function FriendItemR({ userID, gamerID }) {
         setFriend(response.data)
       })
       .catch((error) => console.log(error))
-  }, [])
 
-  const handleAdd = async () => {
-    await addFriend(userID, gamerID)
+    setClickLike(false)
+  }, [clickLike])
+
+  const handleAdd = async (e) => {
+    e.preventDefault()
+    if (isLoggedIn()) {
+      await addFriend(userID, gamerID)
+    }
+  }
+
+  const handleClickLike = async (e) => {
+    e.preventDefault()
+    if (isLoggedIn()) {
+      await changeLikes(gamerID).then((response) => {
+        setClickLike(response.data)
+      })
+    }
   }
 
   return (
@@ -50,17 +73,22 @@ function FriendItemR({ userID, gamerID }) {
         </div>
         <div className='w-40'>
           <div className='flex'>
-            <h2 className='card-title'>{gamer.userName}</h2>
+            <h2 className='card-title'>
+              <Link to={`/profile/` + gamerID}>{gamer.userName}</Link>
+            </h2>
             <div className='badge badge-success font-semibold ml-3 mt-1'>
-              {(gamer.level === 0) && <span>Newbie</span>}
-              {(gamer.level === 1) && <span>Veteran</span>}
-              {(gamer.level === 2) && <span>Pro</span>}
-              {(gamer.level == null) && <span>Unknown</span>}
+              {gamer.level === 0 && <span>Newbie</span>}
+              {gamer.level === 1 && <span>Veteran</span>}
+              {gamer.level === 2 && <span>Pro</span>}
+              {gamer.level == null && <span>Unknown</span>}
             </div>
           </div>
           <p className='my-1'>{gamer.bio}</p>
           <div className='flex justify-between'>
-            <div className='badge badge-accent font-bold mt-3'>
+            <div
+              className='btn-ghost badge badge-accent font-bold mt-3 hover:text-primary'
+              onClick={handleClickLike}
+            >
               <ThumbUpIcon className='inline mr-1 w-4' />
               {gamer.likes}
             </div>
