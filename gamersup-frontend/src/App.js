@@ -17,6 +17,7 @@ import GameDetailsPage from './pages/GameDetailsPage'
 import GamerProfile from './pages/GamerProfile'
 import Settings from './pages/Settings'
 import AcceptFriendPage from './pages/AcceptFriendPage'
+import RecommendationPage from './pages/RecommendationPage'
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
                       path='/acceptFriend/:idA&:idB'
                       element={<AcceptFriendPage />}
                     />
+                    <Route path='/recommendations/:id' element={<RecommendationPage />} />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
                 </main>

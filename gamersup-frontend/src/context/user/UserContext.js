@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext } from 'react'
+import { createContext, useReducer } from 'react'
 import userReducer from './UserReducer'
 import axios from 'axios'
 
@@ -105,8 +105,8 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const getGamerById = (id) => {
-    return axios.get(`${API_URL}/gamers/gamer=${id}`)
+  const getGamerById = async (id) => {
+    return await axios.get(`${API_URL}/gamers/gamer=${id}`)
   }
 
   const getWantToPlayByGamerId = async (id) => {
@@ -176,7 +176,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const checkWantToPlay = async (id) => {
-    return axios.post(`${API_URL}/games/check/wanttoplay`, {
+    return await axios.post(`${API_URL}/games/check/wanttoplay`, {
       gameID: id,
       gamerID: state.user.userID,
     })
@@ -317,6 +317,11 @@ export const UserProvider = ({ children }) => {
   const acceptFriend = (userId, gamerId) => {
     return axios.post(`${API_URL}/gamers/friendsAdd/${userId}&${gamerId}`);
   }
+
+  /** get recommended friend list from back end */
+  const getRecommendFriends = (userId) => {
+    return axios.get(`${API_URL}/recommendations/gamerlist/user=${userId}`)
+  }
   
 
   return (
@@ -357,7 +362,7 @@ export const UserProvider = ({ children }) => {
         isFriend,
         addFriend,
         acceptFriend,
-        
+        getRecommendFriends,
       }}
     >
       {children}
