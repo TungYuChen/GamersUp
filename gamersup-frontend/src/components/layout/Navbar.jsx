@@ -93,12 +93,6 @@ function Navbar({ title }) {
                   tabIndex='0'
                   className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-60'
                 >
-                  {/* <li>
-        <a className="justify-between">
-          Notifications
-          <span className="badge">New</span>
-        </a>
-      </li> */}
                   <FriendList />
                 </ul>
               </div>

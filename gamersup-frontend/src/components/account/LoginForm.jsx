@@ -48,7 +48,7 @@ function LoginForm() {
         }
       })
 
-    if (isLoggedIn && user.level == null) {
+    if (isLoggedIn && user.level === null) {
       navigate('/settings', { replace: true })
     }
   }
