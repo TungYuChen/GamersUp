@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function FriendItemR({ userID, gamerID }) {
   const { getGamerById, isFriend, addFriend } = useContext(UserContext)
-  const [gamer, setGamer] = useState([])
+  const [gamer, setGamer] = useState({})
   const [friend, setFriend] = useState(false)
 
   useEffect(() => {
