@@ -1,5 +1,4 @@
 import { React, useEffect, useContext, useState } from 'react'
-
 import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid'
 import UserContext from '../../../context/user/UserContext'
 

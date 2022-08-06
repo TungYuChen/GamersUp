@@ -13,7 +13,7 @@ function AcceptFriendPage () {
 
 
     return (
-        <h1 className="text-4xl">You accept the friend request!!!!!!!!!!!!!</h1>
+        <h1 className="text-4xl">You accept the friend request!</h1>
     )
 } 
 
