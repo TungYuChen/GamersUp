@@ -89,9 +89,9 @@ function ChatRoom() {
 
 
     return (
-        <div className='grid grid-cols-5 gap-5'>
+        <div className='grid grid-cols-5 gap-5 my-5'>
         <div className='card bg-base-200 shadow-xl mr-5 col-span-4' style={{height: "40rem"}}>
-            <h1 className=' text-center text-xl mb-3 '>Chat Room</h1>           
+            <h1 className=' text-center text-xl  bg-base-300 py-5'>Chat Room</h1>           
             <div className='messageBox overflow-auto' style={{height: "33rem"}} ref={scrollRef}>              
                 <div className='message'>
                 </div> 
@@ -106,9 +106,13 @@ function ChatRoom() {
             </div>
            
         </div>
+            
             <ul
                   tabIndex='0'
-                  className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-60'>
+                  className=' p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-60'>
+                    <li>
+                    <a href="https://discord.com/channels/1005230771893702808/1005230771893702811" target='_blank' className='btn btn-ghost bg-base-300'>Discord</a>
+                    </li>
                     {
                         Object.keys(userList).map(socketID => (                                                                      
                             <FriendComponent key={userList[socketID].userID} friend={userList[socketID]} />
