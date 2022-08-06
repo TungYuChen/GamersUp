@@ -37,12 +37,12 @@ public class ReviewApi {
     public ResponseEntity<Review> addLoveGameReview(@RequestBody Review review) {
         Optional<Review> optionalReview = reviewService.getReview(review.getUserID(), review.getGameID());
         Review reviewUpdated = null;
-        if (optionalReview.isPresent()) {
+        if (optionalReview != null && optionalReview.isPresent()) {
             Review originalReview = optionalReview.get();
-            originalReview.setRating(5);
+            originalReview.setRating(6);
             reviewUpdated = reviewService.saveReview(originalReview);
         } else {
-            review.setRating(5);
+            review.setRating(6);
             reviewUpdated = reviewService.saveReview(review);
         }
         return new ResponseEntity<>(reviewUpdated, HttpStatus.OK);
@@ -53,7 +53,7 @@ public class ReviewApi {
     public ResponseEntity<Review> addHateGameReview(@RequestBody Review review) {
         Optional<Review> optionalReview = reviewService.getReview(review.getUserID(), review.getGameID());
         Review reviewUpdated = null;
-        if (optionalReview.isPresent()) {
+        if (optionalReview != null && optionalReview.isPresent()) {
             Review originalReview = optionalReview.get();
             originalReview.setRating(0);
             reviewUpdated = reviewService.saveReview(originalReview);
