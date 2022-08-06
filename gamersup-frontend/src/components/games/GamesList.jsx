@@ -47,7 +47,8 @@ function GamesList() {
       <>
         <GamePlatforms />
         <PageBar />
-        <div className='flex flex-wrap justify-between mt-5'>
+        {/* <div className='flex flex-wrap justify-between mt-5'> */}
+        <div className='grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-5 gap-5'>
           {games.map((game) => (
             <GameItem key={game.id} game={game} user={user} />
           ))}

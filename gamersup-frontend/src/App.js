@@ -21,8 +21,6 @@ import ChatRoom from './pages/ChatRoom'
 import RecommendationPage from './pages/RecommendationPage'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 
-
-
 function App() {
   return (
     <GamesProvider>
@@ -66,9 +64,14 @@ function App() {
                         </AuthenticatedRoute>
                       }
                     />
-                    <Route path="/chatRoom" element={
-                      <AuthenticatedRoute><ChatRoom /></AuthenticatedRoute>
-                    } />
+                    <Route
+                      path='/chatRoom'
+                      element={
+                        <AuthenticatedRoute>
+                          <ChatRoom />
+                        </AuthenticatedRoute>
+                      }
+                    />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
                 </main>

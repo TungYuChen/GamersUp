@@ -1,9 +1,9 @@
 import React from 'react'
 import gamerAvatar from '../../images/gamers-logo.png'
 
-function FriendComponent({ key, friend }) {
+function FriendComponent({ friend }) {
   return (
-    <li className='w-48 rounded-full bg-base-300 mx-3 my-2 ' key={key}>
+    <li className='w-48 rounded-full bg-base-300 mx-3 my-2'>
       <a href={'/profile/' + friend.userID}>
         {friend.avatarUrl !== null && (
           <img

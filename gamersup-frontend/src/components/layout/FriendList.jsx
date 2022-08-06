@@ -17,9 +17,9 @@ function FriendList() {
 
   return (
     <>
-      {localFriends?.map((friend) => (
+      {localFriends?.map((friend, index) => (
         // hardcode
-        <FriendComponent key={friend.gamerAId} friend={friend} />
+        <FriendComponent key={index} friend={friend} />
       ))}
     </>
   )

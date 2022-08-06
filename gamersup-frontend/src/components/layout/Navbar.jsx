@@ -1,5 +1,5 @@
 import { React, useContext, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/user/UserContext'
 import GamesContext from '../../context/games/GamesContext'
@@ -11,6 +11,8 @@ function Navbar({ title }) {
     useContext(UserContext)
   const { searchGames } = useContext(GamesContext)
   const [text, setText] = useState('')
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     // get the logged user
@@ -24,10 +26,7 @@ function Navbar({ title }) {
 
     //search games
     searchGames(text)
-  }
-
-  const openChatRoom = (e) => {
-    window.open("http://localhost:4200/chatRoom");
+    navigate('/', { replace: true })
   }
 
   return (
