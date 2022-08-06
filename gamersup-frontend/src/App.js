@@ -18,6 +18,7 @@ import GamerProfile from './pages/GamerProfile'
 import Settings from './pages/Settings'
 import AcceptFriendPage from './pages/AcceptFriendPage'
 import RecommendationPage from './pages/RecommendationPage'
+import AuthenticatedRoute from './components/AuthenticatedRoute'
 
 function App() {
   return (
@@ -41,13 +42,27 @@ function App() {
                       element={<ForgotPassword />}
                     />
                     <Route path='/resetpassword' element={<ResetPassword />} />
-                    <Route path='/settings' element={<Settings />} />
                     <Route path='/profile/:id' element={<GamerProfile />} />
                     <Route
                       path='/acceptFriend/:idA&:idB'
                       element={<AcceptFriendPage />}
                     />
-                    <Route path='/recommendations/:id' element={<RecommendationPage />} />
+                    <Route
+                      path='/settings'
+                      element={
+                        <AuthenticatedRoute>
+                          <Settings />
+                        </AuthenticatedRoute>
+                      }
+                    />
+                    <Route
+                      path='/recommendations/:id'
+                      element={
+                        <AuthenticatedRoute>
+                          <RecommendationPage />
+                        </AuthenticatedRoute>
+                      }
+                    />
                     <Route path='/*' element={<NotFound />} />
                   </Routes>
                 </main>
