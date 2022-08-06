@@ -18,15 +18,16 @@ import GameDetailsPage from './pages/GameDetailsPage'
 import GamerProfile from './pages/GamerProfile'
 import Settings from './pages/Settings'
 import AcceptFriendPage from './pages/AcceptFriendPage'
-import {ContextProvider} from './context/Context'
+import ChatRoom from './pages/ChatRoom'
+
 
 function App() {
   return (
     <GamesProvider>
       <UserProvider>
         <ReviewProvider>
-          <AlertProvider>
-            <ContextProvider>
+          <AlertProvider>    
+     
               <Router>
                 <div className='flex flex-col justify-between h-screen'>
                   <Navbar />                
@@ -51,12 +52,13 @@ function App() {
                         element={<AcceptFriendPage />}
                       />
                       <Route path='/*' element={<NotFound />} />
+                      <Route path="/chatRoom" element={<ChatRoom />} />
                     </Routes>
                   </main>
                   <Footer />
                 </div>
-              </Router>
-            </ContextProvider>
+              </Router>      
+             
           </AlertProvider>
         </ReviewProvider>
       </UserProvider>

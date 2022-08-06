@@ -20,7 +20,7 @@ function FriendComponent({ key, friend }) {
           />
         )}
         <div className='my-auto text-base'>{friend.userName}</div>
-      </a>
+      </a>     
     </li>
   )
 }

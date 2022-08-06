@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color:#e6e9ff;
+    font-family: 'Poppins';
+    overflow: hidden;
+}
+
+#chat {
+    background-color: #667aff;
+    width: 50vw;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px 100px
+}
+
+#chat #chat_header {
+    width: 100%;
+    text-align: left;
+    font-size: 2rem;
+    color: #e6e9ff;
+    background-color: #5066fa;   
+    font-weight: bold; 
+}
+
+#chat #chatbox {
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #e6e9ff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#chat .inp_btn {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+#chat .inp_btn input {
+    width: 80%;
+    height: 50%;
+    background-color: #e6e9ff;
+    color: #000;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 15px;
+}
+
+#chat .inp_btn button {
+    padding: 9px 20px;
+    color: #5a70ff;
+    background-color: #e6e9ff;
+    border: none;
+    margin-left: 5px;
+}
+
+#chat .message {
+    background-color: #5a70ff;
+    margin: 0.2rem;
+}

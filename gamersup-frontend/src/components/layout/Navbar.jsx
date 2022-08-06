@@ -26,6 +26,10 @@ function Navbar({ title }) {
     searchGames(text)
   }
 
+  const openChatRoom = (e) => {
+    window.open("http://localhost:4200/chatRoom");
+  }
+
   return (
     <nav className='navbar shadow-lg bg-base-300'>
       <div className='container mx-auto'>
@@ -124,6 +128,11 @@ function Navbar({ title }) {
                   <li>
                     <Link to='/settings' className='text-lg'>
                       Settings
+                    </Link>
+                  </li>
+                  <li>
+                  <Link to='/chatRoom' className='text-lg'>
+                      Chat Room
                     </Link>
                   </li>
                   <li>

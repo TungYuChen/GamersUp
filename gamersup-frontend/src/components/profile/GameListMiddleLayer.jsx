@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import UserContext from "../../context/user/UserContext";
 import PropTypes from 'prop-types';
 import GameListItem from './GameListItem';
