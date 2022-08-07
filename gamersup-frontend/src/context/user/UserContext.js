@@ -332,6 +332,13 @@ export const UserProvider = ({ children }) => {
   const hasRatings = (userId) => {
     return axios.get(`${API_URL}/recommendations/hasratings/user=${userId}`)
   }
+
+  const changePassword = (userId, password) => {
+    return axios.put(`${API_URL}/account/change_password`, {
+      userId,
+      password,
+    })
+  }
   
 
   return (
@@ -375,6 +382,7 @@ export const UserProvider = ({ children }) => {
         getRecommendFriends,
         getRecommendGames,
         hasRatings,
+        changePassword,
       }}
     >
       {children}

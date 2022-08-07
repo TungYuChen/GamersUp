@@ -1,11 +1,14 @@
 import { React, useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LockClosedIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
 import AlertContext from '../../context/alert/AlertContext'
+import UserContext from '../../context/user/UserContext'
+
 
 function ResetPassword() {
+  const { changePassword } = useContext(UserContext)
   const { setAlertWithTimeout } = useContext(AlertContext)
-
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
 
   const handleResetSubmit = (e) => {
@@ -14,7 +17,15 @@ function ResetPassword() {
       setAlertWithTimeout('Passwords must be at least 8 characters', 'information')
     } else if (e.target.newpassword.value !== e.target.passwordconfirm.value) {
       setAlertWithTimeout('Your passwords must match', 'information')
+    } else {
+      changePassword(JSON.parse(sessionStorage.getItem('user')).userID, e.target.newpassword.value)
+      .then( response => {
+        console.log(response);
+        return navigate('/')
+      })
     }
+    
+
   }
 
   return (
@@ -108,7 +119,7 @@ function ResetPassword() {
 
               <div className='flex justify-center'>
                 <div>
-                  <button
+                  <button 
                     type='submit'
                     className='group relative w-auto mx-5 px-10 border border-transparent text-base font-medium rounded btn btn-primary focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus'
                   >

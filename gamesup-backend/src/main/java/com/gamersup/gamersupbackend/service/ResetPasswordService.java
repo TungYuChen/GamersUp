@@ -1,5 +1,6 @@
 package com.gamersup.gamersupbackend.service;
 
+import com.gamersup.gamersupbackend.model.ChangePasswordRequest;
 import com.gamersup.gamersupbackend.model.GamerInfo;
 import com.gamersup.gamersupbackend.model.ResetPasswordRequest;
 import com.gamersup.gamersupbackend.service.email_service.email.EmailSender;
@@ -25,6 +26,13 @@ public record ResetPasswordService(GamerService gamerService,
         emailSender.send(request.getEmail(),
                 buildEmail(gamer.getUsername(), newPassword));
 
+        return "successful";
+    }
+
+    public String changePassword(ChangePasswordRequest request) {
+        System.out.println(request.getUserId());
+        GamerInfo gamer = gamerService.getGamerInfoById(request.getUserId());
+        gamerService.updatePassword(gamer, request.getPassword());
         return "successful";
     }
 

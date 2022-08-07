@@ -11,7 +11,7 @@ function ChatRoom() {
   const user = JSON.parse(sessionStorage.getItem('user'))
 
   useMountEffect(() => {
-    ws.on('joined_user', (data) => {
+    ws.off('join_user').on('joined_user', (data) => {
       if (data != null && data.userID > 0) {
         getMessage(data, 'join')
       }

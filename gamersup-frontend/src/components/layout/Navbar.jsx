@@ -152,7 +152,12 @@ function Navbar({ title }) {
                     <Link to='/settings' className='text-lg'>
                       Settings
                     </Link>
-                  </li>                
+                  </li>
+                  <li>
+                    <Link to='/resetpassword' className='text-lg'>
+                      Reset Password
+                    </Link>
+                  </li>                        
                   <li>
                     <div className='text-lg' onClick={logout}>
                       Logout

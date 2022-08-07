@@ -1,7 +1,6 @@
 package com.gamersup.gamersupbackend.api;
 
 import com.gamersup.gamersupbackend.model.*;
-import com.gamersup.gamersupbackend.model.exception.ResourceNotFoundException;
 import com.gamersup.gamersupbackend.security.config.PasswordConfiguration;
 import com.gamersup.gamersupbackend.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.gamersup.gamersupbackend.security.jwt.model.AuthenticationResponse;
@@ -70,6 +69,11 @@ public class AccountApi {
     @PostMapping("/reset_password")
     public String resetPasswordProgress(@RequestBody ResetPasswordRequest request) {
         return resetPasswordService.resetPassword(request);
+    }
+
+    @PutMapping("/change_password")
+    public String changePassword(@RequestBody ChangePasswordRequest request) {
+        return resetPasswordService.changePassword(request);
     }
 
 
