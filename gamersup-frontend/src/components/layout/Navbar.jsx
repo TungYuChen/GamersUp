@@ -136,7 +136,7 @@ function Navbar({ title }) {
                 </label>
                 <ul
                   tabIndex='0'
-                  className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-40'
+                  className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-44'
                 >
                   <li>
                     <Link

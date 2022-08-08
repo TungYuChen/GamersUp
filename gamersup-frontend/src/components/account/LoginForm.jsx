@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import UserContext from '../../context/user/UserContext'
 import AlertContext from '../../context/alert/AlertContext'
 import {
@@ -24,11 +24,11 @@ function LoginForm() {
   // not working for now
   // const REGISTER_SESSION = process.env.REACT_APP_REGISTER_SESSION
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem(REGISTER_SESSION) !== null) {
-  //     setAlert('Activation Successful! Please sign in with your email and password.', 'information')
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (isLoggedIn && user.level === null) {
+      navigate('/settings', { replace: true })
+    }
+  }, [isLoggedIn])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -48,9 +48,6 @@ function LoginForm() {
         }
       })
 
-    if (isLoggedIn && user.level === null) {
-      navigate('/settings', { replace: true })
-    }
   }
 
   if (isLoggedIn()) {
